@@ -24,6 +24,7 @@ export function Index() {
    */
   return (
     <StyledPage>
+      hello again
       <div className="wrapper">
         <div className="container">
           <div id="welcome">
