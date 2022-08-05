@@ -13,7 +13,6 @@ export function Index() {
    */
   return (
     <StyledPage>
-      hello
       <div className="wrapper">
         <div className="container">
           <div id="welcome">
