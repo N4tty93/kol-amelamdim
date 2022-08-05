@@ -1,11 +1,22 @@
 import styled from '@emotion/styled';
-
+import {useEffect} from 'react';
 const StyledPage = styled.div`
   .page {
   }
 `;
 
 export function Index() {
+  useEffect(() => {
+    const getSomething = async () => {
+      const response = await fetch('/api');
+      const json = await response.json();
+      console.log(json);
+      return json;
+    }
+
+    const response = getSomething();
+    console.log(response);
+  }, []);
   /*
    * Replace the elements below with your own.
    *
