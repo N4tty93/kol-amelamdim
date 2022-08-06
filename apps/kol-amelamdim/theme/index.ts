@@ -26,9 +26,9 @@ const theme: ThemeOptions = createTheme({
   typography: {
     htmlFontSize: 10,
     fontFamily: [
+      'OpenSansHebrew',
       '-apple-system',
       'BlinkMacSystemFont',
-      'OpenSansHebrew',
       'sans-serif',
     ].join(','),
   },
