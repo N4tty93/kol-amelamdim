@@ -25,7 +25,8 @@ const CategoryCard = styled(Card)`
   }
 
   padding: 8px;
-  margin: 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,12 +77,8 @@ export function Home() {
           <Typography variant="h3" component="h3">
             מה בא לך ללמוד?
           </Typography>
-          <Grid
-            container
-            // justifyContent={isSmallScreen ? 'flex-start' : 'space-between'}
-            justifyContent="flex-start"
-            sx={{ mt: 2 }}
-          >
+
+          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={6}>
               <CategoryCard
                 onClick={() => router.push('/category/parashat-shavoa')}
