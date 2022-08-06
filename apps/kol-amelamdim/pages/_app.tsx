@@ -1,18 +1,40 @@
 import { AppProps } from 'next/app';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import Head from 'next/head';
+import rtlPlugin from 'stylis-plugin-rtl';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { prefixer } from 'stylis';
+import theme from '../theme';
 import './styles.css';
 
-function CustomApp({ Component, pageProps }: AppProps) {
+const cacheRtl = createCache({
+  key: 'muirtl',
+  stylisPlugins: [prefixer, rtlPlugin],
+});
+
+function RTL(props) {
+  return <CacheProvider value={cacheRtl}>{props.children}</CacheProvider>;
+}
+
+function KolAmelamdimApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Welcome to kol-amelamdim!</title>
+        <title>כל המלמדים</title>
       </Head>
+
       <main className="app">
-        <Component {...pageProps} />
+        <RTL>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </RTL>
       </main>
     </>
   );
 }
 
-export default CustomApp;
+export default KolAmelamdimApp;
