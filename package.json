@@ -69,7 +69,7 @@
     "husky": "8.0.0"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
+    "**/*.{js,jsx,ts,tsx,json,css}": [
       "npm run lint",
       "npm run format"
     ]
