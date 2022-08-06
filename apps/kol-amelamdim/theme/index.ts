@@ -69,27 +69,34 @@ const theme: ThemeOptions = createTheme({
     },
     MuiTypography: {
       styleOverrides: {
+        root: {
+          fontFamily: 'OpenSansHebrewBold',
+        },
         h1: {
           fontSize: '60px',
-          fontFamily: 'OpenSansHebrewBold',
           '@media (max-width: 600px)': {
             fontSize: '50px',
           },
         },
         h2: {
           fontSize: '45px',
-          fontFamily: 'OpenSansHebrewBold',
         },
         h3: {
           fontSize: '35px',
-          fontFamily: 'OpenSansHebrewBold',
           '@media (max-width: 600px)': {
             fontSize: '30px',
           },
         },
         body1: {
           fontSize: '22px',
-          fontFamily: 'OpenSansHebrewBold',
+          fontFamily: 'OpenSansHebrew',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'OpenSansHebrewLight',
         },
       },
     },
