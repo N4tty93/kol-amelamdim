@@ -6,7 +6,8 @@ import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { prefixer } from 'stylis';
-import theme from 'theme';
+import { Navbar } from '../components';
+import theme from '../theme';
 import './styles.css';
 
 const cacheRtl = createCache({
@@ -29,6 +30,7 @@ function KolAmelamdimApp({ Component, pageProps }: AppProps) {
         <RTL>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+            <Navbar />
             <Component {...pageProps} />
           </ThemeProvider>
         </RTL>
