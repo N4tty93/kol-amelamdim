@@ -62,7 +62,7 @@ export function Home() {
         <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
           אתר שיתוף חומרי למידה המתקדם ביותר בישראל
         </Typography>
-        <Grid container spacing={3} sx={{ mt: 2 }}>
+        <Grid container spacing={1} sx={{ mt: 2 }}>
           <Grid item>
             <Button variant="contained">שיתוף חומרים</Button>
           </Grid>
