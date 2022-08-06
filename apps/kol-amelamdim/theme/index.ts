@@ -72,6 +72,9 @@ const theme: ThemeOptions = createTheme({
         h1: {
           fontSize: '60px',
           fontFamily: 'OpenSansHebrewBold',
+          '@media (max-width: 600px)': {
+            fontSize: '50px',
+          },
         },
         h2: {
           fontSize: '45px',
@@ -80,6 +83,9 @@ const theme: ThemeOptions = createTheme({
         h3: {
           fontSize: '35px',
           fontFamily: 'OpenSansHebrewBold',
+          '@media (max-width: 600px)': {
+            fontSize: '30px',
+          },
         },
         body1: {
           fontSize: '22px',

@@ -21,7 +21,7 @@ export const Navbar = () => {
         <Grid
           item
           container
-          xs={6}
+          xs={5}
           alignItems="center"
           onClick={() => router.push('/')}
         >
@@ -30,7 +30,7 @@ export const Navbar = () => {
         <Grid
           item
           container
-          xs={6}
+          xs={7}
           alignItems="center"
           justifyContent="flex-end"
         >

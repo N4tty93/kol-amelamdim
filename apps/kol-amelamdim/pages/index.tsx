@@ -5,8 +5,10 @@ import {
   Button,
   Grid,
   Divider,
+  useMediaQuery,
 } from '@mui/material';
 import { useRouter } from 'next/router';
+import { MOBILE_QUERY } from '../constants';
 
 const StyledPage = styled('div')`
   font-family: ${(props) => props.theme.fonts.regular};
@@ -14,6 +16,7 @@ const StyledPage = styled('div')`
 `;
 
 export function Index() {
+  const isSmallScreen = useMediaQuery(MOBILE_QUERY);
   const router = useRouter();
 
   return (
@@ -40,7 +43,11 @@ export function Index() {
           <Typography variant="h3" component="h3">
             מה בא לך ללמוד?
           </Typography>
-          <Grid container justifyContent="space-between" sx={{ mt: 2 }}>
+          <Grid
+            container
+            justifyContent={isSmallScreen ? 'flex-start' : 'space-between'}
+            sx={{ mt: 2 }}
+          >
             <Grid item>
               <Button onClick={() => router.push('/category/parashat-shavoa')}>
                 פרשת השבוע
