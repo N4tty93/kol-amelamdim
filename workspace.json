@@ -3,6 +3,8 @@
   "version": 2,
   "projects": {
     "kol-amelamdim": "apps/kol-amelamdim",
-    "models": "libs/models"
+    "models": "libs/models",
+    "styled": "libs/styled",
+    "types": "libs/types"
   }
 }
