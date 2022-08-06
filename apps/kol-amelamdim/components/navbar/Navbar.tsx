@@ -1,13 +1,19 @@
 import { AppBar, Button, Grid, styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { MOBILE_QUERY } from '../../constants';
 
 const StyledNavbar = styled(AppBar)`
   background: ${(props) => props.theme.palette.primary.light};
-  height: 72px;
+  height: 82px;
   display: flex;
   justify-content: center;
   flex-direction: row;
-  padding: 0 10px;
+  padding: 0 60px;
+
+  @media ${MOBILE_QUERY} {
+    padding: 0 10px;
+  }
+
   color: ${(props) => props.theme.palette.primary.main};
   font-weight: ${(props) => props.theme.fonts.bold};
 `;
