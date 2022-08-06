@@ -15,7 +15,7 @@ const StyledPage = styled('div')`
   padding-top: 25px;
 `;
 
-export function Index() {
+export function Home() {
   const isSmallScreen = useMediaQuery(MOBILE_QUERY);
   const router = useRouter();
 
@@ -86,4 +86,4 @@ export function Index() {
   );
 }
 
-export default Index;
+export default Home;

@@ -26,15 +26,13 @@ function KolAmelamdimApp({ Component, pageProps }: AppProps) {
         <title>כל המלמדים</title>
       </Head>
 
-      <main className="app">
-        <RTL>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Navbar />
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </RTL>
-      </main>
+      <RTL>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Navbar />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </RTL>
     </>
   );
 }
