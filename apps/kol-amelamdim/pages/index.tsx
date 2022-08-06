@@ -1,12 +1,17 @@
-import styled from '@emotion/styled';
+import { styled, Container } from '@mui/material';
 
-const StyledPage = styled.div`
-  .page {
-  }
+const StyledPage = styled('div')`
+  background: ${(props) => props.theme.palette.primary.light};
+  min-height: 100vh;
+  font-family: ${(props) => props.theme.fonts.regular};
 `;
 
 export function Index() {
-  return <StyledPage>hello again</StyledPage>;
+  return (
+    <StyledPage>
+      <Container>כל המלמדים</Container>
+    </StyledPage>
+  );
 }
 
 export default Index;
