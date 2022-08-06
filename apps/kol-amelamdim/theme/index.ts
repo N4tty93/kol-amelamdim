@@ -93,13 +93,6 @@ const theme: ThemeOptions = createTheme({
         },
       },
     },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          fontFamily: 'OpenSansHebrewLight',
-        },
-      },
-    },
   },
 }) as ThemeOptions;
 
