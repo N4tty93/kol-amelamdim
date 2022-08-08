@@ -7,8 +7,10 @@ import {
   Divider,
   Card,
 } from '@mui/material';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { MOBILE_QUERY } from '../constants';
+import { UploadFileDialog } from '../components';
 
 const StyledPage = styled('div')`
   font-family: ${(props) => props.theme.fonts.regular};
@@ -51,7 +53,13 @@ const CategoryCard = styled(Card)`
 `;
 
 export function Home() {
+  const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
   const router = useRouter();
+
+  const handleShareContentButtonClick = () => {
+    // TODO: Only logged in users can share new file (Add it after api for login is ready)
+    setIsUploadFileDialogOpen(true);
+  };
 
   return (
     <Container>
@@ -62,9 +70,11 @@ export function Home() {
         <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
           אתר שיתוף חומרי למידה המתקדם ביותר בישראל
         </Typography>
-        <Grid container spacing={1} sx={{ mt: 2 }}>
-          <Grid item>
-            <Button variant="contained">שיתוף חומרים</Button>
+        <Grid container sx={{ mt: 2 }}>
+          <Grid item sx={{ mr: '10px' }}>
+            <Button variant="contained" onClick={handleShareContentButtonClick}>
+              שיתוף חומרים
+            </Button>
           </Grid>
           <Grid item>
             <Button variant="outlined">הורדת חומרים</Button>
@@ -115,6 +125,10 @@ export function Home() {
 
         <Divider sx={{ pt: 7, mb: 7 }} />
       </StyledPage>
+      <UploadFileDialog
+        isOpen={isUploadFileDialogOpen}
+        onClose={() => setIsUploadFileDialogOpen(false)}
+      />
     </Container>
   );
 }
