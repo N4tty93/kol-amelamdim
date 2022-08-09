@@ -1,6 +1,6 @@
 import { AppBar, Button, Grid, styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { MOBILE_QUERY } from '../../constants';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 
 const StyledNavbar = styled(AppBar)`
   background: ${(props) => props.theme.palette.primary.light};

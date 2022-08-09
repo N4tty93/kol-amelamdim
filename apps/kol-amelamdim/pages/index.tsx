@@ -9,7 +9,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { MOBILE_QUERY } from '../constants';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
+import { Category } from '@kol-amelamdim/types';
 import { UploadFileDialog } from '../components';
 
 const StyledPage = styled('div')`
@@ -91,32 +92,42 @@ export function Home() {
           <Grid container sx={{ mt: 2 }}>
             <Grid item xs={6}>
               <CategoryCard
-                onClick={() => router.push('/category/parashat-shavoa')}
+                onClick={() =>
+                  router.push(`/category/${Category['parashat-shavoa']}`)
+                }
               >
                 פרשת השבוע
               </CategoryCard>
             </Grid>
             <Grid item xs={6}>
               <CategoryCard
-                onClick={() => router.push('/category/learning-materials')}
+                onClick={() =>
+                  router.push(`/category/${Category['learning-materials']}`)
+                }
               >
                 חומרי למידה
               </CategoryCard>
             </Grid>
             <Grid item xs={6}>
-              <CategoryCard onClick={() => router.push('/category/mivhanim')}>
+              <CategoryCard
+                onClick={() => router.push(`/category/${Category.mivhanim}`)}
+              >
                 מבחנים
               </CategoryCard>
             </Grid>
             <Grid item xs={6}>
               <CategoryCard
-                onClick={() => router.push('/category/art-and-activities')}
+                onClick={() =>
+                  router.push(`/category/${Category['art-and-activities']}`)
+                }
               >
                 דפי יצירה ופעילות
               </CategoryCard>
             </Grid>
             <Grid item xs={6}>
-              <CategoryCard onClick={() => router.push('/category/shonot')}>
+              <CategoryCard
+                onClick={() => router.push(`/category/${Category.shonot}`)}
+              >
                 שונות
               </CategoryCard>
             </Grid>
