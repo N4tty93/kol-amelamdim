@@ -12,6 +12,14 @@ import {
 } from '@mui/material';
 import { Dialog } from '@kol-amelamdim/styled';
 import { Category } from '@kol-amelamdim/types';
+import {
+  MAX_UPLOAD_FILE_SIZE,
+  ALLWOED_FILE_TYPES,
+  MAX_FILES_ALLOWED,
+  UPLOAD_VALIDATION_ERRORS,
+  MIN_FILES_ALLOWED,
+  UPLOAD_SUBMISSION_ERROR,
+} from '@kol-amelamdim/constants';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 
@@ -32,19 +40,51 @@ export const UploadFileDialog = ({
   onClose,
 }: UploadFileDialogProps) => {
   const [selectedFile, setSelectedFile] = useState<File>();
+  const [submissionError, setSubmissionError] = useState('');
+
+  const uploadFileValidationError = (file: File): string | null => {
+    // if (file.length > MAX_FILES_ALLOWED) {
+    //   return UPLOAD_VALIDATION_ERRORS.MAX_FILES_ALLOWED;
+    // }
+
+    if (!ALLWOED_FILE_TYPES.includes(file[0].type)) {
+      return UPLOAD_VALIDATION_ERRORS.NOT_ALLOWED_TYPE;
+    }
+
+    if (file[0].size > MAX_UPLOAD_FILE_SIZE) {
+      return UPLOAD_VALIDATION_ERRORS.MAX_UPLOAD_FILE_SIZE;
+    }
+
+    return null;
+  };
 
   const handleFileSelection = (e: ChangeEvent<HTMLInputElement>) => {
-    setSelectedFile(e.target.files[0]);
+    const filesList: FileList = e.target.files;
+
+    if (filesList.length > MAX_FILES_ALLOWED) {
+      setSubmissionError(UPLOAD_VALIDATION_ERRORS.MAX_FILES_ALLOWED);
+    }
+
+    if (filesList.length === 0) {
+      setSubmissionError(UPLOAD_VALIDATION_ERRORS.MIN_FILES_ALLOWED);
+    }
+    setSelectedFile(filesList[0]);
   };
 
   const handleFileSubmission = async () => {
-    const formData = new FormData();
-    formData.append('sharedFile', selectedFile, selectedFile.name);
+    const uploadValidationError = uploadFileValidationError(selectedFile);
 
-    try {
-      await axios.post('/api/upload-file', formData);
-    } catch (e) {
-      // TODO: Handle errors
+    if (!uploadValidationError) {
+      const formData = new FormData();
+      formData.append('sharedFile', selectedFile, selectedFile.name);
+
+      try {
+        await axios.post('/api/upload-file', formData);
+      } catch (e) {
+        setSubmissionError(UPLOAD_SUBMISSION_ERROR);
+      }
+    } else {
+      setSubmissionError(uploadValidationError);
     }
   };
 
@@ -99,6 +139,7 @@ export const UploadFileDialog = ({
       <Button variant="contained" onClick={handleFileSubmission}>
         שיתוף
       </Button>
+      {submissionError}
     </Dialog>
   );
 };
