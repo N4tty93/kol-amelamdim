@@ -21,8 +21,7 @@ export const AlertLayout = (props: PropsWithChildren) => {
       <Alert
         open={!!alertMessage}
         severity={alertType}
-        handleClose={handleCloseAlert}
-        autoHideDuration={6000}
+        onClose={handleCloseAlert}
       >
         {alertMessage}
       </Alert>

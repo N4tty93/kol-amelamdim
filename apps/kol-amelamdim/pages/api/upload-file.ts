@@ -40,24 +40,24 @@ export default async function handler(req, res) {
         },
       };
 
-      const response = await s3
-        .listObjectsV2({
-          Bucket: process.env.AWS_BUCKET_NAME,
-          Prefix: 'parashat-shavoa',
-        })
-        .promise();
+      // const response = await s3
+      //   .listObjectsV2({
+      //     Bucket: process.env.AWS_BUCKET_NAME,
+      //     Prefix: 'parashat-shavoa',
+      //   })
+      //   .promise();
+      //
+      // console.log(response);
 
-      console.log(response);
-
-      s3.getObject(
-        {
-          Bucket: process.env.AWS_BUCKET_NAME,
-          Key: data.files.sharedFile.originalFilename,
-        },
-        (err, data) => {
-          console.log(data);
-        }
-      );
+      // s3.getObject(
+      //   {
+      //     Bucket: process.env.AWS_BUCKET_NAME,
+      //     Key: data.files.sharedFile.originalFilename,
+      //   },
+      //   (err, data) => {
+      //     console.log(data);
+      //   }
+      // );
 
       s3.upload(params, (err, data) => {
         if (err) {
