@@ -7,6 +7,7 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { prefixer } from 'stylis';
 import theme from '../theme';
+import { Navbar } from '../components';
 import './styles.css';
 
 const cacheRtl = createCache({
@@ -25,14 +26,13 @@ function KolAmelamdimApp({ Component, pageProps }: AppProps) {
         <title>כל המלמדים</title>
       </Head>
 
-      <main className="app">
-        <RTL>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </RTL>
-      </main>
+      <RTL>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Navbar />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </RTL>
     </>
   );
 }
