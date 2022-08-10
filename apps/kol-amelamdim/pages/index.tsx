@@ -7,11 +7,12 @@ import {
   Divider,
   Card,
 } from '@mui/material';
-import { useState } from 'react';
+import { useState, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import { Category } from '@kol-amelamdim/types';
 import { UploadFileDialog } from '../components';
+import { AlertLayout } from '../layouts';
 
 const StyledPage = styled('div')`
   font-family: ${(props) => props.theme.fonts.regular};
@@ -143,5 +144,9 @@ export function Home() {
     </Container>
   );
 }
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <AlertLayout>{page}</AlertLayout>;
+};
 
 export default Home;

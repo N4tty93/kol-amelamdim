@@ -17,9 +17,11 @@
     "paths": {
       "@kol-amelamdim/api-errors": ["libs/api-errors/src/index.ts"],
       "@kol-amelamdim/constants": ["libs/constants/src/index.ts"],
+      "@kol-amelamdim/context": ["libs/context/src/index.ts"],
       "@kol-amelamdim/models": ["libs/models/src/index.ts"],
       "@kol-amelamdim/styled": ["libs/styled/src/index.ts"],
-      "@kol-amelamdim/types": ["libs/types/src/index.ts"]
+      "@kol-amelamdim/types": ["libs/types/src/index.ts"],
+      "@kol-amelamdim/utils": ["libs/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

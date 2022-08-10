@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import { styled } from '@mui/material';
 import { Dialog as MuiDialog } from '@mui/material';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 
@@ -15,4 +15,9 @@ export const Dialog = styled(MuiDialog)`
       margin: 15px;
     }
   }
+`;
+
+export const FormError = styled('div')`
+  margin: 10px 0;
+  color: ${(props) => props.theme.palette.error.main};
 `;

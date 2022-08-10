@@ -9,6 +9,7 @@ export const ALLWOED_FILE_TYPES = [
   '.doc',
   '.docx',
   'application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 ];
 
 export const UPLOAD_VALIDATION_ERRORS = {
@@ -16,6 +17,7 @@ export const UPLOAD_VALIDATION_ERRORS = {
   MAX_FILES_ALLOWED: 'יש להעלות קובץ אחד בלבד בכל פעם',
   MAX_UPLOAD_FILE_SIZE: 'הגודל המקסימלי להעלאת קובץ הינו 5 מ״ב',
   NOT_ALLOWED_TYPE: 'פורמט הקובץ שבחרת אינו נתמך באתר שלנו',
+  AT_LEAST_ONE_REQUIRED: 'יש לבחור לפחות קובץ אחד',
 };
 
 export const UPLOAD_SUBMISSION_ERROR =

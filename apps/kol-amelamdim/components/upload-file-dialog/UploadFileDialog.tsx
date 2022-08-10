@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useContext } from 'react';
 import {
   Typography,
   Divider,
@@ -9,25 +9,30 @@ import {
   FormControl,
   InputLabel,
   styled,
+  SelectChangeEvent,
 } from '@mui/material';
-import { Dialog } from '@kol-amelamdim/styled';
+import { Dialog, FormError } from '@kol-amelamdim/styled';
 import { Category } from '@kol-amelamdim/types';
 import {
-  MAX_UPLOAD_FILE_SIZE,
-  ALLWOED_FILE_TYPES,
   MAX_FILES_ALLOWED,
   UPLOAD_VALIDATION_ERRORS,
-  MIN_FILES_ALLOWED,
   UPLOAD_SUBMISSION_ERROR,
 } from '@kol-amelamdim/constants';
+import { uploadFileValidationError } from '@kol-amelamdim/utils';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
+import { AlertContext } from '@kol-amelamdim/context';
 
 const CategoryLabel = styled(InputLabel)`
   &.MuiFormLabel-root {
     background: ${(props) => props.theme.palette.primary.light};
     padding: 0 5px;
   }
+`;
+
+const UploadingIndicatorText = styled(Typography)`
+  color: ${(props) => props.theme.palette.primary.main};
+  margin-top: 10px;
 `;
 
 interface UploadFileDialogProps {
@@ -39,24 +44,11 @@ export const UploadFileDialog = ({
   isOpen,
   onClose,
 }: UploadFileDialogProps) => {
-  const [selectedFile, setSelectedFile] = useState<File>();
+  const { setAlertMessage } = useContext(AlertContext);
+  const [category, setCategory] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [submissionError, setSubmissionError] = useState('');
-
-  const uploadFileValidationError = (file: File): string | null => {
-    // if (file.length > MAX_FILES_ALLOWED) {
-    //   return UPLOAD_VALIDATION_ERRORS.MAX_FILES_ALLOWED;
-    // }
-
-    if (!ALLWOED_FILE_TYPES.includes(file[0].type)) {
-      return UPLOAD_VALIDATION_ERRORS.NOT_ALLOWED_TYPE;
-    }
-
-    if (file[0].size > MAX_UPLOAD_FILE_SIZE) {
-      return UPLOAD_VALIDATION_ERRORS.MAX_UPLOAD_FILE_SIZE;
-    }
-
-    return null;
-  };
+  const [isUploadingInProcess, setIsUploadingInProcess] = useState(false);
 
   const handleFileSelection = (e: ChangeEvent<HTMLInputElement>) => {
     const filesList: FileList = e.target.files;
@@ -68,19 +60,37 @@ export const UploadFileDialog = ({
     if (filesList.length === 0) {
       setSubmissionError(UPLOAD_VALIDATION_ERRORS.MIN_FILES_ALLOWED);
     }
+
     setSelectedFile(filesList[0]);
+  };
+
+  const resetFormValues = () => {
+    setSubmissionError('');
+    setCategory('');
+    setSelectedFile(null);
+  };
+
+  const handleCloseUploadFileDialog = () => {
+    resetFormValues();
+    onClose();
   };
 
   const handleFileSubmission = async () => {
     const uploadValidationError = uploadFileValidationError(selectedFile);
 
     if (!uploadValidationError) {
+      setSubmissionError('');
+      setIsUploadingInProcess(true);
       const formData = new FormData();
       formData.append('sharedFile', selectedFile, selectedFile.name);
 
       try {
         await axios.post('/api/upload-file', formData);
+        setAlertMessage('העלאה בוצעה בהצלחה. תודה רבה!');
+        setIsUploadingInProcess(false);
+        handleCloseUploadFileDialog();
       } catch (e) {
+        setIsUploadingInProcess(false);
         setSubmissionError(UPLOAD_SUBMISSION_ERROR);
       }
     } else {
@@ -93,7 +103,7 @@ export const UploadFileDialog = ({
       {onClose ? (
         <IconButton
           aria-label="close"
-          onClick={onClose}
+          onClick={handleCloseUploadFileDialog}
           sx={{
             position: 'absolute',
             right: 8,
@@ -118,7 +128,12 @@ export const UploadFileDialog = ({
         <CategoryLabel id="category-selection">
           לאיזה קטגוריה שייך הקובץ?
         </CategoryLabel>
-        <Select labelId="category-selection" id="demo-simple-select">
+        <Select
+          value={category}
+          labelId="category-selection"
+          id="demo-simple-select"
+          onChange={(e: SelectChangeEvent) => setCategory(e.target.value)}
+        >
           <MenuItem value={Category['parashat-shavoa']}>פרשת השבוע</MenuItem>
           <MenuItem value={Category['learning-materials']}>
             חומרי למידה
@@ -139,7 +154,10 @@ export const UploadFileDialog = ({
       <Button variant="contained" onClick={handleFileSubmission}>
         שיתוף
       </Button>
-      {submissionError}
+      {isUploadingInProcess && !submissionError && (
+        <UploadingIndicatorText>רק עוד כמה רגעים...</UploadingIndicatorText>
+      )}
+      <FormError>{submissionError}</FormError>
     </Dialog>
   );
 };
