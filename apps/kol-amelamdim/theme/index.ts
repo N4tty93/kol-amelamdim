@@ -10,14 +10,10 @@ type Fonts = {
 declare module '@mui/material/styles' {
   interface Theme {
     fonts?: Fonts;
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    overrides?: {};
   }
   interface ThemeOptions {
     // eslint-disable-next-line @typescript-eslint/ban-types
     fonts?: Fonts;
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    overrides?: {};
   }
 }
 
