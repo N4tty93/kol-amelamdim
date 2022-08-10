@@ -5,13 +5,12 @@ import cookie from 'cookie';
 import connect from '../../db/connectMongo';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-connect();
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
+    await connect();
     const user = await User.findOne({ email: req.body.email });
 
     if (user) {
