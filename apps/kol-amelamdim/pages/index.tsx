@@ -52,6 +52,7 @@ const CategoryCard = styled(Card)`
 
 export function Home() {
   const router = useRouter();
+  console.log('render');
 
   return (
     <Container>

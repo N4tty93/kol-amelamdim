@@ -2,6 +2,7 @@ import { User } from '@kol-amelamdim/models';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
+import validator from 'validator';
 import connect from '../../db/connectMongo';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -13,7 +14,7 @@ export default async function handler(
     await connect();
     const user = await User.findOne({ email: req.body.email });
 
-    if (user) {
+    if (user && validator.isEmail(req.body.email)) {
       const validPassword = await bcrypt.compare(
         req.body.password,
         user.password

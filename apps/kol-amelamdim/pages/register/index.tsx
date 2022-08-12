@@ -1,12 +1,9 @@
 import { useState } from 'react';
-import { TextField, Button, Grid, Container, styled } from '@mui/material';
+import { TextField, Button, Grid, Container } from '@mui/material';
 import { useRouter } from 'next/router';
+import validator from 'validator';
+import { StyledPage } from '@kol-amelamdim/styled';
 import instance from '../../api/api';
-
-const StyledPage = styled('div')`
-  font-family: ${(props) => props.theme.fonts.regular};
-  padding-top: 25px;
-`;
 
 const Register = () => {
   const [email, setEmail] = useState<string>('');
@@ -15,9 +12,16 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await instance.post('/api/register', { email, password });
-    if (data.success) {
-      router.push('/');
+    if (validator.isEmail(email)) {
+      const { data } = await instance.post('/api/register', {
+        email,
+        password,
+      });
+      if (data.success) {
+        router.push('/');
+      }
+    } else {
+      throw new Error('יש להזין אימייל תקני');
     }
   };
 

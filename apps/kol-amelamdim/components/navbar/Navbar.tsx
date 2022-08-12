@@ -1,5 +1,7 @@
+import {useState,useEffect} from 'react';
 import { AppBar, Button, Grid, styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import instance from '../../api/api';
 import { MOBILE_QUERY } from '../../constants';
 
 const StyledNavbar = styled(AppBar)`
@@ -20,6 +22,36 @@ const StyledNavbar = styled(AppBar)`
 
 export const Navbar = () => {
   const router = useRouter();
+  const [authorized, setAuthorized] = useState<boolean>(false);
+
+  useEffect(() => {
+    checkAuthentication();
+  }, [router.pathname])
+  
+  const checkAuthentication = async () => {
+    try {
+      const {data} = await instance.get('/api/me');
+      if(data.success){
+        setAuthorized(true);
+      } 
+    }catch (error){
+        console.error(error)
+      }
+ 
+  }
+
+
+  const logOut = async() => {
+    try {
+      await instance.post('/api/logout');
+      setAuthorized(false);
+    } catch (error){
+      console.error(error)
+    }
+  
+    
+  }
+
 
   return (
     <StyledNavbar>
@@ -40,12 +72,16 @@ export const Navbar = () => {
           alignItems="center"
           justifyContent="flex-end"
         >
+         {authorized ? <Button variant="text" onClick={logOut}>
+            התנתק
+          </Button> : <div>
           <Button variant="text" onClick={() => router.push('/login')}>
             התחברות
           </Button>
           <Button variant="text" onClick={() => router.push('/register')}>
             הרשמה
           </Button>
+         </div> } 
         </Grid>
       </Grid>
     </StyledNavbar>
