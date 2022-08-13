@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 import validator from 'validator';
+import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import connect from '../../db/connectMongo';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -42,12 +43,12 @@ export default async function handler(
 
         res.status(200).send({ success: true });
       } else {
-        res.status(400).send({ status: 'Email or password is incorrect.' });
+        return res.status(400).json(API_ERRORS.LoginValidationError);
       }
     } else {
-      res.status(400).send({ status: 'Email or password is incorrect.' });
+      return res.status(400).json(API_ERRORS.LoginValidationError);
     }
   } catch (error) {
-    res.status(404).send({ status: 'Somthing went wrong.' });
+    return res.status(404).json(API_ERRORS.LoginError);
   }
 }

@@ -1,8 +1,11 @@
-import {useState,useEffect} from 'react';
+import { useEffect, useContext } from 'react';
 import { AppBar, Button, Grid, styled, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import instance from '../../api/api';
-import { MOBILE_QUERY } from '../../constants';
+import axios from '../../api';
+import { AuthContext } from '../../context/auth-context-provider';
+import { AlertContext } from '../../context/alert-context-provider';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
+import { AlertLayout } from '../../layouts';
 
 const StyledNavbar = styled(AppBar)`
   background: ${(props) => props.theme.palette.primary.light};
@@ -22,36 +25,35 @@ const StyledNavbar = styled(AppBar)`
 
 export const Navbar = () => {
   const router = useRouter();
-  const [authorized, setAuthorized] = useState<boolean>(false);
+
+  const { isAuthenticated, setAuthenticated } = useContext(AuthContext);
+  const { setAlertMessage, setAlertType } = useContext(AlertContext);
+
+  const checkAuthentication = async () => {
+    try {
+      const { data } = await axios.get('/api/me');
+      if (data.success) {
+        setAuthenticated(true);
+      }
+    } catch (error) {
+      setAlertType('warning');
+      setAlertMessage(error.response.data.message.heb);
+    }
+  };
 
   useEffect(() => {
     checkAuthentication();
-  }, [router.pathname])
-  
-  const checkAuthentication = async () => {
-    try {
-      const {data} = await instance.get('/api/me');
-      if(data.success){
-        setAuthorized(true);
-      } 
-    }catch (error){
-        console.error(error)
-      }
- 
-  }
+  }, []);
 
-
-  const logOut = async() => {
+  const logOut = async () => {
     try {
-      await instance.post('/api/logout');
-      setAuthorized(false);
-    } catch (error){
-      console.error(error)
+      await axios.post('/api/logout');
+      setAuthenticated(false);
+    } catch (error) {
+      setAlertType('warning');
+      setAlertMessage(error.response.data.message.heb);
     }
-  
-    
-  }
-
+  };
 
   return (
     <StyledNavbar>
@@ -72,18 +74,25 @@ export const Navbar = () => {
           alignItems="center"
           justifyContent="flex-end"
         >
-         {authorized ? <Button variant="text" onClick={logOut}>
-            התנתק
-          </Button> : <div>
-          <Button variant="text" onClick={() => router.push('/login')}>
-            התחברות
-          </Button>
-          <Button variant="text" onClick={() => router.push('/register')}>
-            הרשמה
-          </Button>
-         </div> } 
+          {isAuthenticated ? (
+            <Button variant="text" onClick={logOut}>
+              התנתקות
+            </Button>
+          ) : (
+            <div>
+              <Button variant="text" onClick={() => router.push('/login')}>
+                התחברות
+              </Button>
+              <Button variant="text" onClick={() => router.push('/register')}>
+                הרשמה
+              </Button>
+            </div>
+          )}
         </Grid>
       </Grid>
     </StyledNavbar>
   );
+};
+Navbar.getLayout = function getLayout(page: React.ReactElement) {
+  return <AlertLayout>{page}</AlertLayout>;
 };

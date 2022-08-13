@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { API_ERRORS } from '@kol-amelamdim/api-errors';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -7,7 +8,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (cookies.token) {
       res.status(200).send({ success: true });
     }
+    res.status(200).send({ success: false });
   } catch (error) {
-    res.status(404).send({ status: 'Somthing went wrong.' });
+    return res.status(404).json(API_ERRORS.GeneralError);
   }
 }

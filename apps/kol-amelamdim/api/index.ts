@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const instanceConfig = {
+const axiosConfig = {
   baseURL: 'http://localhost:4200',
   headers: {
     'Content-type': 'application/json',
@@ -8,6 +8,4 @@ const instanceConfig = {
   },
 };
 
-const instance = axios.create(instanceConfig);
-
-export default instance;
+export default axios.create(axiosConfig);
