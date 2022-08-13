@@ -94,7 +94,7 @@ export function Home() {
             <Grid item xs={6}>
               <CategoryCard
                 onClick={() =>
-                  router.push(`/category/${Category['parashat-shavoa']}`)
+                  router.push(`/category/${Category.parashat_shavoa}`)
                 }
               >
                 פרשת השבוע
@@ -103,7 +103,7 @@ export function Home() {
             <Grid item xs={6}>
               <CategoryCard
                 onClick={() =>
-                  router.push(`/category/${Category['learning-materials']}`)
+                  router.push(`/category/${Category.learning_materials}`)
                 }
               >
                 חומרי למידה
@@ -119,7 +119,7 @@ export function Home() {
             <Grid item xs={6}>
               <CategoryCard
                 onClick={() =>
-                  router.push(`/category/${Category['art-and-activities']}`)
+                  router.push(`/category/${Category.art_and_activities}`)
                 }
               >
                 דפי יצירה ופעילות

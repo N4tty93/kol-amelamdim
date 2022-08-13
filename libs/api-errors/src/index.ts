@@ -6,4 +6,11 @@ export const API_ERRORS = {
       en: 'An error occurred while uploading the file. Please try again',
     },
   },
+  missingFieldsOnUploadFile: {
+    code: 8,
+    message: {
+      heb: 'נא לשלוח קטגוריה וקובץ',
+      en: 'Please provide category and file',
+    },
+  },
 };
