@@ -7,12 +7,13 @@ import {
   Divider,
   Card,
 } from '@mui/material';
-import { useState, ReactElement } from 'react';
+import { useState, ReactElement, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import { Category } from '@kol-amelamdim/types';
 import { UploadFileDialog } from '../components';
 import { AlertLayout } from '../layouts';
+import { AuthContext } from '../context/auth-context-provider';
 
 const StyledPage = styled('div')`
   font-family: ${(props) => props.theme.fonts.regular};
@@ -55,12 +56,16 @@ const CategoryCard = styled(Card)`
 `;
 
 export function Home() {
+  const { isAuthenticated } = useContext(AuthContext);
   const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
   const router = useRouter();
 
   const handleShareContentButtonClick = () => {
-    // TODO: Only logged in users can share new file (Add it after api for login is ready)
-    setIsUploadFileDialogOpen(true);
+    if (isAuthenticated) {
+      setIsUploadFileDialogOpen(true);
+    } else {
+      router.push('/login');
+    }
   };
 
   return (

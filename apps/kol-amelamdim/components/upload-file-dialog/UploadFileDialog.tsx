@@ -10,16 +10,18 @@ import {
   InputLabel,
   styled,
   SelectChangeEvent,
+  useMediaQuery,
 } from '@mui/material';
 import { Dialog, FormError } from '@kol-amelamdim/styled';
 import { Category } from '@kol-amelamdim/types';
 import {
   MAX_FILES_ALLOWED,
+  MOBILE_QUERY,
   UPLOAD_VALIDATION_ERRORS,
 } from '@kol-amelamdim/constants';
 import { uploadFileValidationError } from '@kol-amelamdim/utils';
 import CloseIcon from '@mui/icons-material/Close';
-import axios from 'axios';
+import axios from '../../api';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { AlertContext } from '../../context/alert-context-provider';
 
@@ -49,6 +51,7 @@ export const UploadFileDialog = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [submissionError, setSubmissionError] = useState('');
   const [isUploadingInProcess, setIsUploadingInProcess] = useState(false);
+  const isMobile = useMediaQuery(MOBILE_QUERY);
 
   const handleFileSelection = (e: ChangeEvent<HTMLInputElement>) => {
     const filesList: FileList = e.target.files;
@@ -167,7 +170,7 @@ export const UploadFileDialog = ({
       )}
 
       <Button
-        sx={{ mt: 'auto' }}
+        sx={{ mt: isMobile ? 7 : 'auto' }}
         variant="contained"
         onClick={handleFileSubmission}
       >
