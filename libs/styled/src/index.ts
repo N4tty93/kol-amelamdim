@@ -21,3 +21,8 @@ export const FormError = styled('div')`
   margin: 10px 0;
   color: ${(props) => props.theme.palette.error.main};
 `;
+
+export const StyledPage = styled('div')`
+  font-family: ${(props) => props.theme.fonts.regular};
+  padding-top: 25px;
+`;

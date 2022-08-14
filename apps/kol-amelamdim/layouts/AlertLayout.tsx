@@ -1,5 +1,5 @@
 import { PropsWithChildren, useContext } from 'react';
-import { AlertContext } from '@kol-amelamdim/context';
+import { AlertContext } from '../context/alert-context-provider';
 import { Alert } from '../components';
 
 export const AlertLayout = (props: PropsWithChildren) => {

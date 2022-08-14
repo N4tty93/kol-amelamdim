@@ -20,8 +20,8 @@ import {
 import { uploadFileValidationError } from '@kol-amelamdim/utils';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
-import { AlertContext } from '@kol-amelamdim/context';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
+import { AlertContext } from '../../context/alert-context-provider';
 
 const CategoryLabel = styled(InputLabel)`
   &.MuiFormLabel-root {

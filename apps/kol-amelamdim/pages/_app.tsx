@@ -11,7 +11,8 @@ import { prefixer } from 'stylis';
 import theme from '../theme';
 import { Navbar } from '../components';
 import './styles.css';
-import { AlertContextProvider } from '@kol-amelamdim/context';
+import { AlertContextProvider } from '../context/alert-context-provider';
+import { AuthProvider } from '../context/auth-context-provider';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -42,9 +43,16 @@ function KolAmelamdimApp({ Component, pageProps }: AppPropsWithLayout) {
       <RTL>
         <AlertContextProvider>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Navbar />
-            {getLayout(<Component {...pageProps} />)}
+            <AuthProvider>
+              <CssBaseline />
+
+              {getLayout(
+                <>
+                  <Navbar />
+                  <Component {...pageProps} />
+                </>
+              )}
+            </AuthProvider>
           </ThemeProvider>
         </AlertContextProvider>
       </RTL>
