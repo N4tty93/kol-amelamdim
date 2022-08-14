@@ -63,6 +63,15 @@ const theme: ThemeOptions = createTheme({
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          '@media (max-width: 600px)': {
+            fontSize: '19px',
+          },
+        },
+      },
+    },
     MuiTypography: {
       styleOverrides: {
         root: {

@@ -7,8 +7,12 @@ import {
   Divider,
   Card,
 } from '@mui/material';
+import { useState, ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import { MOBILE_QUERY } from '../constants';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
+import { Category } from '@kol-amelamdim/types';
+import { UploadFileDialog } from '../components';
+import { AlertLayout } from '../layouts';
 
 const StyledPage = styled('div')`
   font-family: ${(props) => props.theme.fonts.regular};
@@ -51,7 +55,13 @@ const CategoryCard = styled(Card)`
 `;
 
 export function Home() {
+  const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
   const router = useRouter();
+
+  const handleShareContentButtonClick = () => {
+    // TODO: Only logged in users can share new file (Add it after api for login is ready)
+    setIsUploadFileDialogOpen(true);
+  };
 
   return (
     <Container>
@@ -62,9 +72,11 @@ export function Home() {
         <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
           אתר שיתוף חומרי למידה המתקדם ביותר בישראל
         </Typography>
-        <Grid container spacing={1} sx={{ mt: 2 }}>
-          <Grid item>
-            <Button variant="contained">שיתוף חומרים</Button>
+        <Grid container sx={{ mt: 2 }}>
+          <Grid item sx={{ mr: '10px' }}>
+            <Button variant="contained" onClick={handleShareContentButtonClick}>
+              שיתוף חומרים
+            </Button>
           </Grid>
           <Grid item>
             <Button variant="outlined">הורדת חומרים</Button>
@@ -81,32 +93,42 @@ export function Home() {
           <Grid container sx={{ mt: 2 }}>
             <Grid item xs={6}>
               <CategoryCard
-                onClick={() => router.push('/category/parashat-shavoa')}
+                onClick={() =>
+                  router.push(`/category/${Category['parashat-shavoa']}`)
+                }
               >
                 פרשת השבוע
               </CategoryCard>
             </Grid>
             <Grid item xs={6}>
               <CategoryCard
-                onClick={() => router.push('/category/learning-materials')}
+                onClick={() =>
+                  router.push(`/category/${Category['learning-materials']}`)
+                }
               >
                 חומרי למידה
               </CategoryCard>
             </Grid>
             <Grid item xs={6}>
-              <CategoryCard onClick={() => router.push('/category/mivhanim')}>
+              <CategoryCard
+                onClick={() => router.push(`/category/${Category.mivhanim}`)}
+              >
                 מבחנים
               </CategoryCard>
             </Grid>
             <Grid item xs={6}>
               <CategoryCard
-                onClick={() => router.push('/category/art-and-activities')}
+                onClick={() =>
+                  router.push(`/category/${Category['art-and-activities']}`)
+                }
               >
                 דפי יצירה ופעילות
               </CategoryCard>
             </Grid>
             <Grid item xs={6}>
-              <CategoryCard onClick={() => router.push('/category/shonot')}>
+              <CategoryCard
+                onClick={() => router.push(`/category/${Category.shonot}`)}
+              >
                 שונות
               </CategoryCard>
             </Grid>
@@ -115,8 +137,16 @@ export function Home() {
 
         <Divider sx={{ pt: 7, mb: 7 }} />
       </StyledPage>
+      <UploadFileDialog
+        isOpen={isUploadFileDialogOpen}
+        onClose={() => setIsUploadFileDialogOpen(false)}
+      />
     </Container>
   );
 }
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <AlertLayout>{page}</AlertLayout>;
+};
 
 export default Home;
