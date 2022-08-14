@@ -4,10 +4,20 @@ import validator from 'validator';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import connect from '../../db/connectMongo';
 
+async function hashPassword(password) {
+  const saltRounds = 10;
+
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, saltRounds, function (err, hash) {
+      if (err) reject(err);
+      resolve(hash);
+    });
+  });
+}
+
 export default async function handler(req, res) {
   try {
     await connect();
-    const saltRounds = 10;
     const { email, password } = req.body;
     if (!validator.isEmail(email)) {
       return res.status(400).json(API_ERRORS.invalidEmailError);
@@ -16,19 +26,17 @@ export default async function handler(req, res) {
     if (userExists) {
       return res.status(400).json(API_ERRORS.registarationEmailExistsError);
     }
-    console.log('still here');
 
-    bcrypt.hash(password, saltRounds, async function (err, hash) {
-      const newUser = await User.create({
-        email: email,
-        password: hash,
-      });
-
-      if (!newUser) {
-        return res.status(400).json(API_ERRORS.registarationError);
-      }
-      return res.status(200).send({ success: true });
+    const hashedPassword = await hashPassword(password);
+    const newUser = await User.create({
+      email: email,
+      password: hashedPassword,
     });
+
+    if (!newUser) {
+      return res.status(400).json(API_ERRORS.registarationError);
+    }
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(404).json(API_ERRORS.registarationError);
   }

@@ -6,9 +6,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const { cookies } = req;
 
     if (cookies.token) {
-      res.status(200).send({ success: true });
+      return res.status(200).json({ success: true });
     }
-    res.status(200).send({ success: false });
+
+    return res.status(200).json({ success: false });
   } catch (error) {
     return res.status(404).json(API_ERRORS.GeneralError);
   }

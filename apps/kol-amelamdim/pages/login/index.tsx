@@ -5,7 +5,6 @@ import validator from 'validator';
 import { StyledPage, FormError } from '@kol-amelamdim/styled';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { AuthContext } from '../../context/auth-context-provider';
-import { AlertContext } from '../../context/alert-context-provider';
 import axios from '../../api';
 
 const Login = () => {
