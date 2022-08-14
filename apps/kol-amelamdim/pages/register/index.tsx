@@ -1,11 +1,9 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { TextField, Button, Grid, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import validator from 'validator';
 import { StyledPage, FormError } from '@kol-amelamdim/styled';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
-import { AlertLayout } from '../../layouts';
-import { AlertContext } from '../../context/alert-context-provider';
 import axios from '../../api';
 
 const Register = () => {
@@ -49,7 +47,7 @@ const Register = () => {
               label="אימייל"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              error={!validator.isEmail(email)}
+              error={!!error}
             />
             <TextField
               sx={{ mt: 2 }}
@@ -59,7 +57,7 @@ const Register = () => {
               required
               autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
-              error={!password}
+              error={!!error}
             />
             <Button
               sx={{ mt: 2 }}
@@ -75,9 +73,6 @@ const Register = () => {
       </StyledPage>
     </Container>
   );
-};
-Register.getLayout = function getLayout(page: React.ReactElement) {
-  return <AlertLayout>{page}</AlertLayout>;
 };
 
 export default Register;

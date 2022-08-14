@@ -48,7 +48,7 @@ const Login = () => {
               label="אימייל"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              error={!validator.isEmail(email) || !!error}
+              error={!!error}
             />
             <TextField
               sx={{ mt: 2 }}
@@ -58,7 +58,7 @@ const Login = () => {
               required
               autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
-              error={!password || !!error}
+              error={!!error}
             />
             <Button
               sx={{ mt: 2 }}
