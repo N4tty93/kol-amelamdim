@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { TextField, Button, Grid, Container, Typography } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Grid,
+  Container,
+  Typography,
+  Link,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import validator from 'validator';
 import { StyledPage, FormError } from '@kol-amelamdim/styled';
@@ -69,6 +76,12 @@ const Register = () => {
             </Button>
           </Grid>
         </form>
+        <Typography component="h4">
+          כבר נרשמתם ?{' '}
+          <Link onClick={() => router.push('/register')}>
+            לחצו עלי להתחברות
+          </Link>
+        </Typography>
         {error && <FormError>{error}</FormError>}
       </StyledPage>
     </Container>

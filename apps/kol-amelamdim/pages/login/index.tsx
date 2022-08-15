@@ -1,6 +1,13 @@
 import { useRouter } from 'next/router';
 import { useState, useContext } from 'react';
-import { TextField, Button, Grid, Container, Typography } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Grid,
+  Container,
+  Typography,
+  Link,
+} from '@mui/material';
 import validator from 'validator';
 import { StyledPage, FormError } from '@kol-amelamdim/styled';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
@@ -70,6 +77,10 @@ const Login = () => {
             </Button>
           </Grid>
         </form>
+        <Typography component="h4">
+          עוד אין לכם משתמש ?{' '}
+          <Link onClick={() => router.push('/register')}>לחצו עלי להרשמה</Link>
+        </Typography>
         {error && <FormError>{error}</FormError>}
       </StyledPage>
     </Container>

@@ -2,49 +2,49 @@ export const API_ERRORS = {
   uploadFileError: {
     code: 1,
     message: {
-      heb: 'אירעה שגיאה בעת העלאת הקובץ אנא נסה שנית',
+      heb: 'אירעה שגיאה בעת העלאת הקובץ אנא נסו שנית',
       en: 'An error occurred while uploading the file. Please try again',
     },
   },
   invalidEmailError: {
     code: 2,
     message: {
-      heb: 'הוזן אימייל לא תקני, אנא נסה עם כתובת מייל אחרת',
+      heb: 'הוזן אימייל לא תקני, אנא בדקו שהכתובת שהוזנה תקינה',
       en: 'Email is not valid, try again with other email',
     },
   },
-  registarationEmailExistsError: {
+  registrationEmailExistsError: {
     code: 3,
     message: {
-      heb: 'הוזן מייל שכבר קיים במערכת, אנא נסה עם כתובת מייל אחרת',
+      heb: 'הוזן מייל שכבר קיים במערכת, אנא עברו להתחברות או השתמשו במייל אחר.',
       en: 'Email is already exists at the system, try again with other email',
     },
   },
-  registarationError: {
+  registrationError: {
     code: 4,
     message: {
-      heb: 'אירעה שגיאה בהרשמה למערכת, אנא נסה שנית',
+      heb: 'אירעה שגיאה בהרשמה למערכת, אנא נסו שנית',
       en: 'An error occurred while registering to the system. Please try again',
     },
   },
   LoginValidationError: {
     code: 5,
     message: {
-      heb: 'הוזנו אימייל או סיסמא שגויים, אנא נסה שנית',
+      heb: 'הוזנו אימייל או סיסמא שגויים, אנא נסו שנית',
       en: 'Incorrect email or password entered, please try again',
     },
   },
   LoginError: {
     code: 6,
     message: {
-      heb: 'אירעה שגיאה בהתחברות, אנא נסה שנית',
+      heb: 'אירעה שגיאה בהתחברות, אנא נסו שנית',
       en: 'There was an error logging in, please try again',
     },
   },
   GeneralError: {
     code: 7,
     message: {
-      heb: 'אירעה שגיאה כללית, אנא רענן',
+      heb: 'אירעה שגיאה כללית, אנא נסו שנית',
       en: 'A general error has occurred, please refresh',
     },
   },
