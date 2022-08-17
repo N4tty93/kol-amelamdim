@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 import { useState, useContext } from 'react';
 import {
   TextField,
@@ -6,7 +7,7 @@ import {
   Grid,
   Container,
   Typography,
-  Link,
+  Link as MUILink,
 } from '@mui/material';
 import validator from 'validator';
 import { StyledPage, FormError } from '@kol-amelamdim/styled';
@@ -77,10 +78,12 @@ const Login = () => {
             </Button>
           </Grid>
         </form>
-        <Typography component="h4">
-          עוד אין לכם משתמש ?{' '}
-          <Link onClick={() => router.push('/register')}>לחצו עלי להרשמה</Link>
-        </Typography>
+        <Grid container sx={{ mt: 2 }}>
+          <Typography component="h4">עוד אין לכם משתמש?&nbsp;</Typography>
+          <NextLink href="/register" passHref>
+            <MUILink>לחצו עלי להרשמה</MUILink>
+          </NextLink>
+        </Grid>
         {error && <FormError>{error}</FormError>}
       </StyledPage>
     </Container>
