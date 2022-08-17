@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { TextField, Button, Grid, Container, Typography } from '@mui/material';
+import NextLink from 'next/link';
+import {
+  TextField,
+  Button,
+  Grid,
+  Container,
+  Typography,
+  Link as MUILink,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import validator from 'validator';
 import { StyledPage, FormError } from '@kol-amelamdim/styled';
@@ -69,6 +77,12 @@ const Register = () => {
             </Button>
           </Grid>
         </form>
+        <Grid container sx={{ mt: 2 }}>
+          <Typography component="h4">כבר נרשמתם?&nbsp;</Typography>
+          <NextLink href="/login" passHref>
+            <MUILink>לחצו עלי להתחברות</MUILink>
+          </NextLink>
+        </Grid>
         {error && <FormError>{error}</FormError>}
       </StyledPage>
     </Container>
