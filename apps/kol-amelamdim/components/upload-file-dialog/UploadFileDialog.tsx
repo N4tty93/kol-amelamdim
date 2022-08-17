@@ -51,6 +51,7 @@ export const UploadFileDialog = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [submissionError, setSubmissionError] = useState('');
   const [isUploadingInProcess, setIsUploadingInProcess] = useState(false);
+  const [isUploadButtonDisabled, setIsUploadButtonDisabled] = useState(false);
   const isMobile = useMediaQuery(MOBILE_QUERY);
 
   const handleFileSelection = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,6 +72,7 @@ export const UploadFileDialog = ({
     setSubmissionError('');
     setCategory('');
     setSelectedFile(null);
+    setIsUploadButtonDisabled(false);
   };
 
   const handleCloseUploadFileDialog = () => {
@@ -88,6 +90,7 @@ export const UploadFileDialog = ({
     const uploadValidationError = uploadFileValidationError(selectedFile);
 
     if (!uploadValidationError) {
+      setIsUploadButtonDisabled(true);
       setSubmissionError('');
       setIsUploadingInProcess(true);
       const formData = new FormData();
@@ -106,9 +109,11 @@ export const UploadFileDialog = ({
       } catch (e) {
         setIsUploadingInProcess(false);
         setSubmissionError(e.response.data.message.heb);
+        setIsUploadButtonDisabled(false);
       }
     } else {
       setSubmissionError(uploadValidationError);
+      setIsUploadButtonDisabled(false);
     }
   };
 
@@ -173,6 +178,7 @@ export const UploadFileDialog = ({
         sx={{ mt: isMobile ? 7 : 'auto' }}
         variant="contained"
         onClick={handleFileSubmission}
+        disabled={isUploadButtonDisabled}
       >
         שיתוף
       </Button>

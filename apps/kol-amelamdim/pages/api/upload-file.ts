@@ -40,6 +40,7 @@ export default async function handler(req, res) {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: fileLocation,
         Body: contents,
+        Tagging: 'reviewed=false',
       };
 
       s3.upload(params, (err, _) => {
