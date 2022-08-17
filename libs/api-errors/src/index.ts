@@ -9,7 +9,7 @@ export const API_ERRORS = {
   invalidEmailError: {
     code: 2,
     message: {
-      heb: 'הוזן אימייל לא תקני, אנא בדקו שהכתובת שהוזנה תקינה',
+      heb: 'הוזן אימייל לא תקין, אנא בדקו שהמייל שהוזן תקין ונסו שוב',
       en: 'Email is not valid, try again with other email',
     },
   },
