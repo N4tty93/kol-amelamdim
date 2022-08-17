@@ -10,17 +10,19 @@ import {
   InputLabel,
   styled,
   SelectChangeEvent,
+  useMediaQuery,
 } from '@mui/material';
 import { Dialog, FormError } from '@kol-amelamdim/styled';
 import { Category } from '@kol-amelamdim/types';
 import {
   MAX_FILES_ALLOWED,
+  MOBILE_QUERY,
   UPLOAD_VALIDATION_ERRORS,
-  UPLOAD_SUBMISSION_ERROR,
 } from '@kol-amelamdim/constants';
 import { uploadFileValidationError } from '@kol-amelamdim/utils';
 import CloseIcon from '@mui/icons-material/Close';
-import axios from 'axios';
+import axios from '../../api';
+import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { AlertContext } from '../../context/alert-context-provider';
 
 const CategoryLabel = styled(InputLabel)`
@@ -49,6 +51,7 @@ export const UploadFileDialog = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [submissionError, setSubmissionError] = useState('');
   const [isUploadingInProcess, setIsUploadingInProcess] = useState(false);
+  const isMobile = useMediaQuery(MOBILE_QUERY);
 
   const handleFileSelection = (e: ChangeEvent<HTMLInputElement>) => {
     const filesList: FileList = e.target.files;
@@ -76,6 +79,12 @@ export const UploadFileDialog = ({
   };
 
   const handleFileSubmission = async () => {
+    if (!category) {
+      return setSubmissionError(
+        API_ERRORS.missingFieldsOnUploadFile.message.heb
+      );
+    }
+
     const uploadValidationError = uploadFileValidationError(selectedFile);
 
     if (!uploadValidationError) {
@@ -83,15 +92,20 @@ export const UploadFileDialog = ({
       setIsUploadingInProcess(true);
       const formData = new FormData();
       formData.append('sharedFile', selectedFile, selectedFile.name);
+      formData.append('category', category);
 
       try {
-        await axios.post('/api/upload-file', formData);
-        setAlertMessage('העלאה בוצעה בהצלחה. תודה רבה!');
-        setIsUploadingInProcess(false);
-        handleCloseUploadFileDialog();
+        const { data } = await axios.post('/api/upload-file', formData);
+        if (data.isUploaded) {
+          setAlertMessage('העלאה בוצעה בהצלחה. תודה רבה!');
+          setIsUploadingInProcess(false);
+          handleCloseUploadFileDialog();
+        } else {
+          throw new Error(data);
+        }
       } catch (e) {
         setIsUploadingInProcess(false);
-        setSubmissionError(UPLOAD_SUBMISSION_ERROR);
+        setSubmissionError(e.response.data.message.heb);
       }
     } else {
       setSubmissionError(uploadValidationError);
@@ -132,26 +146,34 @@ export const UploadFileDialog = ({
           value={category}
           labelId="category-selection"
           id="demo-simple-select"
+          error={!category && !!submissionError}
           onChange={(e: SelectChangeEvent) => setCategory(e.target.value)}
         >
-          <MenuItem value={Category['parashat-shavoa']}>פרשת השבוע</MenuItem>
-          <MenuItem value={Category['learning-materials']}>
-            חומרי למידה
-          </MenuItem>
+          <MenuItem value={Category.parashat_shavoa}>פרשת השבוע</MenuItem>
+          <MenuItem value={Category.learning_materials}>חומרי למידה</MenuItem>
           <MenuItem value={Category.mivhanim}>מבחנים</MenuItem>
-          <MenuItem value={Category['art-and-activities']}>
+          <MenuItem value={Category.art_and_activities}>
             דפי יצירה ופעילות
           </MenuItem>
           <MenuItem value={Category.shonot}>שונות</MenuItem>
         </Select>
       </FormControl>
 
-      <Button variant="outlined" component="label" sx={{ mb: 'auto' }}>
+      <Button variant="outlined" component="label">
         בחירת קובץ
         <input type="file" onChange={handleFileSelection} hidden />
       </Button>
+      {selectedFile?.name && (
+        <Typography sx={{ mt: 1, fontSize: '16px' }}>
+          {selectedFile.name}
+        </Typography>
+      )}
 
-      <Button variant="contained" onClick={handleFileSubmission}>
+      <Button
+        sx={{ mt: isMobile ? 7 : 'auto' }}
+        variant="contained"
+        onClick={handleFileSubmission}
+      >
         שיתוף
       </Button>
       {isUploadingInProcess && !submissionError && (

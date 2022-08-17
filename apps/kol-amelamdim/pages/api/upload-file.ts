@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
+import { Category } from '@kol-amelamdim/types';
 import { IncomingForm } from 'formidable';
 import { promises as fs } from 'fs';
 
@@ -11,7 +12,7 @@ export const config = {
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const data: any = await new Promise((resolve, reject) => {
+    const formData: any = await new Promise((resolve, reject) => {
       const form = new IncomingForm();
 
       form.parse(req, (err, fields, files) => {
@@ -20,9 +21,12 @@ export default async function handler(req, res) {
       });
     });
 
-    if (data?.files?.sharedFile) {
+    const { fields } = formData;
+    const selectedCategory = Category[fields.category];
+
+    if (formData?.files?.sharedFile && selectedCategory) {
       // read file from the temporary path
-      const contents = await fs.readFile(data.files.sharedFile?.filepath, {
+      const contents = await fs.readFile(formData.files.sharedFile?.filepath, {
         encoding: 'utf8',
       });
 
@@ -31,41 +35,22 @@ export default async function handler(req, res) {
         secretAccessKey: process.env.S3_SECRET_KEY,
       });
 
+      const fileLocation = `${selectedCategory}/${formData.files.sharedFile.originalFilename}`;
       const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `parashat-shavoa/${data.files.sharedFile.originalFilename}`,
+        Key: fileLocation,
         Body: contents,
-        Metadata: {
-          something: 'wow!',
-        },
       };
 
-      // const response = await s3
-      //   .listObjectsV2({
-      //     Bucket: process.env.AWS_BUCKET_NAME,
-      //     Prefix: 'parashat-shavoa',
-      //   })
-      //   .promise();
-      //
-      // console.log(response);
-
-      // s3.getObject(
-      //   {
-      //     Bucket: process.env.AWS_BUCKET_NAME,
-      //     Key: data.files.sharedFile.originalFilename,
-      //   },
-      //   (err, data) => {
-      //     console.log(data);
-      //   }
-      // );
-
-      s3.upload(params, (err, data) => {
+      s3.upload(params, (err, _) => {
         if (err) {
           res.status(400).json(API_ERRORS.uploadFileError);
         }
 
         res.status(200).json({ isUploaded: true });
       });
+    } else {
+      res.status(400).json(API_ERRORS.missingFieldsOnUploadFile);
     }
   }
 }
