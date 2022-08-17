@@ -80,7 +80,7 @@ const Register = () => {
         <Grid container sx={{ mt: 2 }}>
           <Typography component="h4">כבר נרשמתם?&nbsp;</Typography>
           <NextLink href="/login" passHref>
-            <MUILink>לחצו עלי להתחברות</MUILink>
+            <MUILink>להתחברות</MUILink>
           </NextLink>
         </Grid>
         {error && <FormError>{error}</FormError>}

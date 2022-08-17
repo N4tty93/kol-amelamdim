@@ -79,9 +79,9 @@ const Login = () => {
           </Grid>
         </form>
         <Grid container sx={{ mt: 2 }}>
-          <Typography component="h4">עוד אין לכם משתמש?&nbsp;</Typography>
+          <Typography component="h4">אין לכם משתמש?&nbsp;</Typography>
           <NextLink href="/register" passHref>
-            <MUILink>לחצו עלי להרשמה</MUILink>
+            <MUILink>לחצו להרשמה</MUILink>
           </NextLink>
         </Grid>
         {error && <FormError>{error}</FormError>}
