@@ -44,13 +44,13 @@ export default async function handler(req, res) {
 
       s3.upload(params, (err, _) => {
         if (err) {
-          res.status(400).send(API_ERRORS.uploadFileError);
+          res.status(400).json(API_ERRORS.uploadFileError);
         }
 
-        res.status(200).send({ isUploaded: true });
+        res.status(200).json({ isUploaded: true });
       });
     } else {
-      res.status(400).send(API_ERRORS.missingFieldsOnUploadFile);
+      res.status(400).json(API_ERRORS.missingFieldsOnUploadFile);
     }
   }
 }
