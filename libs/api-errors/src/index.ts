@@ -48,4 +48,11 @@ export const API_ERRORS = {
       en: 'A general error has occurred, please refresh',
     },
   },
+  missingFieldsOnUploadFile: {
+    code: 8,
+    message: {
+      heb: 'נא לשלוח קטגוריה וקובץ',
+      en: 'Please provide category and file',
+    },
+  },
 };
