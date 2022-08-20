@@ -47,6 +47,7 @@ export const Navbar = () => {
     try {
       await axios.post('/api/logout');
       setAuthenticated(false);
+      router.push('/');
     } catch (error) {
       setAlertType('warning');
       setAlertMessage(error.response.data.message.heb);

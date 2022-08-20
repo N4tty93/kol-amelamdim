@@ -1,25 +1,22 @@
+import { Grid, Button } from '@mui/material';
 import { StyledPageContainer } from '@kol-amelamdim/styled';
-import axios from '../../../api';
+import { useRouter } from 'next/router';
 
 const AdminDashboard = () => {
+  const router = useRouter();
+
   return (
     <StyledPageContainer>
-      Admin dashboard
-      {/* Will be changed .... */}
-      <button
-        onClick={() => {
-          axios
-            .get('/api/admin/add-weekly-post')
-            .then(() => {
-              console.log('here');
-            })
-            .catch(() => {
-              console.log('should catch');
-            });
-        }}
-      >
-        Test auth
-      </button>
+      <Grid container direction="column">
+        <Grid item>
+          <Button
+            variant="text"
+            onClick={() => router.push('/admin/dashboard/add-weekly-article')}
+          >
+            הוספת מאמר שבועי
+          </Button>
+        </Grid>
+      </Grid>
     </StyledPageContainer>
   );
 };
