@@ -1,7 +1,6 @@
-import mongoose, { ObjectId } from 'mongoose';
+import mongoose from 'mongoose';
 
 export interface IUser {
-  _id: ObjectId;
   email: string;
   password: string;
   admin: boolean;
@@ -27,5 +26,5 @@ const UserSchema = new mongoose.Schema(
   { collection: 'my-users' }
 );
 
-export const User: mongoose.Model<Omit<IUser, '_id'>> =
+export const User: mongoose.Model<IUser & mongoose.Document> =
   mongoose.models['UserSchema'] || mongoose.model('UserSchema', UserSchema);
