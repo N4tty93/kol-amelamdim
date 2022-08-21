@@ -38,8 +38,10 @@ export const Navbar = () => {
         }
       })
       .catch((error) => {
+        if (error.response) {
+          setAlertMessage(error.response.data.message.heb);
+        }
         setAlertType('warning');
-        setAlertMessage(error.response.data.message.heb);
       });
   }, []);
 
