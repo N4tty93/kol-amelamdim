@@ -1,4 +1,4 @@
-import { styled } from '@mui/material';
+import { Container, styled } from '@mui/material';
 import { Dialog as MuiDialog } from '@mui/material';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 
@@ -22,7 +22,7 @@ export const FormError = styled('div')`
   color: ${(props) => props.theme.palette.error.main};
 `;
 
-export const StyledPage = styled('div')`
+export const StyledPage = styled(Container)`
   font-family: ${(props) => props.theme.fonts.regular};
   padding-top: 25px;
 `;

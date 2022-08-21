@@ -11,14 +11,10 @@ import { useState, ReactElement, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import { Category } from '@kol-amelamdim/types';
+import { StyledPage } from '@kol-amelamdim/styled';
 import { UploadFileDialog } from '../components';
 import { AlertLayout } from '../layouts';
 import { AuthContext } from '../context/auth-context-provider';
-
-const StyledPage = styled('div')`
-  font-family: ${(props) => props.theme.fonts.regular};
-  padding-top: 25px;
-`;
 
 const CategoryCard = styled(Card)`
   height: 90px;
