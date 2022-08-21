@@ -1,15 +1,15 @@
 import mongoose from 'mongoose';
 
-const UserSchema = new mongoose.Schema(
+const WeeklyArticleSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     content: { type: String, required: true },
     description: { type: String },
-    isActiveArticle: { type: Boolean },
+    isActiveArticle: { type: Boolean, unique: true },
   },
   { collection: 'my-weekly-articles' }
 );
 
 export const WeeklyArticle =
   mongoose.models['WeeklyArticleSchema'] ||
-  mongoose.model('WeeklyArticleSchema', UserSchema);
+  mongoose.model('WeeklyArticleSchema', WeeklyArticleSchema);

@@ -62,7 +62,6 @@ const AddWeeklyArticle = () => {
             value={description}
             multiline
             rows={4}
-            maxRows={4}
             onChange={(e) => setDescription(e.target.value)}
           />
         </Grid>
