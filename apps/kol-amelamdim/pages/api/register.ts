@@ -1,7 +1,7 @@
 import { User } from '@kol-amelamdim/models';
 import bcrypt from 'bcrypt';
 import validator from 'validator';
-import jwt from 'jsonwebtoken';
+import { SignJWT } from 'jose';
 import cookie from 'cookie';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import connect from '../../db/connectMongo';
@@ -38,18 +38,19 @@ export default async function handler(req, res) {
     if (!newUser) {
       return res.status(400).json(API_ERRORS.registrationError);
     }
-    const token = jwt.sign(
-      {
-        email: req.body.email,
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: '365',
-      }
-    );
+    const iat = Math.floor(Date.now() / 1000);
+    const exp = iat + 1440 * 365;
+
+    const joseToken = await new SignJWT({ email: req.body.email })
+      .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+      .setExpirationTime(exp)
+      .setIssuedAt(iat)
+      .setNotBefore(iat)
+      .sign(new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET));
+
     res.setHeader(
       'Set-Cookie',
-      cookie.serialize('token', token, {
+      cookie.serialize('token', joseToken, {
         httpOnly: true,
         secure: false,
         maxAge: 60 * 60,

@@ -31,10 +31,14 @@ const Login = () => {
         const { data } = await axios.post('/api/login', { email, password });
         if (data.success) {
           setAuthenticated(true);
-          router.push('/');
+          await router.push('/');
         }
       } catch (error) {
-        setError(error.response.data.message.heb);
+        if (error.response) {
+          setError(error.response.data.message.heb);
+        } else {
+          console.error(error);
+        }
       }
     } else {
       setError(API_ERRORS.invalidEmailError.message.heb);
