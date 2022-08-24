@@ -6,8 +6,10 @@ const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
   loading: () => <div>loading content editor...</div>,
 });
-import { StyledPageContainer } from '@kol-amelamdim/styled';
+import { FormError, StyledPageContainer } from '@kol-amelamdim/styled';
 import { useRouter } from 'next/router';
+import axios from '../../../../api';
+import { API_ERRORS } from '@kol-amelamdim/api-errors';
 
 const ContentEditor = styled(QuillNoSSRWrapper)`
   & .ql-editor {
@@ -43,7 +45,25 @@ const AddWeeklyArticle = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [weeklyArticleContent, setWeeklyArticleContent] = useState('');
+  const [error, setError] = useState('');
   const router = useRouter();
+
+  const addWeeklyArticle = async () => {
+    try {
+      await axios.post('/api/admin/add-weekly-post', {
+        title,
+        description,
+        content: weeklyArticleContent,
+        isActiveArticle: false,
+      });
+
+      setError('');
+      await router.push('/admin/dashboard/list-of-weekly-articles');
+    } catch (e) {
+      console.log('here');
+      setError(API_ERRORS.addWeeklyArticleError.message.heb);
+    }
+  };
 
   return (
     <StyledPageContainer>
@@ -78,12 +98,18 @@ const AddWeeklyArticle = () => {
         onChange={setWeeklyArticleContent}
         modules={editorModules}
       />
-      <Grid container justifyContent="flex-end" sx={{ pb: '100px' }}>
+      <Grid
+        container
+        justifyContent="flex-end"
+        direction="column"
+        sx={{ pb: '100px' }}
+      >
         <Grid item>
-          <Button variant="contained" sx={{ mt: 2 }}>
+          <Button variant="contained" sx={{ mt: 2 }} onClick={addWeeklyArticle}>
             הוספת מאמר שבועי
           </Button>
         </Grid>
+        <Grid item>{error && <FormError>{error}</FormError>}</Grid>
       </Grid>
     </StyledPageContainer>
   );

@@ -55,4 +55,11 @@ export const API_ERRORS = {
       en: 'Please provide category and file',
     },
   },
+  addWeeklyArticleError: {
+    code: 9,
+    message: {
+      heb: 'אירעה שגיאה בעת הוספת המאמר',
+      en: 'An error has occurred while adding new article',
+    },
+  },
 };
