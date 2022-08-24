@@ -26,29 +26,28 @@ const StyledNavbar = styled(AppBar)`
 export const Navbar = () => {
   const router = useRouter();
 
-  const { isAuthenticated, setAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, setAuthenticated, checkAuthentication } =
+    useContext(AuthContext);
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
 
-  const checkAuthentication = async () => {
-    try {
-      const { data } = await axios.get('/api/me');
-      if (data.success) {
-        setAuthenticated(true);
-      }
-    } catch (error) {
-      setAlertType('warning');
-      setAlertMessage(error.response.data.message.heb);
-    }
-  };
-
   useEffect(() => {
-    checkAuthentication();
+    checkAuthentication()
+      .then((data) => {
+        if (data.success) {
+          setAuthenticated(true);
+        }
+      })
+      .catch((error) => {
+        setAlertType('warning');
+        setAlertMessage(error.response.data.message.heb);
+      });
   }, []);
 
   const logOut = async () => {
     try {
       await axios.post('/api/logout');
       setAuthenticated(false);
+      router.push('/');
     } catch (error) {
       setAlertType('warning');
       setAlertMessage(error.response.data.message.heb);

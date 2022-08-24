@@ -5,12 +5,11 @@ import {
   TextField,
   Button,
   Grid,
-  Container,
   Typography,
   Link as MUILink,
 } from '@mui/material';
 import validator from 'validator';
-import { StyledPage, FormError } from '@kol-amelamdim/styled';
+import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { AuthContext } from '../../context/auth-context-provider';
 import axios from '../../api';
@@ -19,9 +18,7 @@ const Login = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
-
   const { setAuthenticated } = useContext(AuthContext);
-
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -42,51 +39,49 @@ const Login = () => {
   };
 
   return (
-    <Container>
-      <StyledPage>
-        <form onSubmit={handleSubmit}>
-          <Grid container direction={'column'}>
-            <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
-              התחברות
-            </Typography>
-            <TextField
-              sx={{ mt: 2 }}
-              required
-              id="outlined-required"
-              label="אימייל"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              error={!!error}
-            />
-            <TextField
-              sx={{ mt: 2 }}
-              value={password}
-              label="סיסמא"
-              type="password"
-              required
-              autoComplete="current-password"
-              onChange={(e) => setPassword(e.target.value)}
-              error={!!error}
-            />
-            <Button
-              sx={{ mt: 2 }}
-              variant="contained"
-              type="submit"
-              disabled={!email || !password}
-            >
-              התחבר
-            </Button>
-          </Grid>
-        </form>
-        <Grid container sx={{ mt: 2 }}>
-          <Typography component="h4">אין לכם משתמש?&nbsp;</Typography>
-          <NextLink href="/register" passHref>
-            <MUILink>לחצו להרשמה</MUILink>
-          </NextLink>
+    <StyledPageContainer>
+      <form onSubmit={handleSubmit}>
+        <Grid container direction={'column'}>
+          <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
+            התחברות
+          </Typography>
+          <TextField
+            sx={{ mt: 2 }}
+            required
+            id="outlined-required"
+            label="אימייל"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            error={!!error}
+          />
+          <TextField
+            sx={{ mt: 2 }}
+            value={password}
+            label="סיסמא"
+            type="password"
+            required
+            autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
+            error={!!error}
+          />
+          <Button
+            sx={{ mt: 2 }}
+            variant="contained"
+            type="submit"
+            disabled={!email || !password}
+          >
+            התחבר
+          </Button>
         </Grid>
-        {error && <FormError>{error}</FormError>}
-      </StyledPage>
-    </Container>
+      </form>
+      <Grid container sx={{ mt: 2 }}>
+        <Typography component="h4">אין לכם משתמש?&nbsp;</Typography>
+        <NextLink href="/register" passHref>
+          <MUILink>לחצו להרשמה</MUILink>
+        </NextLink>
+      </Grid>
+      {error && <FormError>{error}</FormError>}
+    </StyledPageContainer>
   );
 };
 export default Login;

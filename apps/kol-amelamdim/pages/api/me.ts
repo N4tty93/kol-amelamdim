@@ -5,7 +5,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { cookies } = req;
 
-    if (cookies.token) {
+    if (cookies.token || cookies.adminToken) {
       return res.status(200).json({ success: true });
     }
 
