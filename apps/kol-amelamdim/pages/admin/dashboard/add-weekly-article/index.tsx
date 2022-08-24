@@ -12,8 +12,14 @@ import { useRouter } from 'next/router';
 const ContentEditor = styled(QuillNoSSRWrapper)`
   & .ql-editor {
     font-family: ${(props) => props.theme.fonts.regular};
-    h1,
-    h2,
+    h1 {
+      font-size: 50px;
+    }
+
+    h2 {
+      font-size: 45px;
+    }
+
     ul,
     li,
     p {
