@@ -20,6 +20,7 @@ async function hashPassword(password) {
 export default async function handler(req, res) {
   try {
     await connect();
+
     const { email, password } = req.body;
     if (!validator.isEmail(email)) {
       return res.status(400).json(API_ERRORS.invalidEmailError);
