@@ -23,8 +23,10 @@ export default async function handler(req, res) {
         resolve({ fields, files });
       });
     });
+
     const { fields } = formData;
     const selectedCategory = Category[fields.category];
+
     if (formData?.files?.sharedFile && selectedCategory) {
       // read file from the temporary path
       const fileSize = formData.files.sharedFile.size * 1e-6;
@@ -47,6 +49,7 @@ export default async function handler(req, res) {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: fileLocation,
         Body: contents,
+        Tagging: 'reviewed=false',
         ACL: 'public-read',
       };
 

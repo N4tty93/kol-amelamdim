@@ -20,6 +20,7 @@ async function hashPassword(password) {
 export default async function handler(req, res) {
   try {
     await connect();
+
     const { email, password } = req.body;
     if (!validator.isEmail(email)) {
       return res.status(400).json(API_ERRORS.invalidEmailError);
@@ -31,22 +32,20 @@ export default async function handler(req, res) {
 
     const hashedPassword = await hashPassword(password);
     const newUser = await User.create({
-      email: email,
+      email,
       password: hashedPassword,
     });
 
     if (!newUser) {
       return res.status(400).json(API_ERRORS.registrationError);
     }
+
     const token = jwt.sign(
-      {
-        email: req.body.email,
-      },
+      { email: req.body.email },
       process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: '365',
-      }
+      { expiresIn: '365d' }
     );
+
     res.setHeader(
       'Set-Cookie',
       cookie.serialize('token', token, {

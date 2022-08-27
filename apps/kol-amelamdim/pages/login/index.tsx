@@ -5,12 +5,11 @@ import {
   TextField,
   Button,
   Grid,
-  Container,
   Typography,
   Link as MUILink,
 } from '@mui/material';
 import validator from 'validator';
-import { StyledPage, FormError } from '@kol-amelamdim/styled';
+import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { AuthContext } from '../../context/auth-context-provider';
 import axios from '../../api';
@@ -22,7 +21,6 @@ const Login = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const { setAuthenticated } = useContext(AuthContext);
-
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -47,11 +45,11 @@ const Login = () => {
   };
   //Todo: handle loading and errors
   return (
-    <Container>
+    <StyledPageContainer>
       {loading ? (
         <div>טוען....</div>
       ) : (
-        <StyledPage>
+        <>
           <form onSubmit={handleSubmit}>
             <Grid container direction={'column'}>
               <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
@@ -93,9 +91,9 @@ const Login = () => {
             </NextLink>
           </Grid>
           {error && <FormError>{error}</FormError>}
-        </StyledPage>
+        </>
       )}
-    </Container>
+    </StyledPageContainer>
   );
 };
 export default Login;

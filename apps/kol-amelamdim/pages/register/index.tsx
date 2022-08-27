@@ -4,19 +4,17 @@ import {
   TextField,
   Button,
   Grid,
-  Container,
   Typography,
   Link as MUILink,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import validator from 'validator';
-import { StyledPage, FormError } from '@kol-amelamdim/styled';
+import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import axios from '../../api';
 
 const Register = () => {
   const router = useRouter();
-
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -46,11 +44,11 @@ const Register = () => {
   };
 
   return (
-    <Container>
+    <StyledPageContainer>
       {loading ? (
         <div>טוען....</div>
       ) : (
-        <StyledPage>
+        <>
           <form onSubmit={handleSubmit}>
             <Grid container direction={'column'}>
               <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
@@ -92,9 +90,9 @@ const Register = () => {
             </NextLink>
           </Grid>
           {error && <FormError>{error}</FormError>}
-        </StyledPage>
+        </>
       )}
-    </Container>
+    </StyledPageContainer>
   );
 };
 

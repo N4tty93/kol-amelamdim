@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
+
 export interface IUser {
   email: string;
   password: string;
+  admin?: boolean;
 }
 
 const UserSchema = new mongoose.Schema(
@@ -16,6 +18,9 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    admin: {
+      type: Boolean,
     },
   },
   { collection: 'my-users' }

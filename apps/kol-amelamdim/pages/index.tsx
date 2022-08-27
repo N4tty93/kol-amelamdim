@@ -1,20 +1,12 @@
-import {
-  styled,
-  Container,
-  Typography,
-  Button,
-  Grid,
-  Divider,
-  Card,
-} from '@mui/material';
+import { styled, Typography, Button, Grid, Divider, Card } from '@mui/material';
 import { useState, ReactElement, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import { Category } from '@kol-amelamdim/types';
-import { StyledPage } from '@kol-amelamdim/styled';
 import { UploadFileDialog } from '../components';
 import { AlertLayout } from '../layouts';
 import { AuthContext } from '../context/auth-context-provider';
+import { StyledPageContainer } from '@kol-amelamdim/styled';
 
 const CategoryCard = styled(Card)`
   height: 90px;
@@ -65,84 +57,82 @@ export function Home() {
   };
 
   return (
-    <Container>
-      <StyledPage>
-        <Typography variant="h1" component="h1">
-          כל המלמדים
+    <StyledPageContainer>
+      <Typography variant="h1" component="h1">
+        כל המלמדים
+      </Typography>
+      <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
+        אתר שיתוף חומרי למידה המתקדם ביותר בישראל
+      </Typography>
+      <Grid container sx={{ mt: 2 }}>
+        <Grid item sx={{ mr: '10px' }}>
+          <Button variant="contained" onClick={handleShareContentButtonClick}>
+            שיתוף חומרים
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button variant="outlined">הורדת חומרים</Button>
+        </Grid>
+      </Grid>
+
+      <Divider sx={{ pt: 7, mb: 7 }} />
+
+      <Grid>
+        <Typography variant="h3" component="h3">
+          מה בא לך ללמוד?
         </Typography>
-        <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
-          אתר שיתוף חומרי למידה המתקדם ביותר בישראל
-        </Typography>
+
         <Grid container sx={{ mt: 2 }}>
-          <Grid item sx={{ mr: '10px' }}>
-            <Button variant="contained" onClick={handleShareContentButtonClick}>
-              שיתוף חומרים
-            </Button>
+          <Grid item xs={6}>
+            <CategoryCard
+              onClick={() =>
+                router.push(`/category/${Category.parashat_shavoa}`)
+              }
+            >
+              פרשת השבוע
+            </CategoryCard>
           </Grid>
-          <Grid item>
-            <Button variant="outlined">הורדת חומרים</Button>
+          <Grid item xs={6}>
+            <CategoryCard
+              onClick={() =>
+                router.push(`/category/${Category.learning_materials}`)
+              }
+            >
+              חומרי למידה
+            </CategoryCard>
           </Grid>
-        </Grid>
-
-        <Divider sx={{ pt: 7, mb: 7 }} />
-
-        <Grid>
-          <Typography variant="h3" component="h3">
-            מה בא לך ללמוד?
-          </Typography>
-
-          <Grid container sx={{ mt: 2 }}>
-            <Grid item xs={6}>
-              <CategoryCard
-                onClick={() =>
-                  router.push(`/category/${Category.parashat_shavoa}`)
-                }
-              >
-                פרשת השבוע
-              </CategoryCard>
-            </Grid>
-            <Grid item xs={6}>
-              <CategoryCard
-                onClick={() =>
-                  router.push(`/category/${Category.learning_materials}`)
-                }
-              >
-                חומרי למידה
-              </CategoryCard>
-            </Grid>
-            <Grid item xs={6}>
-              <CategoryCard
-                onClick={() => router.push(`/category/${Category.mivhanim}`)}
-              >
-                מבחנים
-              </CategoryCard>
-            </Grid>
-            <Grid item xs={6}>
-              <CategoryCard
-                onClick={() =>
-                  router.push(`/category/${Category.art_and_activities}`)
-                }
-              >
-                דפי יצירה ופעילות
-              </CategoryCard>
-            </Grid>
-            <Grid item xs={6}>
-              <CategoryCard
-                onClick={() => router.push(`/category/${Category.shonot}`)}
-              >
-                שונות
-              </CategoryCard>
-            </Grid>
+          <Grid item xs={6}>
+            <CategoryCard
+              onClick={() => router.push(`/category/${Category.mivhanim}`)}
+            >
+              מבחנים
+            </CategoryCard>
+          </Grid>
+          <Grid item xs={6}>
+            <CategoryCard
+              onClick={() =>
+                router.push(`/category/${Category.art_and_activities}`)
+              }
+            >
+              דפי יצירה ופעילות
+            </CategoryCard>
+          </Grid>
+          <Grid item xs={6}>
+            <CategoryCard
+              onClick={() => router.push(`/category/${Category.shonot}`)}
+            >
+              שונות
+            </CategoryCard>
           </Grid>
         </Grid>
+      </Grid>
 
-        <Divider sx={{ pt: 7, mb: 7 }} />
-      </StyledPage>
+      <Divider sx={{ pt: 7, mb: 7 }} />
       <UploadFileDialog
         isOpen={isUploadFileDialogOpen}
         onClose={() => setIsUploadFileDialogOpen(false)}
       />
-    </Container>
+    </StyledPageContainer>
   );
 }
 

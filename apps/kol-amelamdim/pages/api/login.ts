@@ -20,26 +20,43 @@ export default async function handler(
         req.body.password,
         user.password
       );
+
       if (validPassword) {
-        const token = jwt.sign(
-          {
-            email: req.body.email,
-          },
-          process.env.ACCESS_TOKEN_SECRET,
-          {
-            expiresIn: '365',
-          }
-        );
-        res.setHeader(
-          'Set-Cookie',
-          cookie.serialize('token', token, {
-            httpOnly: true,
-            secure: false,
-            maxAge: 60 * 60,
-            sameSite: 'strict',
-            path: '/',
-          })
-        );
+        // User is either admin or "regular" user, so we are managing two cookies
+        if (user.admin) {
+          const adminToken = jwt.sign(
+            { email: req.body.email },
+            process.env.ADMIN_TOKEN_SECRET,
+            { expiresIn: '365d' }
+          );
+
+          res.setHeader(
+            'Set-Cookie',
+            cookie.serialize('adminToken', adminToken, {
+              httpOnly: true,
+              secure: false,
+              maxAge: 60 * 60,
+              sameSite: 'strict',
+              path: '/',
+            })
+          );
+        } else {
+          const token = jwt.sign(
+            { email: req.body.email },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '365d' }
+          );
+          res.setHeader(
+            'Set-Cookie',
+            cookie.serialize('token', token, {
+              httpOnly: true,
+              secure: false,
+              maxAge: 60 * 60,
+              sameSite: 'strict',
+              path: '/',
+            })
+          );
+        }
 
         res.status(200).send({ success: true });
       } else {
