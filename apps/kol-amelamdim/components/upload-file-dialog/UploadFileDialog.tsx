@@ -11,6 +11,7 @@ import {
   styled,
   SelectChangeEvent,
   useMediaQuery,
+  TextField,
 } from '@mui/material';
 import { Dialog, FormError } from '@kol-amelamdim/styled';
 import { Category } from '@kol-amelamdim/types';
@@ -40,14 +41,17 @@ const UploadingIndicatorText = styled(Typography)`
 interface UploadFileDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultCategory?: Category;
 }
 
 export const UploadFileDialog = ({
   isOpen,
   onClose,
+  defaultCategory,
 }: UploadFileDialogProps) => {
   const { setAlertMessage } = useContext(AlertContext);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(defaultCategory || '');
+  const [fileName, setFileName] = useState<string>('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [submissionError, setSubmissionError] = useState('');
   const [isUploadingInProcess, setIsUploadingInProcess] = useState(false);
@@ -70,6 +74,7 @@ export const UploadFileDialog = ({
   const resetFormValues = () => {
     setSubmissionError('');
     setCategory('');
+    setFileName('');
     setSelectedFile(null);
   };
 
@@ -79,7 +84,7 @@ export const UploadFileDialog = ({
   };
 
   const handleFileSubmission = async () => {
-    if (!category) {
+    if (!category || !fileName) {
       return setSubmissionError(
         API_ERRORS.missingFieldsOnUploadFile.message.heb
       );
@@ -91,7 +96,7 @@ export const UploadFileDialog = ({
       setSubmissionError('');
       setIsUploadingInProcess(true);
       const formData = new FormData();
-      formData.append('sharedFile', selectedFile, selectedFile.name);
+      formData.append('sharedFile', selectedFile, fileName);
       formData.append('category', category);
 
       try {
@@ -158,7 +163,13 @@ export const UploadFileDialog = ({
           <MenuItem value={Category.shonot}>שונות</MenuItem>
         </Select>
       </FormControl>
-
+      <TextField
+        label="שם הקובץ"
+        sx={{ mb: 3 }}
+        value={fileName}
+        onChange={(e) => setFileName(e.target.value)}
+        error={!fileName && !!submissionError}
+      />
       <Button variant="outlined" component="label">
         בחירת קובץ
         <input type="file" onChange={handleFileSelection} hidden />
