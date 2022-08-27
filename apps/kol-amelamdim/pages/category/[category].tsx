@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Category, IFile } from '@kol-amelamdim/types';
-import { StyledPage } from '@kol-amelamdim/styled';
+import { StyledPageContainer } from '@kol-amelamdim/styled';
 import { FILE_TYPES_DICTIONARY } from '@kol-amelamdim/constants';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { FilterCard } from '../../components/filter-card/FilterCard';
@@ -103,7 +103,7 @@ const Mivhanim = () => {
       <div>אין מידע להציג</div>
     );
   return (
-    <StyledPage>
+    <StyledPageContainer>
       {loading ? (
         renderNoData()
       ) : (
@@ -164,7 +164,7 @@ const Mivhanim = () => {
           />
         </>
       )}
-    </StyledPage>
+    </StyledPageContainer>
   );
 };
 Mivhanim.getLayout = function getLayout(page: ReactElement) {

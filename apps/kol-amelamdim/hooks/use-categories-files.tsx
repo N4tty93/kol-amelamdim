@@ -8,8 +8,10 @@ export const useCategoriesFiles = (category: string) => {
   const [error, setError] = useState<boolean>(false);
 
   const getFiles = async () => {
-    const { data } = await axios.get(`/api/category/${category}`);
-    return data.files;
+    if (category) {
+      const { data } = await axios.get(`/api/category/${category}`);
+      return data.files;
+    }
   };
   useEffect(() => {
     setLoading(true);
