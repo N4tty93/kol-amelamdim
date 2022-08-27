@@ -16,6 +16,17 @@ const AdminDashboard = () => {
             הוספת מאמר שבועי
           </Button>
         </Grid>
+
+        <Grid item>
+          <Button
+            variant="text"
+            onClick={() =>
+              router.push('/admin/dashboard/list-of-weekly-articles')
+            }
+          >
+            צפיה בכל מאמרי השבוע
+          </Button>
+        </Grid>
       </Grid>
     </StyledPageContainer>
   );

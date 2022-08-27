@@ -54,13 +54,11 @@ const AddWeeklyArticle = () => {
         title,
         description,
         content: weeklyArticleContent,
-        isActiveArticle: false,
       });
 
       setError('');
       await router.push('/admin/dashboard/list-of-weekly-articles');
     } catch (e) {
-      console.log('here');
       setError(API_ERRORS.addWeeklyArticleError.message.heb);
     }
   };

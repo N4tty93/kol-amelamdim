@@ -62,4 +62,11 @@ export const API_ERRORS = {
       en: 'An error has occurred while adding new article',
     },
   },
+  updateWeeklyArticleError: {
+    code: 10,
+    message: {
+      heb: 'אירעה שגיאה בעת עדכון המאמר',
+      en: 'An error has occurred while updating the article',
+    },
+  },
 };
