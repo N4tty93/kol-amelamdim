@@ -13,6 +13,7 @@ export const useCategoriesFiles = (category: string) => {
       return data.files;
     }
   };
+
   useEffect(() => {
     setLoading(true);
     getFiles()
