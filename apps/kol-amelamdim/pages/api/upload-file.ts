@@ -6,6 +6,7 @@ import { IncomingForm } from 'formidable';
 import { promises as fs } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import connect from '../../db/connectMongo';
+import { megaBytes } from '@kol-amelamdim/utils';
 
 export const config = {
   api: {
@@ -29,14 +30,13 @@ export default async function handler(req, res) {
 
     if (formData?.files?.sharedFile && selectedCategory) {
       // read file from the temporary path
-      const fileSize = formData.files.sharedFile.size * 1e-6;
+      const fileSize = megaBytes(formData.files.sharedFile.size);
       const { mimetype } = formData.files.sharedFile;
       const fileType = mimetype.substring(
         mimetype.indexOf('/') + 1,
         mimetype.length
       );
 
-      //TODO: ask Netanel why he put the utf8 encoding
       const contents = await fs.readFile(formData.files.sharedFile?.filepath);
 
       const s3 = new AWS.S3({

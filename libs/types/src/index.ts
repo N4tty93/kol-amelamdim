@@ -16,3 +16,12 @@ export interface IFile {
   URL: string;
   approved: boolean;
 }
+
+export const FILE_TYPES_DICTIONARY = {
+  all: 'הכל',
+  pdf: 'pdf',
+  png: 'png',
+  jpeg: 'jpeg',
+};
+
+export const FileTypes = ['pdf', 'png', 'jpeg'];

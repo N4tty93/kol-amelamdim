@@ -1,11 +1,10 @@
 import { styled, Typography, Button, Grid, Divider, Card } from '@mui/material';
-import { useState, ReactElement, useContext } from 'react';
+import { useState, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import { Category } from '@kol-amelamdim/types';
 import { UploadFileDialog } from '../components';
 import { AlertLayout } from '../layouts';
-import { AuthContext } from '../context/auth-context-provider';
 import { StyledPageContainer } from '@kol-amelamdim/styled';
 
 const CategoryCard = styled(Card)`
@@ -44,17 +43,8 @@ const CategoryCard = styled(Card)`
 `;
 
 export function Home() {
-  const { isAuthenticated } = useContext(AuthContext);
   const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
   const router = useRouter();
-
-  const handleShareContentButtonClick = () => {
-    if (isAuthenticated) {
-      setIsUploadFileDialogOpen(true);
-    } else {
-      router.push('/login');
-    }
-  };
 
   return (
     <StyledPageContainer>
@@ -66,7 +56,10 @@ export function Home() {
       </Typography>
       <Grid container sx={{ mt: 2 }}>
         <Grid item sx={{ mr: '10px' }}>
-          <Button variant="contained" onClick={handleShareContentButtonClick}>
+          <Button
+            variant="contained"
+            onClick={() => setIsUploadFileDialogOpen(true)}
+          >
             שיתוף חומרים
           </Button>
         </Grid>
@@ -128,10 +121,12 @@ export function Home() {
       </Grid>
 
       <Divider sx={{ pt: 7, mb: 7 }} />
-      <UploadFileDialog
-        isOpen={isUploadFileDialogOpen}
-        onClose={() => setIsUploadFileDialogOpen(false)}
-      />
+      {isUploadFileDialogOpen && (
+        <UploadFileDialog
+          isOpen={isUploadFileDialogOpen}
+          onClose={() => setIsUploadFileDialogOpen(false)}
+        />
+      )}
     </StyledPageContainer>
   );
 }

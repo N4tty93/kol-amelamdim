@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { IFile } from '@kol-amelamdim/types';
+import { IFile, FileTypes } from '@kol-amelamdim/types';
 
 const FilesSchema = new mongoose.Schema(
   {
@@ -27,6 +27,9 @@ const FilesSchema = new mongoose.Schema(
     type: {
       type: String,
       required: true,
+      validate: function (value: string) {
+        return FileTypes.includes(value);
+      },
     },
     URL: {
       type: String,

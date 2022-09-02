@@ -10,8 +10,8 @@ export default async function handler(
   try {
     const { category } = req.query;
     await connect();
-    const files = await File.find({ category: category });
-    return res.status(200).json({ files: files });
+    const files = await File.find({ category });
+    return res.status(200).json({ files });
   } catch (error) {
     return res.status(400).json(API_ERRORS.errorFetchData);
   }

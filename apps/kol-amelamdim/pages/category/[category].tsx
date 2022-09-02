@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  useState,
-  ChangeEvent,
-  useContext,
-  ReactElement,
-} from 'react';
+import { useEffect, useState, useContext, ReactElement } from 'react';
 import {
   Table,
   TableBody,
@@ -20,27 +14,25 @@ import {
 import { useRouter } from 'next/router';
 import { Category, IFile } from '@kol-amelamdim/types';
 import { StyledPageContainer } from '@kol-amelamdim/styled';
-import { FILE_TYPES_DICTIONARY } from '@kol-amelamdim/constants';
+import { FILE_TYPES_DICTIONARY } from '@kol-amelamdim/types';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { FilterCard } from '../../components/filter-card/FilterCard';
-import { useCategoriesFiles } from '../../hooks/use-categories-files';
-import { AuthContext } from '../../context/auth-context-provider';
 import { UploadFileDialog } from '../../components';
 import { AlertContext } from '../../context/alert-context-provider';
 import { AlertLayout } from '../../layouts';
+import axios from '../../api';
 
-const Mivhanim = () => {
+const rowsPerPage = 25;
+
+const Mivhanim = ({ files, error }) => {
   const [fileType, setFileType] = useState('');
   const [filterText, setFilterText] = useState('');
   const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [filteredFiles, setFilteredFiles] = useState<IFile[]>([]);
   const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
 
   const router = useRouter();
   const { category } = router.query;
-  const { files, error, loading } = useCategoriesFiles(category as Category);
-  const { isAuthenticated } = useContext(AuthContext);
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
 
   //TODO: handle Error & loading & no data to show.
@@ -49,17 +41,11 @@ const Mivhanim = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   const handleFilter = () => {
+    const isFilteredByFileType =
+      fileType && fileType !== FILE_TYPES_DICTIONARY.all;
     let filteredFileType = [...files];
-    if (
-      fileType &&
-      FILE_TYPES_DICTIONARY[fileType] !== FILE_TYPES_DICTIONARY[10]
-    ) {
+    if (isFilteredByFileType) {
       filteredFileType = filteredFileType.filter(
         (file) => file.type === FILE_TYPES_DICTIONARY[fileType]
       );
@@ -76,13 +62,6 @@ const Mivhanim = () => {
     setFilteredFiles(filteredTextData);
   };
 
-  const handleShareContentButtonClick = async () => {
-    if (isAuthenticated) {
-      setIsUploadFileDialogOpen(true);
-    } else {
-      await router.push('/login');
-    }
-  };
   useEffect(() => {
     if (files) {
       setFilteredFiles(files);
@@ -94,17 +73,12 @@ const Mivhanim = () => {
       setAlertType('warning');
       setAlertMessage(API_ERRORS.errorFetchData.message.heb);
     }
-  }, [error]);
+  }, [error, setAlertType, setAlertMessage]);
 
-  const renderNoData = () =>
-    loading ? (
-      <div style={{ fontSize: '200px' }}>טוען..</div>
-    ) : (
-      <div>אין מידע להציג</div>
-    );
+  const renderNoData = () => <div>אין מידע להציג</div>;
   return (
     <StyledPageContainer>
-      {loading ? (
+      {files.length === 0 ? (
         renderNoData()
       ) : (
         <>
@@ -146,22 +120,26 @@ const Mivhanim = () => {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
             component="div"
+            rowsPerPageOptions={[]}
             count={filteredFiles.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
           />
-          <Button variant="contained" onClick={handleShareContentButtonClick}>
+          <Button
+            variant="contained"
+            onClick={() => setIsUploadFileDialogOpen(true)}
+          >
             שיתוף חומרים
           </Button>
-          <UploadFileDialog
-            isOpen={isUploadFileDialogOpen}
-            onClose={() => setIsUploadFileDialogOpen(false)}
-            defaultCategory={category as Category}
-          />
+          {isUploadFileDialogOpen && (
+            <UploadFileDialog
+              isOpen={isUploadFileDialogOpen}
+              onClose={() => setIsUploadFileDialogOpen(false)}
+              defaultCategory={category as Category}
+            />
+          )}
         </>
       )}
     </StyledPageContainer>
@@ -172,3 +150,24 @@ Mivhanim.getLayout = function getLayout(page: ReactElement) {
 };
 
 export default Mivhanim;
+
+export async function getServerSideProps(context) {
+  try {
+    const { category } = context.query;
+    const { data } = await axios.get(`/api/category/${category}`);
+
+    return {
+      props: {
+        files: data.files,
+        error: false,
+      },
+    };
+  } catch (e) {
+    return {
+      props: {
+        files: [],
+        error: true,
+      },
+    };
+  }
+}

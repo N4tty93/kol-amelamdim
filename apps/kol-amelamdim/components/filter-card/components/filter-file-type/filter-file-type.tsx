@@ -1,10 +1,7 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
+import { Box, InputLabel, MenuItem, FormControl } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { FILE_TYPES_DICTIONARY } from '@kol-amelamdim/constants';
+import { FILE_TYPES_DICTIONARY } from '@kol-amelamdim/types';
 
 interface FilterFileTypeProps {
   fileType: string;
@@ -24,10 +21,18 @@ export const FilterFileType = ({
       <FormControl fullWidth>
         <InputLabel>סוג קובץ</InputLabel>
         <Select value={fileType} label="סוג קובץ" onChange={handleChange}>
-          <MenuItem value={10}>{FILE_TYPES_DICTIONARY[10]}</MenuItem>
-          <MenuItem value={20}>{FILE_TYPES_DICTIONARY[20]}</MenuItem>
-          <MenuItem value={30}>{FILE_TYPES_DICTIONARY[30]}</MenuItem>
-          <MenuItem value={40}>{FILE_TYPES_DICTIONARY[40]}</MenuItem>
+          <MenuItem value={FILE_TYPES_DICTIONARY.all}>
+            {FILE_TYPES_DICTIONARY.all}
+          </MenuItem>
+          <MenuItem value={FILE_TYPES_DICTIONARY.pdf}>
+            {FILE_TYPES_DICTIONARY.pdf}
+          </MenuItem>
+          <MenuItem value={FILE_TYPES_DICTIONARY.png}>
+            {FILE_TYPES_DICTIONARY.png}
+          </MenuItem>
+          <MenuItem value={FILE_TYPES_DICTIONARY.jpeg}>
+            {FILE_TYPES_DICTIONARY.jpeg}
+          </MenuItem>
         </Select>
       </FormControl>
     </Box>
