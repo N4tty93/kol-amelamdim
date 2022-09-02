@@ -10,9 +10,10 @@ import {
   TablePagination,
   Link,
   Button,
+  Typography,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Category, IFile } from '@kol-amelamdim/types';
+import { Category, CategoryObject, IFile } from '@kol-amelamdim/types';
 import { StyledPageContainer } from '@kol-amelamdim/styled';
 import { FILE_TYPES_DICTIONARY } from '@kol-amelamdim/types';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
@@ -82,6 +83,9 @@ const Mivhanim = ({ files, error }) => {
         renderNoData()
       ) : (
         <>
+          <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
+            {CategoryObject[category as string].hebName}
+          </Typography>
           <FilterCard
             setFileType={setFileType}
             fileType={fileType}
@@ -89,8 +93,8 @@ const Mivhanim = ({ files, error }) => {
             setFilterText={setFilterText}
             onClick={handleFilter}
           />
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }}>
+          <TableContainer component={Paper} sx={{ maxHeight: 400, mt: '20px' }}>
+            <Table stickyHeader>
               <TableHead>
                 <TableRow>
                   <TableCell>שם</TableCell>

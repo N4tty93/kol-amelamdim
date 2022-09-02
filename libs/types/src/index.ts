@@ -6,6 +6,29 @@ export enum Category {
   'shonot' = 'shonot',
 }
 
+export const CategoryObject = {
+  parashat_shavoa: {
+    enName: 'Parashat shavoa',
+    hebName: 'פרשת שבוע',
+  },
+  learning_materials: {
+    enName: 'Learning materials',
+    hebName: 'חומרי לימוד',
+  },
+  mivhanim: {
+    enName: 'Mivhanim',
+    hebName: 'מבחנים',
+  },
+  art_and_activities: {
+    enName: 'Art andactivities',
+    hebName: 'דפי יצירה ופעילות',
+  },
+  shonot: {
+    enName: 'Shonot',
+    hebName: 'שונות',
+  },
+};
+
 export interface IFile {
   key: string;
   category: string;

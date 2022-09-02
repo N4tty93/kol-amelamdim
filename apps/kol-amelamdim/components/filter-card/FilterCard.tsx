@@ -18,28 +18,15 @@ export const FilterCard = ({
   setFilterText,
   onClick,
 }: FilterCardProps) => (
-  <Grid
-    container
-    direction="column"
-    alignItems="center"
-    justifyContent="center"
-    sx={{ height: '200px', mt: '20px', mb: 5 }}
-  >
-    <Grid item sx={{ height: '100%', width: '100%' }}>
-      <Card sx={{ height: '100%', width: '100%' }}>
-        <Grid
-          container
-          alignItems="center"
-          justifyContent="flex-start"
-          sx={{ height: '100%', width: '100%' }}
-        >
-          <FilterFileType setFileType={setFileType} fileType={fileType} />
-          <FilterText filterText={filterText} setFilterText={setFilterText} />
-          <Button variant="contained" onClick={onClick}>
-            סנן
-          </Button>
-        </Grid>
-      </Card>
+  <Card sx={{ mt: '20px' }}>
+    <Grid container alignItems="center" sx={{ height: '100%' }}>
+      <Grid item container>
+        <FilterText filterText={filterText} setFilterText={setFilterText} />
+        <FilterFileType setFileType={setFileType} fileType={fileType} />
+        <Button variant="contained" onClick={onClick}>
+          סנן
+        </Button>
+      </Grid>
     </Grid>
-  </Grid>
+  </Card>
 );

@@ -6,12 +6,11 @@ interface FilterTextProps {
   setFilterText: (filterText: string) => void;
 }
 
-export const FilterText = ({ filterText, setFilterText }: FilterTextProps) => {
-  return (
-    <TextField
-      label="חיפוש שם קובץ"
-      value={filterText}
-      onChange={(e) => setFilterText(e.target.value)}
-    />
-  );
-};
+export const FilterText = ({ filterText, setFilterText }: FilterTextProps) => (
+  <TextField
+    label="חיפוש"
+    value={filterText}
+    onChange={(e) => setFilterText(e.target.value)}
+    sx={{ mr: '20px' }}
+  />
+);
