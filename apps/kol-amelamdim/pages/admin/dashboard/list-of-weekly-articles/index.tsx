@@ -1,11 +1,19 @@
 import { ReactElement, useContext, useState } from 'react';
 import axios from '../../../../api';
 import { useRouter } from 'next/router';
-import { Button, Divider, Grid, Typography, IconButton } from '@mui/material';
+import {
+  Button,
+  Divider,
+  Grid,
+  Typography,
+  IconButton,
+  useMediaQuery,
+} from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { StyledPageContainer } from '@kol-amelamdim/styled';
 import { AlertContext } from '../../../../context/alert-context-provider';
 import { AlertLayout } from '../../../../layouts';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 
 const getAllWeeklyArticles = async () => {
   return await axios.get('/api/admin/get-weekly-articles');
@@ -14,6 +22,7 @@ const getAllWeeklyArticles = async () => {
 const ListOfWeeklyArticles = ({ weeklyArticles }) => {
   const [articles, setArticles] = useState(weeklyArticles);
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
+  const isMobile = useMediaQuery(MOBILE_QUERY);
   const router = useRouter();
 
   const toggleActiveWeeklyArticle = async (id: string) => {
@@ -50,12 +59,17 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
       {articles.map(({ _id, title, isActiveArticle }) => {
         return (
           <div key={_id}>
-            <Grid container alignItems="center" spacing={4} sx={{ m: 2 }}>
-              <Grid item xs={4}>
+            <Grid
+              container
+              alignItems="center"
+              spacing={isMobile ? 0 : 1}
+              sx={{ m: 2 }}
+            >
+              <Grid item xs={3}>
                 <Typography>{title}</Typography>
               </Grid>
 
-              <Grid item xs={8} container justifyContent="flex-end">
+              <Grid item xs={9} container justifyContent="flex-end">
                 <Button
                   variant="contained"
                   disabled={isActiveArticle}
@@ -73,7 +87,7 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
                   עריכה
                 </Button>
                 <IconButton
-                  sx={{ ml: 2 }}
+                  sx={{ ml: 2, pr: 4 }}
                   onClick={() => deleteWeeklyArticle(_id)}
                 >
                   <Delete />
