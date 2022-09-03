@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { styled, Button, Grid, TextField, Typography } from '@mui/material';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
-  loading: () => <div>loading content editor...</div>,
 });
 import { FormError, StyledPageContainer } from '@kol-amelamdim/styled';
 import { useRouter } from 'next/router';
@@ -41,16 +41,28 @@ export const StyledGrid = styled(Grid)`
   }
 `;
 
+const getWeeklyArticleById = async (id: string) => {
+  try {
+    const article = await axios.get(`/api/admin/get-article-by-id?id=${id}`);
+    if (article.data) {
+      return article.data;
+    }
+  } catch (e) {
+    return null;
+  }
+};
+
 const AddWeeklyArticle = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [weeklyArticleContent, setWeeklyArticleContent] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+  const id = router.query.id;
 
   const addWeeklyArticle = async () => {
     try {
-      await axios.post('/api/admin/add-weekly-post', {
+      await axios.post('/api/admin/add-weekly-article', {
         title,
         description,
         content: weeklyArticleContent,
@@ -62,6 +74,42 @@ const AddWeeklyArticle = () => {
       setError(API_ERRORS.addWeeklyArticleError.message.heb);
     }
   };
+
+  const updateWeeklyArticle = async (id: string) => {
+    try {
+      await axios.post('/api/admin/update-weekly-article', {
+        id,
+        title,
+        description,
+        content: weeklyArticleContent,
+      });
+
+      setError('');
+      await router.push('/admin/dashboard/list-of-weekly-articles');
+    } catch (e) {
+      setError(API_ERRORS.addWeeklyArticleError.message.heb);
+    }
+  };
+
+  const submitHandler = async () => {
+    if (id) {
+      await updateWeeklyArticle(id as string);
+    } else {
+      await addWeeklyArticle();
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      getWeeklyArticleById(id as string).then((response) => {
+        ReactDOM.unstable_batchedUpdates(() => {
+          setTitle(response.title);
+          setDescription(response.description);
+          setWeeklyArticleContent(response.content);
+        });
+      });
+    }
+  }, [id]);
 
   return (
     <StyledPageContainer>
@@ -103,8 +151,8 @@ const AddWeeklyArticle = () => {
         sx={{ pb: '100px' }}
       >
         <Grid item>
-          <Button variant="contained" sx={{ mt: 2 }} onClick={addWeeklyArticle}>
-            הוספת מאמר שבועי
+          <Button variant="contained" sx={{ mt: 2 }} onClick={submitHandler}>
+            {id ? 'עריכת מאמר שבועי' : 'הוספת מאמר שבועי'}
           </Button>
         </Grid>
         <Grid item>{error && <FormError>{error}</FormError>}</Grid>

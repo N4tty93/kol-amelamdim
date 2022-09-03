@@ -69,4 +69,18 @@ export const API_ERRORS = {
       en: 'An error has occurred while updating the article',
     },
   },
+  deleteWeeklyArticleError: {
+    code: 11,
+    message: {
+      heb: 'לא הצלחנו למחוק את המאמר. נא לנסות שנית.',
+      en: 'We cant delete the article. Please try again.',
+    },
+  },
+  getArticleByIdError: {
+    code: 11,
+    message: {
+      heb: 'לא הצלחנו למצוא את המאמר הרצוי',
+      en: 'We didnt found the article',
+    },
+  },
 };
