@@ -60,7 +60,7 @@ export default async function handler(req, res) {
 
       return res.status(200).json({ success: true });
     } catch (error) {
-      return res.status(404).json(API_ERRORS.registrationError);
+      return res.status(400).json(API_ERRORS.registrationError);
     }
   }
 }

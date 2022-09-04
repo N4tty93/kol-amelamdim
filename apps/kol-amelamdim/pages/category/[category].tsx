@@ -99,7 +99,7 @@ const Mivhanim = ({ files, error }) => {
                 <TableRow>
                   <TableCell>שם</TableCell>
                   <TableCell>מחבר</TableCell>
-                  <TableCell>גודל קובץ (מגה בייט)</TableCell>
+                  <TableCell>גודל קובץ</TableCell>
                   <TableCell>סוג קובץ</TableCell>
                   <TableCell>לינק להורדה</TableCell>
                 </TableRow>

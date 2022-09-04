@@ -5,8 +5,8 @@ import { Category } from '@kol-amelamdim/types';
 import { IncomingForm } from 'formidable';
 import { promises as fs } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
+import { formatBytes } from '@kol-amelamdim/utils';
 import connect from '../../db/connectMongo';
-import { megaBytes } from '@kol-amelamdim/utils';
 
 export const config = {
   api: {
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
 
     if (formData?.files?.sharedFile && selectedCategory) {
       // read file from the temporary path
-      const fileSize = megaBytes(formData.files.sharedFile.size);
+      const fileSize = formatBytes(formData.files.sharedFile.size);
       const { mimetype } = formData.files.sharedFile;
       const fileType = mimetype.substring(
         mimetype.indexOf('/') + 1,

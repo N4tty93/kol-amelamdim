@@ -11,7 +11,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(req.method);
   if (req.method === 'POST') {
     try {
       await connect();
@@ -68,7 +67,7 @@ export default async function handler(
         return res.status(400).json(API_ERRORS.LoginValidationError);
       }
     } catch (error) {
-      return res.status(404).json(API_ERRORS.LoginError);
+      return res.status(400).json(API_ERRORS.LoginError);
     }
   }
 }

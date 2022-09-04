@@ -68,7 +68,7 @@ export const UploadFileDialog = ({
     if (!isAuthenticated && isOpen) {
       router.push('/login');
     }
-  }, [isOpen]);
+  }, [isOpen, isAuthenticated, router]);
 
   const handleFileSelection = (e: ChangeEvent<HTMLInputElement>) => {
     const filesList: FileList = e.target.files;
