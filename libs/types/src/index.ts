@@ -9,7 +9,7 @@ export enum Category {
 export const CategoryObject = {
   parashat_shavoa: {
     enName: 'Parashat shavoa',
-    hebName: 'פרשת שבוע',
+    hebName: 'פרשת השבוע',
   },
   learning_materials: {
     enName: 'Learning materials',

@@ -77,6 +77,7 @@ const Mivhanim = ({ files, error }) => {
   }, [error, setAlertType, setAlertMessage]);
 
   const renderNoData = () => <div>אין מידע להציג</div>;
+
   return (
     <StyledPageContainer>
       {files.length === 0 ? (
