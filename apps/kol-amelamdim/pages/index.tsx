@@ -2,7 +2,7 @@ import { styled, Typography, Button, Grid, Divider, Card } from '@mui/material';
 import { useState, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
-import { Category } from '@kol-amelamdim/types';
+import { Categories } from '@kol-amelamdim/types';
 import { UploadFileDialog } from '../components';
 import { AlertLayout } from '../layouts';
 import { StyledPageContainer } from '@kol-amelamdim/styled';
@@ -76,47 +76,15 @@ export function Home() {
         </Typography>
 
         <Grid container sx={{ mt: 2 }}>
-          <Grid item xs={6}>
-            <CategoryCard
-              onClick={() =>
-                router.push(`/category/${Category.parashat_shavoa}`)
-              }
-            >
-              פרשת השבוע
-            </CategoryCard>
-          </Grid>
-          <Grid item xs={6}>
-            <CategoryCard
-              onClick={() =>
-                router.push(`/category/${Category.learning_materials}`)
-              }
-            >
-              חומרי למידה
-            </CategoryCard>
-          </Grid>
-          <Grid item xs={6}>
-            <CategoryCard
-              onClick={() => router.push(`/category/${Category.mivhanim}`)}
-            >
-              מבחנים
-            </CategoryCard>
-          </Grid>
-          <Grid item xs={6}>
-            <CategoryCard
-              onClick={() =>
-                router.push(`/category/${Category.art_and_activities}`)
-              }
-            >
-              דפי יצירה ופעילות
-            </CategoryCard>
-          </Grid>
-          <Grid item xs={6}>
-            <CategoryCard
-              onClick={() => router.push(`/category/${Category.shonot}`)}
-            >
-              שונות
-            </CategoryCard>
-          </Grid>
+          {Categories.map((category) => (
+            <Grid key={category.URL} item xs={6}>
+              <CategoryCard
+                onClick={() => router.push(`/category/${category.URL}`)}
+              >
+                {category.hebName}
+              </CategoryCard>
+            </Grid>
+          ))}
         </Grid>
       </Grid>
 

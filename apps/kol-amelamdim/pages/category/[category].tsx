@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Category, CategoryObject, IFile } from '@kol-amelamdim/types';
+import { Category, Categories, IFile } from '@kol-amelamdim/types';
 import { StyledPageContainer } from '@kol-amelamdim/styled';
 import { FILE_TYPES_DICTIONARY } from '@kol-amelamdim/types';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
@@ -35,6 +35,7 @@ const Mivhanim = ({ files, error }) => {
   const router = useRouter();
   const { category } = router.query;
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
+  const displayedCategory = Categories.filter((cat) => cat.URL === category);
 
   //TODO: handle Error & loading & no data to show.
   //TODO: handle file upload to be added to the tabled immediately
@@ -76,77 +77,71 @@ const Mivhanim = ({ files, error }) => {
     }
   }, [error, setAlertType, setAlertMessage]);
 
-  const renderNoData = () => <div>אין מידע להציג</div>;
-
   return (
     <StyledPageContainer>
-      {files.length === 0 ? (
-        renderNoData()
-      ) : (
-        <>
-          <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
-            {CategoryObject[category as string].hebName}
-          </Typography>
-          <FilterCard
-            setFileType={setFileType}
-            fileType={fileType}
-            filterText={filterText}
-            setFilterText={setFilterText}
-            onClick={handleFilter}
+      <>
+        <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
+          {displayedCategory[0].hebName}
+        </Typography>
+        <FilterCard
+          setFileType={setFileType}
+          fileType={fileType}
+          filterText={filterText}
+          setFilterText={setFilterText}
+          onClick={handleFilter}
+        />
+        <TableContainer component={Paper} sx={{ maxHeight: 400, mt: '20px' }}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>שם</TableCell>
+                <TableCell>מחבר</TableCell>
+                <TableCell>גודל קובץ</TableCell>
+                <TableCell>סוג קובץ</TableCell>
+                <TableCell>לינק להורדה</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredFiles
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => {
+                  return (
+                    <TableRow key={row.key}>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.author}</TableCell>
+                      <TableCell>{row.size}</TableCell>
+                      <TableCell>{row.type}</TableCell>
+                      <TableCell>
+                        <Link href={row.URL}>להורדה</Link>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          component="div"
+          rowsPerPageOptions={[]}
+          count={filteredFiles.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+        />
+        <Button
+          variant="contained"
+          onClick={() => setIsUploadFileDialogOpen(true)}
+        >
+          שיתוף חומרים
+        </Button>
+        {isUploadFileDialogOpen && (
+          <UploadFileDialog
+            isOpen={isUploadFileDialogOpen}
+            onClose={() => setIsUploadFileDialogOpen(false)}
+            defaultCategory={category as Category}
           />
-          <TableContainer component={Paper} sx={{ maxHeight: 400, mt: '20px' }}>
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow>
-                  <TableCell>שם</TableCell>
-                  <TableCell>מחבר</TableCell>
-                  <TableCell>גודל קובץ</TableCell>
-                  <TableCell>סוג קובץ</TableCell>
-                  <TableCell>לינק להורדה</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredFiles
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    return (
-                      <TableRow key={row.key}>
-                        <TableCell>{row.name}</TableCell>
-                        <TableCell>{row.author}</TableCell>
-                        <TableCell>{row.size}</TableCell>
-                        <TableCell>{row.type}</TableCell>
-                        <TableCell>
-                          <Link href={row.URL}>להורדה</Link>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            component="div"
-            rowsPerPageOptions={[]}
-            count={filteredFiles.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-          />
-          <Button
-            variant="contained"
-            onClick={() => setIsUploadFileDialogOpen(true)}
-          >
-            שיתוף חומרים
-          </Button>
-          {isUploadFileDialogOpen && (
-            <UploadFileDialog
-              isOpen={isUploadFileDialogOpen}
-              onClose={() => setIsUploadFileDialogOpen(false)}
-              defaultCategory={category as Category}
-            />
-          )}
-        </>
-      )}
+        )}
+      </>
     </StyledPageContainer>
   );
 };
