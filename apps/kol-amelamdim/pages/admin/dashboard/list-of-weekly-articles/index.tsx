@@ -49,7 +49,12 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
     }
   };
 
-  if (!articles.length) return null;
+  if (!articles?.length)
+    return (
+      <StyledPageContainer>
+        <Typography variant="h1">לא נמצאו מאמרים</Typography>
+      </StyledPageContainer>
+    );
 
   return (
     <StyledPageContainer>
