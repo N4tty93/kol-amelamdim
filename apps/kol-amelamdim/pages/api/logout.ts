@@ -15,7 +15,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
       }),
     ]);
 
-    res.status(200).send({ success: true });
+    res.status(200).json({ success: true });
   } catch (error) {
     return res.status(404).json(API_ERRORS.GeneralError);
   }
