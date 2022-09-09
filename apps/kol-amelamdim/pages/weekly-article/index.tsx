@@ -5,7 +5,6 @@ import axios from '../../api';
 const WeeklyArticleContainer = styled(StyledPageContainer)`
   padding: 125px 0 70px;
   h1,
-  h2,
   p {
     margin: 0;
   }
@@ -18,7 +17,7 @@ const Index = ({ activeArticle }) => {
         <Typography variant="h1" component="h1">
           {activeArticle.title}
         </Typography>
-        <Typography variant="h2" component="h2">
+        <Typography variant="h2" component="h2" sx={{ mb: 3 }}>
           {activeArticle.description}
         </Typography>
         <div
