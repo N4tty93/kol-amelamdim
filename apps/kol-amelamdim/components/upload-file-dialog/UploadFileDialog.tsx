@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useContext } from 'react';
+import { useState, ChangeEvent, useContext, useEffect } from 'react';
 import {
   Typography,
   Divider,
@@ -11,7 +11,9 @@ import {
   styled,
   SelectChangeEvent,
   useMediaQuery,
+  TextField,
 } from '@mui/material';
+import { useRouter } from 'next/router';
 import { Dialog, FormError } from '@kol-amelamdim/styled';
 import { Category } from '@kol-amelamdim/types';
 import {
@@ -24,6 +26,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from '../../api';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { AlertContext } from '../../context/alert-context-provider';
+import { AuthContext } from '../../context/auth-context-provider';
 
 const CategoryLabel = styled(InputLabel)`
   &.MuiFormLabel-root {
@@ -40,19 +43,32 @@ const UploadingIndicatorText = styled(Typography)`
 interface UploadFileDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultCategory?: Category;
 }
 
 export const UploadFileDialog = ({
   isOpen,
   onClose,
+  defaultCategory,
 }: UploadFileDialogProps) => {
+  const router = useRouter();
+
   const { setAlertMessage } = useContext(AlertContext);
-  const [category, setCategory] = useState('');
+  const { isAuthenticated } = useContext(AuthContext);
+
+  const [category, setCategory] = useState(defaultCategory || '');
+  const [fileName, setFileName] = useState<string>('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [submissionError, setSubmissionError] = useState('');
   const [isUploadingInProcess, setIsUploadingInProcess] = useState(false);
   const [isUploadButtonDisabled, setIsUploadButtonDisabled] = useState(false);
   const isMobile = useMediaQuery(MOBILE_QUERY);
+
+  useEffect(() => {
+    if (!isAuthenticated && isOpen) {
+      router.push('/login');
+    }
+  }, [isOpen, isAuthenticated, router]);
 
   const handleFileSelection = (e: ChangeEvent<HTMLInputElement>) => {
     const filesList: FileList = e.target.files;
@@ -71,6 +87,7 @@ export const UploadFileDialog = ({
   const resetFormValues = () => {
     setSubmissionError('');
     setCategory('');
+    setFileName('');
     setSelectedFile(null);
     setIsUploadButtonDisabled(false);
   };
@@ -81,7 +98,7 @@ export const UploadFileDialog = ({
   };
 
   const handleFileSubmission = async () => {
-    if (!category) {
+    if (!category || !fileName) {
       return setSubmissionError(
         API_ERRORS.missingFieldsOnUploadFile.message.heb
       );
@@ -95,7 +112,7 @@ export const UploadFileDialog = ({
       setIsUploadingInProcess(true);
 
       const formData = new FormData();
-      formData.append('sharedFile', selectedFile, selectedFile.name);
+      formData.append('sharedFile', selectedFile, fileName);
       formData.append('category', category);
 
       try {
@@ -104,6 +121,7 @@ export const UploadFileDialog = ({
           setAlertMessage('העלאה בוצעה בהצלחה. תודה רבה!');
           setIsUploadingInProcess(false);
           handleCloseUploadFileDialog();
+          await router.replace(router.asPath);
         }
       } catch (e) {
         if (e.response) {
@@ -119,7 +137,7 @@ export const UploadFileDialog = ({
   };
 
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isAuthenticated && isOpen}>
       {onClose ? (
         <IconButton
           aria-label="close"
@@ -143,7 +161,13 @@ export const UploadFileDialog = ({
       </Typography>
 
       <Divider sx={{ mt: 4, mb: 4 }} />
-
+      <TextField
+        label="שם הקובץ"
+        sx={{ mb: 3 }}
+        value={fileName}
+        onChange={(e) => setFileName(e.target.value)}
+        error={!fileName && !!submissionError}
+      />
       <FormControl sx={{ mb: 3 }}>
         <CategoryLabel id="category-selection">
           לאיזה קטגוריה שייך הקובץ?
@@ -164,7 +188,6 @@ export const UploadFileDialog = ({
           <MenuItem value={Category.shonot}>שונות</MenuItem>
         </Select>
       </FormControl>
-
       <Button variant="outlined" component="label">
         בחירת קובץ
         <input type="file" onChange={handleFileSelection} hidden />
