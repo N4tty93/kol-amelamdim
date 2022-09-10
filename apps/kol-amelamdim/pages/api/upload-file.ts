@@ -1,8 +1,12 @@
 import AWS from 'aws-sdk';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
+import { File } from '@kol-amelamdim/models';
 import { Category } from '@kol-amelamdim/types';
 import { IncomingForm } from 'formidable';
 import { promises as fs } from 'fs';
+import { v4 as uuidv4 } from 'uuid';
+import { formatBytes } from '@kol-amelamdim/utils';
+import connect from '../../db/connectMongo';
 
 export const config = {
   api: {
@@ -26,9 +30,14 @@ export default async function handler(req, res) {
 
     if (formData?.files?.sharedFile && selectedCategory) {
       // read file from the temporary path
-      const contents = await fs.readFile(formData.files.sharedFile?.filepath, {
-        encoding: 'utf8',
-      });
+      const fileSize = formatBytes(formData.files.sharedFile.size);
+      const { mimetype } = formData.files.sharedFile;
+      const fileType = mimetype.substring(
+        mimetype.indexOf('/') + 1,
+        mimetype.length
+      );
+
+      const contents = await fs.readFile(formData.files.sharedFile?.filepath);
 
       const s3 = new AWS.S3({
         accessKeyId: process.env.S3_ACCESS_KEY,
@@ -40,16 +49,32 @@ export default async function handler(req, res) {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: fileLocation,
         Body: contents,
-        Tagging: 'reviewed=false',
+        ACL: 'public-read',
       };
 
-      s3.upload(params, (err, _) => {
-        if (err) {
-          res.status(400).json(API_ERRORS.uploadFileError);
-        }
-
-        res.status(200).json({ isUploaded: true });
-      });
+      const returnedData = s3
+        .upload(params, (err, _) => {
+          if (err) {
+            res.status(400).json(API_ERRORS.uploadFileError);
+          }
+        })
+        .promise();
+      return returnedData
+        .then(async (response) => {
+          await connect();
+          await File.create({
+            key: uuidv4(),
+            category: selectedCategory,
+            name: formData?.files?.sharedFile.originalFilename,
+            size: fileSize,
+            author: 'the author',
+            type: fileType,
+            URL: response.Location,
+            approved: false,
+          });
+          res.status(200).json({ isUploaded: true });
+        })
+        .catch((e) => console.error(e));
     } else {
       res.status(400).json(API_ERRORS.missingFieldsOnUploadFile);
     }
