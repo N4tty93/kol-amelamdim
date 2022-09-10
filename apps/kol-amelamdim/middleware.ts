@@ -4,16 +4,11 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const adminToken = request.cookies.get('adminToken');
 
-  if (request.nextUrl.pathname.startsWith('/admin/')) {
-    if (!adminToken) {
-      return NextResponse.redirect(new URL('/login', request.nextUrl));
-    }
-    return NextResponse.next();
-  } else {
-    return NextResponse.next();
+  if (!adminToken) {
+    return NextResponse.redirect(new URL('/login', request.nextUrl));
   }
 }
 
 export const config = {
-  matcher: '/admin',
+  matcher: '/admin/:path*',
 };

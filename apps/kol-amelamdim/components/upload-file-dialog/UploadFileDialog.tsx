@@ -14,7 +14,7 @@ import {
   TextField,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Dialog, FormError } from '@kol-amelamdim/styled';
+import { Dialog, FormError, LoadingText } from '@kol-amelamdim/styled';
 import { Category } from '@kol-amelamdim/types';
 import {
   MAX_FILES_ALLOWED,
@@ -33,11 +33,6 @@ const CategoryLabel = styled(InputLabel)`
     background: ${(props) => props.theme.palette.primary.light};
     padding: 0 5px;
   }
-`;
-
-const UploadingIndicatorText = styled(Typography)`
-  color: ${(props) => props.theme.palette.primary.main};
-  margin-top: 10px;
 `;
 
 interface UploadFileDialogProps {
@@ -207,7 +202,7 @@ export const UploadFileDialog = ({
         שיתוף
       </Button>
       {isUploadingInProcess && !submissionError && (
-        <UploadingIndicatorText>רק עוד כמה רגעים...</UploadingIndicatorText>
+        <LoadingText>רק עוד כמה רגעים...</LoadingText>
       )}
       <FormError>{submissionError}</FormError>
     </Dialog>

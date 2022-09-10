@@ -1,4 +1,9 @@
-import { Dialog as MuiDialog, Container, styled } from '@mui/material';
+import {
+  Dialog as MuiDialog,
+  Container,
+  styled,
+  Typography,
+} from '@mui/material';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 
 export const Dialog = styled(MuiDialog)`
@@ -26,4 +31,9 @@ export const StyledPageContainer = styled(Container)`
   @media ${MOBILE_QUERY} {
     padding-top: 110px;
   }
+`;
+
+export const LoadingText = styled(Typography)`
+  color: ${(props) => props.theme.palette.primary.main};
+  margin-top: 10px;
 `;
