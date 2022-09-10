@@ -43,7 +43,7 @@ export default async function handler(req, res) {
     const token = jwt.sign(
       { email: req.body.email },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '365' }
+      { expiresIn: '365d' }
     );
 
     res.setHeader(
