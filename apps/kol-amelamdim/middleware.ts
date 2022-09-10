@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const adminToken = request.cookies.get('adminToken');
 
   if (!adminToken) {
-    return NextResponse.redirect(new URL('/login', request.nextUrl));
+    return NextResponse.redirect(new URL('/404', request.nextUrl));
   }
 }
 

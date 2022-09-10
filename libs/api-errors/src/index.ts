@@ -51,8 +51,15 @@ export const API_ERRORS = {
   missingFieldsOnUploadFile: {
     code: 8,
     message: {
-      heb: 'נא לשלוח קטגוריה וקובץ',
-      en: 'Please provide category and file',
+      heb: 'נא לשלוח קטגוריה שם וקובץ',
+      en: 'Please provide category, name and file',
+    },
+  },
+  errorFetchData: {
+    code: 9,
+    message: {
+      heb: 'שגיאה ארעה בהזנת נתונים, אנא נסו שנית מאוחר יותר',
+      en: 'Error occurred while fetching data, try again later.',
     },
   },
   addWeeklyArticleError: {
