@@ -46,22 +46,21 @@ const Mivhanim = ({ files, error }) => {
   const handleFilter = () => {
     const isFilteredByFileType =
       fileType && fileType !== FILE_TYPES_DICTIONARY.all;
-    let filteredFileType = [...files];
+    let filteredFiles = [...files];
     if (isFilteredByFileType) {
-      filteredFileType = filteredFileType.filter(
+      filteredFiles = filteredFiles.filter(
         (file) => file.type === FILE_TYPES_DICTIONARY[fileType]
       );
     }
 
-    let filteredTextData = [...filteredFileType];
     if (filterText) {
-      filteredTextData = filteredTextData.filter(
+      filteredFiles = filteredFiles.filter(
         (file) =>
           file.name.includes(filterText) || file.author.includes(filterText)
       );
     }
 
-    setFilteredFiles(filteredTextData);
+    setFilteredFiles(filteredFiles);
   };
 
   useEffect(() => {

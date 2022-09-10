@@ -74,6 +74,42 @@ const theme: ThemeOptions = createTheme(
           },
         },
       },
+      MuiInputBase: {
+        styleOverrides: {
+          root: {
+            '@media (max-width: 600px)': {
+              fontSize: '19px',
+            },
+          },
+        },
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            '@media (max-width: 600px)': {
+              fontSize: '19px',
+            },
+          },
+        },
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            '@media (max-width: 600px)': {
+              fontSize: '19px',
+            },
+          },
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            '@media (max-width: 600px)': {
+              fontSize: '19px',
+            },
+          },
+        },
+      },
       MuiTypography: {
         styleOverrides: {
           root: {

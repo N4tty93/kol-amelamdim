@@ -1,7 +1,14 @@
 import * as React from 'react';
-import { Box, InputLabel, MenuItem, FormControl } from '@mui/material';
+import {
+  Box,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  useMediaQuery,
+} from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { FILE_TYPES_DICTIONARY } from '@kol-amelamdim/types';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 
 interface FilterFileTypeProps {
   fileType: string;
@@ -12,12 +19,19 @@ export const FilterFileType = ({
   fileType,
   setFileType,
 }: FilterFileTypeProps) => {
+  const isMobile = useMediaQuery(MOBILE_QUERY);
+
   const handleChange = (event: SelectChangeEvent) => {
     setFileType(event.target.value);
   };
 
   return (
-    <Box sx={{ minWidth: 120, marginRight: '20px' }}>
+    <Box
+      sx={{
+        minWidth: isMobile ? '100px' : '120px',
+        marginRight: isMobile ? '10px' : '20px',
+      }}
+    >
       <FormControl fullWidth>
         <InputLabel>סוג קובץ</InputLabel>
         <Select value={fileType} label="סוג קובץ" onChange={handleChange}>
