@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect, ReactElement, useContext } from 'react';
+import ReactDOM from 'react-dom';
 import { styled, Button, Grid, TextField, Typography } from '@mui/material';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
-  loading: () => <div>loading content editor...</div>,
 });
 import { FormError, StyledPageContainer } from '@kol-amelamdim/styled';
 import { useRouter } from 'next/router';
 import axios from '../../../../api';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
+import { AlertLayout } from '../../../../layouts';
+import { AlertContext } from '../../../../context/alert-context-provider';
 
 const ContentEditor = styled(QuillNoSSRWrapper)`
   & .ql-editor {
@@ -41,20 +43,28 @@ export const StyledGrid = styled(Grid)`
   }
 `;
 
-const AddWeeklyArticle = () => {
+const getWeeklyArticleById = async (id: string) => {
+  const article = await axios.get(`/api/admin/get-article-by-id?id=${id}`);
+  if (article.data) {
+    return article.data;
+  }
+};
+
+const AddWeeklyArticle = ({ id }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [weeklyArticleContent, setWeeklyArticleContent] = useState('');
   const [error, setError] = useState('');
+  const { setAlertMessage, setAlertType } = useContext(AlertContext);
+
   const router = useRouter();
 
   const addWeeklyArticle = async () => {
     try {
-      await axios.post('/api/admin/add-weekly-post', {
+      await axios.post('/api/admin/add-weekly-article', {
         title,
         description,
         content: weeklyArticleContent,
-        isActiveArticle: false,
       });
 
       setError('');
@@ -64,6 +74,47 @@ const AddWeeklyArticle = () => {
     }
   };
 
+  const updateWeeklyArticle = async (id: string) => {
+    try {
+      await axios.post('/api/admin/update-weekly-article', {
+        id,
+        title,
+        description,
+        content: weeklyArticleContent,
+      });
+
+      setError('');
+      await router.push('/admin/dashboard/list-of-weekly-articles');
+    } catch (e) {
+      setError(API_ERRORS.addWeeklyArticleError.message.heb);
+    }
+  };
+
+  const submitHandler = async () => {
+    if (id) {
+      await updateWeeklyArticle(id as string);
+    } else {
+      await addWeeklyArticle();
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      getWeeklyArticleById(id as string)
+        .then((response) => {
+          ReactDOM.unstable_batchedUpdates(() => {
+            setTitle(response.title);
+            setDescription(response.description);
+            setWeeklyArticleContent(response.content);
+          });
+        })
+        .catch((e) => {
+          setAlertType('warning');
+          setAlertMessage(e.response.data.message.heb);
+        });
+    }
+  }, [id, setAlertMessage, setAlertType]);
+
   return (
     <StyledPageContainer>
       <Button onClick={() => router.push('/admin/dashboard')} sx={{ mb: 2 }}>
@@ -71,7 +122,7 @@ const AddWeeklyArticle = () => {
       </Button>
 
       <Typography variant="h1" component="h1" sx={{ mb: 2 }}>
-        הוספת מאמר שבועי
+        {!id ? 'הוספת מאמר שבועי' : 'עריכת מאמר שבועי'}
       </Typography>
       <StyledGrid container spacing={2} sx={{ mb: 2 }}>
         <Grid item xs={12}>
@@ -104,8 +155,8 @@ const AddWeeklyArticle = () => {
         sx={{ pb: '100px' }}
       >
         <Grid item>
-          <Button variant="contained" sx={{ mt: 2 }} onClick={addWeeklyArticle}>
-            הוספת מאמר שבועי
+          <Button variant="contained" sx={{ mt: 2 }} onClick={submitHandler}>
+            {id ? 'עריכת מאמר שבועי' : 'הוספת מאמר שבועי'}
           </Button>
         </Grid>
         <Grid item>{error && <FormError>{error}</FormError>}</Grid>
@@ -127,5 +178,18 @@ const editorModules = {
     [{ direction: 'rtl' }],
   ],
 };
+
+AddWeeklyArticle.getLayout = function getLayout(page: ReactElement) {
+  return <AlertLayout>{page}</AlertLayout>;
+};
+
+export async function getServerSideProps(context) {
+  const id = context.query.id;
+  if (id) {
+    return { props: { id } };
+  }
+
+  return { props: { id: null } };
+}
 
 export default AddWeeklyArticle;

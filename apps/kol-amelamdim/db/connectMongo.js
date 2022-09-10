@@ -1,16 +1,23 @@
 import mongoose from 'mongoose';
 
-const connection = {};
+let cachedConnection = global.mongoose;
+
+if (!cachedConnection) {
+  cachedConnection = global.mongoose = null;
+}
 
 async function connect() {
-  if (connection.isConnected) {
-    return;
+  if (cachedConnection) {
+    return cachedConnection;
   }
-  const db = await mongoose.connect(process.env.MONGO_URI, {
+
+  cachedConnection = await mongoose.connect(process.env.MONGO_URI, {
+    bufferCommands: false,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-  connection.isConnected = db.connections[0].readyState;
+
+  return cachedConnection;
 }
 
 export default connect;
