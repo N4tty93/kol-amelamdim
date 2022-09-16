@@ -9,7 +9,7 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { prefixer } from 'stylis';
 import theme from '../theme';
-import { Navbar } from '../components';
+import { Navbar, Footer } from '../components';
 import './styles.css';
 import { AlertContextProvider } from '../context/alert-context-provider';
 import { AuthProvider } from '../context/auth-context-provider';
@@ -50,6 +50,7 @@ function KolAmelamdimApp({ Component, pageProps }: AppPropsWithLayout) {
                 <>
                   <Navbar />
                   <Component {...pageProps} />
+                  <Footer />
                 </>
               )}
             </AuthProvider>
