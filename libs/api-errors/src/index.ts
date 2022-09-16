@@ -90,4 +90,11 @@ export const API_ERRORS = {
       en: 'We didnt found the article',
     },
   },
+  contactUsFormError: {
+    code: 12,
+    message: {
+      heb: 'שגיאה בעת שליחת הטופס. נא לוודא שכל השדות מלאים.',
+      en: 'Error occurred while submiting the form. Please make sure all fields are filled.',
+    },
+  },
 };

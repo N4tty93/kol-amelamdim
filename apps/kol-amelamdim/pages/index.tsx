@@ -6,6 +6,7 @@ import {
   Divider,
   Card,
   TextField,
+  useMediaQuery,
 } from '@mui/material';
 import { useState, ReactElement, useContext } from 'react';
 import { useRouter } from 'next/router';
@@ -14,8 +15,10 @@ import { Categories } from '@kol-amelamdim/types';
 import { UploadFileDialog } from '../components';
 import { AlertLayout } from '../layouts';
 import { AuthContext } from '../context/auth-context-provider';
-import { StyledPageContainer } from '@kol-amelamdim/styled';
+import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
+import validator from 'validator';
 import axios from '../api';
+import { AlertContext } from '../context/alert-context-provider';
 
 const CategoryCard = styled(Card)`
   height: 90px;
@@ -55,9 +58,13 @@ const CategoryCard = styled(Card)`
 export function Home({ activeArticle }) {
   const [customerEmail, setCustomerEmail] = useState('');
   const [customerQuestion, setCustomerQuestion] = useState('');
+  const [formError, setFormError] = useState('');
   const { isAuthenticated } = useContext(AuthContext);
   const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
+  const { setAlertMessage, setAlertType } = useContext(AlertContext);
+  const isMobile = useMediaQuery(MOBILE_QUERY);
   const router = useRouter();
+  const submitButtonStyles = { ml: isMobile ? 0 : 2, mt: isMobile ? 2 : 0 };
 
   const handleShareContentButtonClick = () => {
     if (isAuthenticated) {
@@ -67,8 +74,28 @@ export function Home({ activeArticle }) {
     }
   };
 
-  const handleSendCustomerQuestion = (e) => {
+  const handleSendCustomerQuestion = async (e) => {
     e.preventDefault();
+    if (!customerQuestion || !customerEmail) {
+      return setFormError('נא לוודא שכל השדות מלאים');
+    } else if (!validator.isEmail(customerEmail)) {
+      return setFormError('כתובת אימייל לא חוקית');
+    }
+
+    try {
+      await axios.post('/api/contact-us', {
+        customerEmail,
+        customerQuestion,
+        from: 'kol-amelamdim-website',
+      });
+      setFormError('');
+      setCustomerEmail('');
+      setCustomerQuestion('');
+      setAlertType('success');
+      setAlertMessage('הטופס נקלט בהצלחה.');
+    } catch (e) {
+      setFormError(e.response.data);
+    }
   };
 
   return (
@@ -79,14 +106,20 @@ export function Home({ activeArticle }) {
       <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
         אתר שיתוף חומרי למידה המתקדם ביותר בישראל
       </Typography>
-      <Grid container sx={{ mt: 2 }}>
+      <Grid container sx={{ mt: 3 }}>
         <Grid item sx={{ mr: '10px' }}>
-          <Button variant="contained" onClick={handleShareContentButtonClick}>
+          <Button
+            size="large"
+            variant="contained"
+            onClick={handleShareContentButtonClick}
+          >
             שיתוף חומרים
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="outlined">הורדת חומרים</Button>
+          <Button size="large" variant="outlined">
+            הורדת חומרים
+          </Button>
         </Grid>
       </Grid>
 
@@ -150,25 +183,40 @@ export function Home({ activeArticle }) {
           <Grid item container sx={{ mt: 2 }} spacing={2} direction="column">
             <Grid item xs={12}>
               <TextField
+                sx={{ width: isMobile ? '100%' : '450px' }}
                 label="כתובת מייל"
                 value={customerEmail}
-                type="email"
+                error={!!formError}
                 onChange={(e) => setCustomerEmail(e.target.value)}
               />
             </Grid>
-            <Grid item container alignItems="flex-end">
+            <Grid
+              item
+              xs={12}
+              container
+              direction={isMobile ? 'column' : 'row'}
+              alignItems={isMobile ? 'flex-start' : 'flex-end'}
+            >
               <TextField
+                sx={{ width: isMobile ? '100%' : '450px' }}
                 label="מה בא לכם לשאול אותנו?"
                 rows="4"
                 multiline
+                error={!!formError}
                 value={customerQuestion}
                 onChange={(e) => setCustomerQuestion(e.target.value)}
               />
-              <Button variant="contained" sx={{ ml: 2 }}>
+              <Button
+                variant="contained"
+                sx={submitButtonStyles}
+                size="large"
+                type="submit"
+              >
                 שליחה
               </Button>
             </Grid>
           </Grid>
+          {formError && <FormError>{formError}</FormError>}
         </form>
       </Grid>
 

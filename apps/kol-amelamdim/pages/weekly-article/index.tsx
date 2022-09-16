@@ -1,5 +1,6 @@
 import { StyledPageContainer } from '@kol-amelamdim/styled';
 import { Typography, styled } from '@mui/material';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import axios from '../../api';
 
 const WeeklyArticleContainer = styled(StyledPageContainer)`
@@ -8,10 +9,14 @@ const WeeklyArticleContainer = styled(StyledPageContainer)`
   p {
     margin: 0;
   }
+
+  @media ${MOBILE_QUERY} {
+    padding: 125px 10px 70px;
+  }
 `;
 
 const Index = ({ activeArticle }) => {
-  if (activeArticle.content && activeArticle.title) {
+  if (activeArticle?.content && activeArticle?.title) {
     return (
       <WeeklyArticleContainer>
         <Typography variant="h1" component="h1">
