@@ -117,13 +117,17 @@ export function Home({ activeArticle }) {
           </Button>
         </Grid>
         <Grid item>
-          <Button size="large" variant="outlined">
+          <Button
+            size="large"
+            variant="outlined"
+            onClick={() => router.push('/#learn-categories')}
+          >
             הורדת חומרים
           </Button>
         </Grid>
       </Grid>
 
-      <Divider sx={{ pt: 7, mb: 7 }} />
+      <Divider sx={{ pt: 7, mb: 7 }} id="learn-categories" />
 
       <Grid>
         <Typography variant="h3" component="h3">
