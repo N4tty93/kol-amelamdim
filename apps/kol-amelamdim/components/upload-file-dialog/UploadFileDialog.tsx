@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dialog, FormError } from '@kol-amelamdim/styled';
-import { Category } from '@kol-amelamdim/types';
+import { Categories, Category } from '@kol-amelamdim/types';
 import {
   MAX_FILES_ALLOWED,
   MOBILE_QUERY,
@@ -27,6 +27,7 @@ import axios from '../../api';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { AlertContext } from '../../context/alert-context-provider';
 import { AuthContext } from '../../context/auth-context-provider';
+import { i18n, useTranslation } from 'next-i18next';
 
 const CategoryLabel = styled(InputLabel)`
   &.MuiFormLabel-root {
@@ -52,6 +53,7 @@ export const UploadFileDialog = ({
   defaultCategory,
 }: UploadFileDialogProps) => {
   const router = useRouter();
+  const { t } = useTranslation('home');
 
   const { setAlertMessage } = useContext(AlertContext);
   const { isAuthenticated } = useContext(AuthContext);
@@ -100,7 +102,7 @@ export const UploadFileDialog = ({
   const handleFileSubmission = async () => {
     if (!category || !fileName) {
       return setSubmissionError(
-        API_ERRORS.missingFieldsOnUploadFile.message.heb
+        API_ERRORS.missingFieldsOnUploadFile.message[i18n.language]
       );
     }
 
@@ -118,14 +120,14 @@ export const UploadFileDialog = ({
       try {
         const res = await axios.post('/api/upload-file', formData);
         if (res.data.isUploaded) {
-          setAlertMessage('העלאה בוצעה בהצלחה. תודה רבה!');
+          setAlertMessage(t('dialog-success-message'));
           setIsUploadingInProcess(false);
           handleCloseUploadFileDialog();
           await router.replace(router.asPath);
         }
       } catch (e) {
         if (e.response) {
-          setSubmissionError(e.response.data.message.heb);
+          setSubmissionError(e.response.data.message[i18n.language]);
         }
         setIsUploadingInProcess(false);
         setIsUploadButtonDisabled(false);
@@ -154,15 +156,13 @@ export const UploadFileDialog = ({
       ) : null}
 
       <Typography variant="h2" component="h3" sx={{ mt: 1 }}>
-        שיתוף תוכן
+        {t('dialog-header')}
       </Typography>
-      <Typography component="h4">
-        תודה שבחרת לשתף חומרי לימוד ולהגדיל תורה בישראל!
-      </Typography>
+      <Typography component="h4">{t('dialog-subheader')}</Typography>
 
       <Divider sx={{ mt: 4, mb: 4 }} />
       <TextField
-        label="שם הקובץ"
+        label={t('dialog-file-name')}
         sx={{ mb: 3 }}
         value={fileName}
         onChange={(e) => setFileName(e.target.value)}
@@ -170,7 +170,7 @@ export const UploadFileDialog = ({
       />
       <FormControl sx={{ mb: 3 }}>
         <CategoryLabel id="category-selection">
-          לאיזה קטגוריה שייך הקובץ?
+          {t('dialog-file-type')}
         </CategoryLabel>
         <Select
           value={category}
@@ -179,17 +179,17 @@ export const UploadFileDialog = ({
           error={!category && !!submissionError}
           onChange={(e: SelectChangeEvent) => setCategory(e.target.value)}
         >
-          <MenuItem value={Category.parashat_shavoa}>פרשת השבוע</MenuItem>
-          <MenuItem value={Category.learning_materials}>חומרי למידה</MenuItem>
-          <MenuItem value={Category.mivhanim}>מבחנים</MenuItem>
-          <MenuItem value={Category.art_and_activities}>
-            דפי יצירה ופעילות
-          </MenuItem>
-          <MenuItem value={Category.shonot}>שונות</MenuItem>
+          {Categories.map((category) => {
+            return (
+              <MenuItem key={category.URL} value={category.URL}>
+                {category[i18n.language]}
+              </MenuItem>
+            );
+          })}
         </Select>
       </FormControl>
       <Button variant="outlined" component="label">
-        בחירת קובץ
+        {t('dialog-file-upload-btn')}
         <input type="file" onChange={handleFileSelection} hidden />
       </Button>
       {selectedFile?.name && (
@@ -204,10 +204,10 @@ export const UploadFileDialog = ({
         onClick={handleFileSubmission}
         disabled={isUploadButtonDisabled}
       >
-        שיתוף
+        {t('dialog-submit')}
       </Button>
       {isUploadingInProcess && !submissionError && (
-        <UploadingIndicatorText>רק עוד כמה רגעים...</UploadingIndicatorText>
+        <UploadingIndicatorText>{t('dialog-loading')}</UploadingIndicatorText>
       )}
       <FormError>{submissionError}</FormError>
     </Dialog>

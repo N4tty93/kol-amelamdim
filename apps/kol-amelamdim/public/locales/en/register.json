@@ -1,0 +1,8 @@
+{
+  "h1": "Register",
+  "email": "Email",
+  "password": "Password",
+  "submit": "Submit",
+  "login-txt": "Already signed in ?",
+  "login-btn": "Login"
+}

@@ -13,19 +13,22 @@ import {
   Typography,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Category, Categories, IFile } from '@kol-amelamdim/types';
+import { i18n, useTranslation } from 'next-i18next';
+import { Category, Categories, IFile, CategoryObj } from '@kol-amelamdim/types';
 import { StyledPageContainer } from '@kol-amelamdim/styled';
 import { FILE_TYPES_DICTIONARY } from '@kol-amelamdim/types';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { FilterCard } from '../../components/filter-card/FilterCard';
 import { UploadFileDialog } from '../../components';
 import { AlertContext } from '../../context/alert-context-provider';
 import { AlertLayout } from '../../layouts';
 import axios from '../../api';
+import i18nConfig from '../../next-i18next.config';
 
 const rowsPerPage = 25;
 
-const Mivhanim = ({ files, error }) => {
+const CategoryPage = ({ files, error }) => {
   const [fileType, setFileType] = useState('');
   const [filterText, setFilterText] = useState('');
   const [page, setPage] = useState<number>(0);
@@ -33,6 +36,7 @@ const Mivhanim = ({ files, error }) => {
   const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
 
   const router = useRouter();
+  const { t } = useTranslation('category');
   const { category } = router.query;
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
   const displayedCategory = Categories.filter((cat) => cat.URL === category);
@@ -72,7 +76,7 @@ const Mivhanim = ({ files, error }) => {
   useEffect(() => {
     if (error) {
       setAlertType('warning');
-      setAlertMessage(API_ERRORS.errorFetchData.message.heb);
+      setAlertMessage(API_ERRORS.errorFetchData.message[i18n.language]);
     }
   }, [error, setAlertType, setAlertMessage]);
 
@@ -80,7 +84,7 @@ const Mivhanim = ({ files, error }) => {
     <StyledPageContainer>
       <>
         <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
-          {displayedCategory[0].hebName}
+          {t(`${displayedCategory[0].URL}`)}
         </Typography>
         <FilterCard
           setFileType={setFileType}
@@ -93,11 +97,11 @@ const Mivhanim = ({ files, error }) => {
           <Table stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell>שם</TableCell>
-                <TableCell>מחבר</TableCell>
-                <TableCell>גודל קובץ</TableCell>
-                <TableCell>סוג קובץ</TableCell>
-                <TableCell>לינק להורדה</TableCell>
+                <TableCell>{t('table-column-name')}</TableCell>
+                <TableCell>{t('table-column-author')}</TableCell>
+                <TableCell>{t('table-column-file-size')}</TableCell>
+                <TableCell>{t('table-column-file-type')}</TableCell>
+                <TableCell>{t('table-column-file-download')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -111,7 +115,7 @@ const Mivhanim = ({ files, error }) => {
                       <TableCell>{row.size}</TableCell>
                       <TableCell>{row.type}</TableCell>
                       <TableCell>
-                        <Link href={row.URL}>להורדה</Link>
+                        <Link href={row.URL}>{t('table-download-btn')}</Link>
                       </TableCell>
                     </TableRow>
                   );
@@ -131,7 +135,7 @@ const Mivhanim = ({ files, error }) => {
           variant="contained"
           onClick={() => setIsUploadFileDialogOpen(true)}
         >
-          שיתוף חומרים
+          {t('share-btn')}
         </Button>
         {isUploadFileDialogOpen && (
           <UploadFileDialog
@@ -144,21 +148,40 @@ const Mivhanim = ({ files, error }) => {
     </StyledPageContainer>
   );
 };
-Mivhanim.getLayout = function getLayout(page: ReactElement) {
+CategoryPage.getLayout = function getLayout(page: ReactElement) {
   return <AlertLayout>{page}</AlertLayout>;
 };
 
-export default Mivhanim;
+export default CategoryPage;
 
-export async function getServerSideProps(context) {
+export async function getStaticPaths(context) {
+  // Get available locales from `context`
+
+  const paths = Categories.map((category: CategoryObj) =>
+    context.locales.map((locale) => ({
+      params: { category: category.URL },
+      locale,
+    }))
+  ).flat();
+
+  return { paths, fallback: false };
+}
+
+export async function getStaticProps(context) {
   try {
-    const { category } = context.query;
+    const category = context.params.category;
+
     const { data } = await axios.get(`/api/category/${category}`);
 
     return {
       props: {
         files: data.files,
         error: false,
+        ...(await serverSideTranslations(
+          context.locale,
+          ['category', 'home'],
+          i18nConfig
+        )),
       },
     };
   } catch (e) {
@@ -166,6 +189,11 @@ export async function getServerSideProps(context) {
       props: {
         files: [],
         error: true,
+        ...(await serverSideTranslations(
+          context.locale,
+          ['category', 'home'],
+          i18nConfig
+        )),
       },
     };
   }

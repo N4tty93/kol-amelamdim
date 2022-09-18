@@ -1,5 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 import { NextPage } from 'next';
+import { appWithTranslation } from 'next-i18next';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -60,4 +61,4 @@ function KolAmelamdimApp({ Component, pageProps }: AppPropsWithLayout) {
   );
 }
 
-export default KolAmelamdimApp;
+export default appWithTranslation(KolAmelamdimApp);

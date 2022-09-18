@@ -14,6 +14,9 @@ import { StyledPageContainer } from '@kol-amelamdim/styled';
 import { AlertContext } from '../../../../context/alert-context-provider';
 import { AlertLayout } from '../../../../layouts';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import i18nConfig from '../../../../next-i18next.config';
+import { i18n, useTranslation } from 'next-i18next';
 
 const getAllWeeklyArticles = async () => {
   return await axios.get('/api/admin/get-weekly-articles');
@@ -24,6 +27,7 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const router = useRouter();
+  const { t } = useTranslation('list-of-weekly-article');
 
   const toggleActiveWeeklyArticle = async (id: string) => {
     try {
@@ -34,7 +38,7 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
       }
     } catch (e) {
       setAlertType('warning');
-      setAlertMessage(e.response.data.message.heb);
+      setAlertMessage(e.response.data.message[i18n.language]);
     }
   };
 
@@ -45,21 +49,21 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
       setArticles(data);
     } catch (e) {
       setAlertType('warning');
-      setAlertMessage(e.response.data.message.heb);
+      setAlertMessage(e.response.data.message[i18n.language]);
     }
   };
 
   if (!articles?.length)
     return (
       <StyledPageContainer>
-        <Typography variant="h1">לא נמצאו מאמרים</Typography>
+        <Typography variant="h1">{t('no-results')}</Typography>
       </StyledPageContainer>
     );
 
   return (
     <StyledPageContainer>
       <Button onClick={() => router.push('/admin/dashboard')} sx={{ mb: 2 }}>
-        חזור לדף ניהול
+        {t('back')}
       </Button>
       {articles.map(({ _id, title, isActiveArticle }) => {
         return (
@@ -80,7 +84,7 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
                   disabled={isActiveArticle}
                   onClick={() => toggleActiveWeeklyArticle(_id)}
                 >
-                  החל
+                  {t('activate')}
                 </Button>
                 <Button
                   variant="outlined"
@@ -89,7 +93,7 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
                     router.push(`/admin/dashboard/add-weekly-article?id=${_id}`)
                   }
                 >
-                  עריכה
+                  {t('edit')}
                 </Button>
                 <IconButton
                   sx={{ ml: 2, pr: 4 }}
@@ -108,12 +112,29 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ locale }) {
   try {
     const weeklyArticles = await getAllWeeklyArticles();
-    return { props: { weeklyArticles: weeklyArticles.data } };
+    return {
+      props: {
+        weeklyArticles: weeklyArticles.data,
+        ...(await serverSideTranslations(
+          locale,
+          ['list-of-weekly-article', 'home'],
+          i18nConfig
+        )),
+      },
+    };
   } catch (e) {
-    return { props: {} };
+    return {
+      props: {
+        ...(await serverSideTranslations(
+          locale,
+          ['list-of-weekly-article'],
+          i18nConfig
+        )),
+      },
+    };
   }
 }
 

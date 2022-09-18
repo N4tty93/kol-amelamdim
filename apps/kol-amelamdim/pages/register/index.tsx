@@ -12,6 +12,9 @@ import validator from 'validator';
 import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import axios from '../../api';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import i18nConfig from '../../next-i18next.config';
+import { i18n, useTranslation } from 'next-i18next';
 
 const Register = () => {
   const router = useRouter();
@@ -19,6 +22,8 @@ const Register = () => {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+
+  const { t } = useTranslation('register');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,11 +40,11 @@ const Register = () => {
         }
       } catch (error) {
         setLoading(false);
-        setError(error.response.data.message.heb);
+        setError(error.response.data.message[i18n.language]);
       }
     } else {
       setLoading(false);
-      setError(API_ERRORS.invalidEmailError.message.heb);
+      setError(API_ERRORS.invalidEmailError.message[i18n.language]);
     }
   };
 
@@ -52,13 +57,13 @@ const Register = () => {
           <form onSubmit={handleSubmit}>
             <Grid container direction={'column'}>
               <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
-                הרשמה
+                {t('h1')}
               </Typography>
               <TextField
                 sx={{ mt: 2 }}
                 required
                 id="outlined-required"
-                label="אימייל"
+                label={t('email')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 error={!!error}
@@ -66,7 +71,7 @@ const Register = () => {
               <TextField
                 sx={{ mt: 2 }}
                 value={password}
-                label="סיסמא"
+                label={t('password')}
                 type="password"
                 required
                 autoComplete="current-password"
@@ -79,14 +84,14 @@ const Register = () => {
                 type="submit"
                 disabled={!email || !password}
               >
-                הרשם
+                {t('submit')}
               </Button>
             </Grid>
           </form>
           <Grid container sx={{ mt: 2 }}>
-            <Typography component="h4">כבר נרשמתם?&nbsp;</Typography>
+            <Typography component="h4">{t('login-txt')}&nbsp;</Typography>
             <NextLink href="/login" passHref>
-              <MUILink>לחצו להתחברות</MUILink>
+              <MUILink>{t('login-btn')}</MUILink>
             </NextLink>
           </Grid>
           {error && <FormError>{error}</FormError>}
@@ -95,5 +100,17 @@ const Register = () => {
     </StyledPageContainer>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(
+        locale,
+        ['register', 'home'],
+        i18nConfig
+      )),
+    },
+  };
+}
 
 export default Register;
