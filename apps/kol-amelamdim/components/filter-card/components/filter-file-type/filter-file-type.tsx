@@ -9,6 +9,7 @@ import {
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { FILE_TYPES_DICTIONARY } from '@kol-amelamdim/types';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
+import { useTranslation } from 'next-i18next';
 
 interface FilterFileTypeProps {
   fileType: string;
@@ -20,6 +21,7 @@ export const FilterFileType = ({
   setFileType,
 }: FilterFileTypeProps) => {
   const isMobile = useMediaQuery(MOBILE_QUERY);
+  const { t } = useTranslation('category');
 
   const handleChange = (event: SelectChangeEvent) => {
     setFileType(event.target.value);
@@ -33,7 +35,7 @@ export const FilterFileType = ({
       }}
     >
       <FormControl fullWidth>
-        <InputLabel>סוג קובץ</InputLabel>
+        <InputLabel>{t('select-file-type')}</InputLabel>
         <Select value={fileType} label="סוג קובץ" onChange={handleChange}>
           <MenuItem value={FILE_TYPES_DICTIONARY.all}>
             {FILE_TYPES_DICTIONARY.all}

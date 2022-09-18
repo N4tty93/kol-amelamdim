@@ -1,5 +1,15 @@
 import { useEffect, useContext } from 'react';
-import { AppBar, Button, Grid, styled, Typography } from '@mui/material';
+import {
+  AppBar,
+  Button,
+  Grid,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  styled,
+  Typography,
+} from '@mui/material';
+import { i18n, useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import axios from '../../api';
 import { AuthContext } from '../../context/auth-context-provider';
@@ -25,10 +35,18 @@ const StyledNavbar = styled(AppBar)`
 
 export const Navbar = () => {
   const router = useRouter();
+  const { pathname, asPath, query } = router;
+  const { t } = useTranslation('home');
 
   const { isAuthenticated, setAuthenticated, checkAuthentication } =
     useContext(AuthContext);
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
+
+  const handleLanguageChange = async (event: SelectChangeEvent) => {
+    await router.push({ pathname, query }, asPath, {
+      locale: event.target.value,
+    });
+  };
 
   useEffect(() => {
     checkAuthentication()
@@ -75,17 +93,27 @@ export const Navbar = () => {
           alignItems="center"
           justifyContent="flex-end"
         >
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={i18n.language || 'he'}
+            onChange={handleLanguageChange}
+            sx={{ height: '50px' }}
+          >
+            <MenuItem value={'he'}>עברית</MenuItem>
+            <MenuItem value={'en'}>English(us)</MenuItem>
+          </Select>
           {isAuthenticated ? (
             <Button variant="text" onClick={logOut}>
-              התנתקות
+              {t('logout-btn')}
             </Button>
           ) : (
             <div>
               <Button variant="text" onClick={() => router.push('/login')}>
-                התחברות
+                {t('login-btn')}
               </Button>
               <Button variant="text" onClick={() => router.push('/register')}>
-                הרשמה
+                {t('register-btn')}
               </Button>
             </div>
           )}

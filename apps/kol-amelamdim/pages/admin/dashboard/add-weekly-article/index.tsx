@@ -12,6 +12,9 @@ import axios from '../../../../api';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { AlertLayout } from '../../../../layouts';
 import { AlertContext } from '../../../../context/alert-context-provider';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import i18nConfig from '../../../../next-i18next.config';
+import { useTranslation } from 'next-i18next';
 
 const ContentEditor = styled(QuillNoSSRWrapper)`
   & .ql-editor {
@@ -58,6 +61,7 @@ const AddWeeklyArticle = ({ id }) => {
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
 
   const router = useRouter();
+  const { t } = useTranslation('add-weekly-article');
 
   const addWeeklyArticle = async () => {
     try {
@@ -118,23 +122,23 @@ const AddWeeklyArticle = ({ id }) => {
   return (
     <StyledPageContainer>
       <Button onClick={() => router.push('/admin/dashboard')} sx={{ mb: 2 }}>
-        חזור לדף ניהול
+        {t('back')}
       </Button>
 
       <Typography variant="h1" component="h1" sx={{ mb: 2 }}>
-        {!id ? 'הוספת מאמר שבועי' : 'עריכת מאמר שבועי'}
+        {!id ? t('add-text') : t('edit-text')}
       </Typography>
       <StyledGrid container spacing={2} sx={{ mb: 2 }}>
         <Grid item xs={12}>
           <TextField
-            label="כותרת המאמר"
+            label={t('article-header')}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            label="תיאור המאמר"
+            label={t('article-description')}
             value={description}
             multiline
             rows={4}
@@ -156,7 +160,7 @@ const AddWeeklyArticle = ({ id }) => {
       >
         <Grid item>
           <Button variant="contained" sx={{ mt: 2 }} onClick={submitHandler}>
-            {id ? 'עריכת מאמר שבועי' : 'הוספת מאמר שבועי'}
+            {id ? t('edit-text') : t('add-text')}
           </Button>
         </Grid>
         <Grid item>{error && <FormError>{error}</FormError>}</Grid>
@@ -186,10 +190,28 @@ AddWeeklyArticle.getLayout = function getLayout(page: ReactElement) {
 export async function getServerSideProps(context) {
   const id = context.query.id;
   if (id) {
-    return { props: { id } };
+    return {
+      props: {
+        id,
+        ...(await serverSideTranslations(
+          context.locale,
+          ['add-weekly-article'],
+          i18nConfig
+        )),
+      },
+    };
   }
 
-  return { props: { id: null } };
+  return {
+    props: {
+      id: null,
+      ...(await serverSideTranslations(
+        context.locale,
+        ['add-weekly-article'],
+        i18nConfig
+      )),
+    },
+  };
 }
 
 export default AddWeeklyArticle;

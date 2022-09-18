@@ -6,6 +6,10 @@ import { Categories } from '@kol-amelamdim/types';
 import { UploadFileDialog } from '../components';
 import { AlertLayout } from '../layouts';
 import { StyledPageContainer } from '@kol-amelamdim/styled';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPropsContext } from 'next';
+import i18nConfig from '../next-i18next.config';
+import { useTranslation } from 'next-i18next';
 
 const CategoryCard = styled(Card)`
   height: 90px;
@@ -46,13 +50,16 @@ export function Home() {
   const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
   const router = useRouter();
 
+  const translation = useTranslation('home');
+  const { t, i18n } = translation;
+
   return (
     <StyledPageContainer>
       <Typography variant="h1" component="h1">
-        כל המלמדים
+        {t('h1')}
       </Typography>
       <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
-        אתר שיתוף חומרי למידה המתקדם ביותר בישראל
+        {t('h2')}
       </Typography>
       <Grid container sx={{ mt: 2 }}>
         <Grid item sx={{ mr: '10px' }}>
@@ -60,11 +67,11 @@ export function Home() {
             variant="contained"
             onClick={() => setIsUploadFileDialogOpen(true)}
           >
-            שיתוף חומרים
+            {t('share-btn')}
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="outlined">הורדת חומרים</Button>
+          <Button variant="outlined">{t('download-btn')}</Button>
         </Grid>
       </Grid>
 
@@ -72,7 +79,7 @@ export function Home() {
 
       <Grid>
         <Typography variant="h3" component="h3">
-          מה בא לך ללמוד?
+          {t('categories-title')}
         </Typography>
 
         <Grid container sx={{ mt: 2 }}>
@@ -81,7 +88,7 @@ export function Home() {
               <CategoryCard
                 onClick={() => router.push(`/category/${category.URL}`)}
               >
-                {category.hebName}
+                {category[i18n.language]}
               </CategoryCard>
             </Grid>
           ))}
@@ -97,6 +104,14 @@ export function Home() {
       )}
     </StyledPageContainer>
   );
+}
+
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['home'], i18nConfig)),
+    },
+  };
 }
 
 Home.getLayout = function getLayout(page: ReactElement) {

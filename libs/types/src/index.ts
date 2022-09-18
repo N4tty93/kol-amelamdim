@@ -6,61 +6,46 @@ export enum Category {
   'shonot' = 'shonot',
 }
 
-export const Categories = [
+type CategoriesUrl =
+  | 'parashat_shavoa'
+  | 'learning_materials'
+  | 'mivhanim'
+  | 'art_and_activities'
+  | 'shonot';
+
+export type CategoryObj = {
+  URL: CategoriesUrl;
+  en: string;
+  he: string;
+};
+
+export const Categories: CategoryObj[] = [
   {
     URL: 'parashat_shavoa',
-    enName: 'Parashat shavoa',
-    hebName: 'פרשת השבוע',
+    en: 'Parashat shavoa',
+    he: 'פרשת השבוע',
   },
   {
     URL: 'learning_materials',
-    enName: 'Learning materials',
-    hebName: 'חומרי לימוד',
+    en: 'Learning materials',
+    he: 'חומרי לימוד',
   },
   {
     URL: 'mivhanim',
-    enName: 'Mivhanim',
-    hebName: 'מבחנים',
+    en: 'Mivhanim',
+    he: 'מבחנים',
   },
   {
     URL: 'art_and_activities',
-    enName: 'Art andactivities',
-    hebName: 'דפי יצירה ופעילות',
+    en: 'Art andactivities',
+    he: 'דפי יצירה ופעילות',
   },
   {
     URL: 'shonot',
-    enName: 'Shonot',
-    hebName: 'שונות',
+    en: 'Shonot',
+    he: 'שונות',
   },
 ];
-
-export const CategoryObject = {
-  parashat_shavoa: {
-    URL: 'parashat_shavoa',
-    enName: 'Parashat shavoa',
-    hebName: 'פרשת השבוע',
-  },
-  learning_materials: {
-    URL: 'learning_materials',
-    enName: 'Learning materials',
-    hebName: 'חומרי לימוד',
-  },
-  mivhanim: {
-    URL: 'mivhanim',
-    enName: 'Mivhanim',
-    hebName: 'מבחנים',
-  },
-  art_and_activities: {
-    URL: 'art_and_activities',
-    enName: 'Art andactivities',
-    hebName: 'דפי יצירה ופעילות',
-  },
-  shonot: {
-    URL: 'shonot',
-    enName: 'Shonot',
-    hebName: 'שונות',
-  },
-};
 
 export interface IFile {
   key: string;

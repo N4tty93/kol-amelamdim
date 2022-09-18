@@ -10,9 +10,12 @@ import {
 } from '@mui/material';
 import validator from 'validator';
 import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
+import { useTranslation } from 'next-i18next';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { AuthContext } from '../../context/auth-context-provider';
 import axios from '../../api';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import i18nConfig from '../../next-i18next.config';
 
 const Login = () => {
   const [email, setEmail] = useState<string>('');
@@ -22,6 +25,7 @@ const Login = () => {
 
   const { setAuthenticated } = useContext(AuthContext);
   const router = useRouter();
+  const { t } = useTranslation('login');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,13 +57,13 @@ const Login = () => {
           <form onSubmit={handleSubmit}>
             <Grid container direction={'column'}>
               <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
-                התחברות
+                {t('h1')}
               </Typography>
               <TextField
                 sx={{ mt: 2 }}
                 required
                 id="outlined-required"
-                label="אימייל"
+                label={t('email')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 error={!!error}
@@ -67,7 +71,7 @@ const Login = () => {
               <TextField
                 sx={{ mt: 2 }}
                 value={password}
-                label="סיסמא"
+                label={t('password')}
                 type="password"
                 required
                 autoComplete="current-password"
@@ -80,14 +84,17 @@ const Login = () => {
                 type="submit"
                 disabled={!email || !password}
               >
-                התחבר
+                {t('submit')}
               </Button>
             </Grid>
           </form>
           <Grid container sx={{ mt: 2 }}>
-            <Typography component="h4">אין לכם משתמש?&nbsp;</Typography>
+            <Typography component="h4">
+              {t('register-txt')}
+              &nbsp;
+            </Typography>
             <NextLink href="/register" passHref>
-              <MUILink>לחצו להרשמה</MUILink>
+              <MUILink>{t('register-btn')}</MUILink>
             </NextLink>
           </Grid>
           {error && <FormError>{error}</FormError>}
@@ -96,4 +103,13 @@ const Login = () => {
     </StyledPageContainer>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['login', 'home'], i18nConfig)),
+    },
+  };
+}
+
 export default Login;
