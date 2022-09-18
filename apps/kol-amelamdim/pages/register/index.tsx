@@ -14,7 +14,7 @@ import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import axios from '../../api';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import i18nConfig from '../../next-i18next.config';
-import { useTranslation } from 'next-i18next';
+import { i18n, useTranslation } from 'next-i18next';
 
 const Register = () => {
   const router = useRouter();
@@ -40,11 +40,11 @@ const Register = () => {
         }
       } catch (error) {
         setLoading(false);
-        setError(error.response.data.message.heb);
+        setError(error.response.data.message[i18n.language]);
       }
     } else {
       setLoading(false);
-      setError(API_ERRORS.invalidEmailError.message.heb);
+      setError(API_ERRORS.invalidEmailError.message[i18n.language]);
     }
   };
 

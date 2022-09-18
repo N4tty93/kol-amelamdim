@@ -63,7 +63,7 @@ export async function getServerSideProps({ locale }) {
       props: {
         ...(await serverSideTranslations(
           locale,
-          ['weekly-article'],
+          ['weekly-article', 'home'],
           i18nConfig
         )),
       },

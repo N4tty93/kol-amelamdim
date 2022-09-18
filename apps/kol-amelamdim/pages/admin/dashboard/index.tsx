@@ -38,7 +38,11 @@ const AdminDashboard = () => {
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['dashboard'], i18nConfig)),
+      ...(await serverSideTranslations(
+        locale,
+        ['dashboard', 'home'],
+        i18nConfig
+      )),
     },
   };
 }

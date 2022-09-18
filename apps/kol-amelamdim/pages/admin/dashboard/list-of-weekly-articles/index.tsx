@@ -16,7 +16,7 @@ import { AlertLayout } from '../../../../layouts';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import i18nConfig from '../../../../next-i18next.config';
-import { useTranslation } from 'next-i18next';
+import { i18n, useTranslation } from 'next-i18next';
 
 const getAllWeeklyArticles = async () => {
   return await axios.get('/api/admin/get-weekly-articles');
@@ -38,7 +38,7 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
       }
     } catch (e) {
       setAlertType('warning');
-      setAlertMessage(e.response.data.message.heb);
+      setAlertMessage(e.response.data.message[i18n.language]);
     }
   };
 
@@ -49,7 +49,7 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
       setArticles(data);
     } catch (e) {
       setAlertType('warning');
-      setAlertMessage(e.response.data.message.heb);
+      setAlertMessage(e.response.data.message[i18n.language]);
     }
   };
 
@@ -120,7 +120,7 @@ export async function getServerSideProps({ locale }) {
         weeklyArticles: weeklyArticles.data,
         ...(await serverSideTranslations(
           locale,
-          ['list-of-weekly-article'],
+          ['list-of-weekly-article', 'home'],
           i18nConfig
         )),
       },

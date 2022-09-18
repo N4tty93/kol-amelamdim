@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { i18n, useTranslation } from 'next-i18next';
 import { Category, Categories, IFile, CategoryObj } from '@kol-amelamdim/types';
 import { StyledPageContainer } from '@kol-amelamdim/styled';
 import { FILE_TYPES_DICTIONARY } from '@kol-amelamdim/types';
@@ -76,7 +76,7 @@ const CategoryPage = ({ files, error }) => {
   useEffect(() => {
     if (error) {
       setAlertType('warning');
-      setAlertMessage(API_ERRORS.errorFetchData.message.heb);
+      setAlertMessage(API_ERRORS.errorFetchData.message[i18n.language]);
     }
   }, [error, setAlertType, setAlertMessage]);
 

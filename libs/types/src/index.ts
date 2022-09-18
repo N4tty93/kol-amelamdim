@@ -37,7 +37,7 @@ export const Categories: CategoryObj[] = [
   },
   {
     URL: 'art_and_activities',
-    en: 'Art andactivities',
+    en: 'Art and activities',
     he: 'דפי יצירה ופעילות',
   },
   {

@@ -14,7 +14,7 @@ import { AlertLayout } from '../../../../layouts';
 import { AlertContext } from '../../../../context/alert-context-provider';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import i18nConfig from '../../../../next-i18next.config';
-import { useTranslation } from 'next-i18next';
+import { i18n, useTranslation } from 'next-i18next';
 
 const ContentEditor = styled(QuillNoSSRWrapper)`
   & .ql-editor {
@@ -74,7 +74,7 @@ const AddWeeklyArticle = ({ id }) => {
       setError('');
       await router.push('/admin/dashboard/list-of-weekly-articles');
     } catch (e) {
-      setError(API_ERRORS.addWeeklyArticleError.message.heb);
+      setError(API_ERRORS.addWeeklyArticleError.message[i18n.language]);
     }
   };
 
@@ -90,7 +90,7 @@ const AddWeeklyArticle = ({ id }) => {
       setError('');
       await router.push('/admin/dashboard/list-of-weekly-articles');
     } catch (e) {
-      setError(API_ERRORS.addWeeklyArticleError.message.heb);
+      setError(API_ERRORS.addWeeklyArticleError.message[i18n.language]);
     }
   };
 
@@ -114,7 +114,7 @@ const AddWeeklyArticle = ({ id }) => {
         })
         .catch((e) => {
           setAlertType('warning');
-          setAlertMessage(e.response.data.message.heb);
+          setAlertMessage(e.response.data.message[i18n.language]);
         });
     }
   }, [id, setAlertMessage, setAlertType]);
@@ -207,7 +207,7 @@ export async function getServerSideProps(context) {
       id: null,
       ...(await serverSideTranslations(
         context.locale,
-        ['add-weekly-article'],
+        ['add-weekly-article', 'home'],
         i18nConfig
       )),
     },

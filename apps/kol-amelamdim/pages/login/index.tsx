@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import validator from 'validator';
 import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
-import { useTranslation } from 'next-i18next';
+import { i18n, useTranslation } from 'next-i18next';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { AuthContext } from '../../context/auth-context-provider';
 import axios from '../../api';
@@ -40,11 +40,11 @@ const Login = () => {
         }
       } catch (error) {
         setLoading(false);
-        setError(error.response.data.message.heb);
+        setError(error.response.data.message[i18n.language]);
       }
     } else {
       setLoading(false);
-      setError(API_ERRORS.invalidEmailError.message.heb);
+      setError(API_ERRORS.invalidEmailError.message[i18n.language]);
     }
   };
   //Todo: handle loading and errors

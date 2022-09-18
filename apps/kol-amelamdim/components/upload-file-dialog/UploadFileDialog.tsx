@@ -102,7 +102,7 @@ export const UploadFileDialog = ({
   const handleFileSubmission = async () => {
     if (!category || !fileName) {
       return setSubmissionError(
-        API_ERRORS.missingFieldsOnUploadFile.message.heb
+        API_ERRORS.missingFieldsOnUploadFile.message[i18n.language]
       );
     }
 
@@ -127,7 +127,7 @@ export const UploadFileDialog = ({
         }
       } catch (e) {
         if (e.response) {
-          setSubmissionError(e.response.data.message.heb);
+          setSubmissionError(e.response.data.message[i18n.language]);
         }
         setIsUploadingInProcess(false);
         setIsUploadButtonDisabled(false);

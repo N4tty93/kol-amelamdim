@@ -57,7 +57,7 @@ export const Navbar = () => {
       })
       .catch((error) => {
         if (error.response) {
-          setAlertMessage(error.response.data.message.heb);
+          setAlertMessage(error.response.data.message[i18n.language]);
         }
         setAlertType('warning');
       });
@@ -70,7 +70,7 @@ export const Navbar = () => {
       router.push('/');
     } catch (error) {
       setAlertType('warning');
-      setAlertMessage(error.response.data.message.heb);
+      setAlertMessage(error.response.data.message[i18n.language]);
     }
   };
 
