@@ -160,20 +160,19 @@ export function Home({ activeArticle }) {
         <>
           <Grid container direction="column">
             <Typography variant="h3" component="h3">
-              מאמר השבוע - {activeArticle?.title}
+              {t('article-of-the-week-title')} {activeArticle?.title}
             </Typography>
             <Typography>{activeArticle?.description}</Typography>
             <Button
               variant="text"
               sx={{
-                width: '165px',
                 padding: 0,
                 justifyContent: 'flex-start',
                 mt: 1,
               }}
               onClick={() => router.push('/weekly-article')}
             >
-              לקריאה לחצו כאן
+              {t('continue-reading-button')}
             </Button>
           </Grid>
           <Divider sx={{ pt: 7, mb: 7 }} />
@@ -183,11 +182,11 @@ export function Home({ activeArticle }) {
       <Grid container direction="column">
         <Grid item>
           <Typography variant="h3" component="h3">
-            בואו נשאר בקשר
+            {t('keep-in-touch-heading')}
           </Typography>
         </Grid>
         <Grid item>
-          <Typography>השאירו לנו הודעה ונחזור אליכם בהקדם</Typography>
+          <Typography>{t('send-us-a-message')}</Typography>
         </Grid>
 
         <form onSubmit={handleSendCustomerQuestion}>
@@ -195,7 +194,7 @@ export function Home({ activeArticle }) {
             <Grid item xs={12}>
               <TextField
                 sx={{ width: isMobile ? '100%' : '450px' }}
-                label="כתובת מייל"
+                label={t('email-input-label')}
                 value={customerEmail}
                 error={!!formError}
                 onChange={(e) => setCustomerEmail(e.target.value)}
@@ -210,7 +209,7 @@ export function Home({ activeArticle }) {
             >
               <TextField
                 sx={{ width: isMobile ? '100%' : '450px' }}
-                label="מה בא לכם לשאול אותנו?"
+                label={t('what-do-you-want-to-ask')}
                 rows="4"
                 multiline
                 error={!!formError}
@@ -223,7 +222,7 @@ export function Home({ activeArticle }) {
                 size="large"
                 type="submit"
               >
-                שליחה
+                {t('send-form-button-text')}
               </Button>
             </Grid>
           </Grid>
@@ -242,26 +241,21 @@ export function Home({ activeArticle }) {
 }
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['home'], i18nConfig)),
-    },
-  };
-}
-
-Home.getLayout = function getLayout(page: ReactElement) {
-  return <AlertLayout>{page}</AlertLayout>;
-};
-
-export async function getServerSideProps() {
   try {
     const activeArticle = await axios.get('/api/get-active-weekly-article');
     return {
-      props: { activeArticle: activeArticle.data },
+      props: {
+        ...(await serverSideTranslations(locale, ['home'], i18nConfig)),
+        activeArticle: activeArticle.data,
+      },
     };
   } catch (e) {
     return { props: {} };
   }
 }
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <AlertLayout>{page}</AlertLayout>;
+};
 
 export default Home;
