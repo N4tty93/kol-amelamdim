@@ -1,0 +1,18 @@
+{
+  "h1": "Kol Amelamdim",
+  "h2": "The most advanced learning materials sharing site in Israel",
+  "share-btn": "Sharing materials",
+  "download-btn": "Download materials",
+  "categories-title": "What do you want to learn?",
+  "dialog-header": "Content sharing",
+  "dialog-subheader": "Thank you for choosing to share study materials and increase Torah in Israel!",
+  "dialog-file-name": "File name",
+  "dialog-file-type": "What category does the file belong to?",
+  "dialog-file-upload-btn": "Choose file",
+  "dialog-submit": "Submit",
+  "dialog-loading": "Just a few more moments...",
+  "dialog-success-message": "Upload was done successfully. Thank you!",
+  "logout-btn": "Logout",
+  "login-btn": "Login",
+  "register-btn": "Register"
+}

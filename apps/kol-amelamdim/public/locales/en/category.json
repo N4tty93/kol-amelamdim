@@ -1,0 +1,17 @@
+{
+  "parashat_shavoa": "Weekly Torah portion",
+  "learning_materials": "Learning materials",
+  "mivhanim": "Exams",
+  "art_and_activities": "Art and activities",
+  "shonot": "Other",
+  "share-btn": "Share materials",
+  "search": "Search",
+  "select-file-type": "type",
+  "filter-btn": "Filter",
+  "table-column-name": "name",
+  "table-column-author": "author",
+  "table-column-file-size": "file size",
+  "table-column-file-type": "file type",
+  "table-column-file-download": "download URL",
+  "table-download-btn": "download"
+}

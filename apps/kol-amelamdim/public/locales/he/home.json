@@ -1,0 +1,18 @@
+{
+  "h1": "כל המלמדים",
+  "h2": "אתר שיתוף חומרי למידה המתקדם ביותר בישראל",
+  "share-btn": "שיתוף חומרים",
+  "download-btn": "הורדת חומרים",
+  "categories-title": "מה בא לך ללמוד ?",
+  "dialog-header": "שיתוף תוכן",
+  "dialog-subheader": "תודה שבחרת לשתף חומרי לימוד ולהגדיל תורה בישראל!",
+  "dialog-file-name": "שם הקובץ",
+  "dialog-file-type": "לאיזה קטגוריה שייך הקובץ?",
+  "dialog-file-upload-btn": "בחירת קובץ",
+  "dialog-submit": "שיתוף",
+  "dialog-loading": "רק עוד כמה רגעים...",
+  "dialog-success-message": "העלאה בוצעה בהצלחה. תודה רבה",
+  "logout-btn": "התנתקות",
+  "login-btn": "התחברות",
+  "register-btn": "הרשמה"
+}

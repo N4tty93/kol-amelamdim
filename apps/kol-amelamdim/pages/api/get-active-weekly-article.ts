@@ -18,7 +18,6 @@ export default async function handler(
       return res.status(404).json(null);
     }
   } catch (e) {
-    console.log('here 2');
     return res.status(400).json({ success: false });
   }
 }

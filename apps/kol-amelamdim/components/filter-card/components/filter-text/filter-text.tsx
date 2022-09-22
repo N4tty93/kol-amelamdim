@@ -2,6 +2,7 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { useMediaQuery } from '@mui/material';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
+import { useTranslation } from 'next-i18next';
 
 interface FilterTextProps {
   filterText: string;
@@ -10,10 +11,11 @@ interface FilterTextProps {
 
 export const FilterText = ({ filterText, setFilterText }: FilterTextProps) => {
   const isMobile = useMediaQuery(MOBILE_QUERY);
+  const { t } = useTranslation('category');
 
   return (
     <TextField
-      label="חיפוש"
+      label={t('search')}
       value={filterText}
       onChange={(e) => setFilterText(e.target.value)}
       sx={{
