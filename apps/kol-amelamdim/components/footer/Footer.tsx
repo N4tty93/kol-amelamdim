@@ -27,11 +27,10 @@ export const Footer = () => {
           />
         </Grid>
         <Grid item>
-          {/* TODO: ask Refael for his email */}
           <EmailIcon
             round
             onClick={() => {
-              window.location.href = 'mailto:emailofnetanel@gmail.com';
+              window.location.href = 'mailto:kol.amelamdim@gmail.com';
             }}
           />
         </Grid>
