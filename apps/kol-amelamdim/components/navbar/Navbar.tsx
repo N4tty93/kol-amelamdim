@@ -7,8 +7,8 @@ import {
   Select,
   SelectChangeEvent,
   styled,
-  Typography,
 } from '@mui/material';
+import Image from 'next/image';
 import { i18n, useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import axios from '../../api';
@@ -19,7 +19,7 @@ import { AlertLayout } from '../../layouts';
 
 const StyledNavbar = styled(AppBar)`
   background: ${(props) => props.theme.palette.primary.light};
-  height: 82px;
+  height: 90px;
   display: flex;
   justify-content: center;
   flex-direction: row;
@@ -83,8 +83,9 @@ export const Navbar = () => {
           xs={5}
           alignItems="center"
           onClick={() => router.push('/')}
+          sx={{ position: 'relative' }}
         >
-          <Typography>הלוגו יהיה כאן</Typography>
+          <Image src="/images/logo.svg" alt="logo" width={190} height={80} />
         </Grid>
         <Grid
           item

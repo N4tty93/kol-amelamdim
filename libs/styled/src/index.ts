@@ -22,7 +22,7 @@ export const FormError = styled('div')`
 `;
 
 export const StyledPageContainer = styled(Container)`
-  padding-top: 95px;
+  padding-top: 105px;
   min-height: 90vh;
   padding-bottom: 50px;
   @media ${MOBILE_QUERY} {
