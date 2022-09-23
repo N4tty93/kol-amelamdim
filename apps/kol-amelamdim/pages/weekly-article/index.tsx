@@ -20,6 +20,7 @@ const WeeklyArticleContainer = styled(StyledPageContainer)`
 
 const Index = ({ activeArticle }) => {
   const { t } = useTranslation('weekly-article');
+
   if (activeArticle?.content && activeArticle?.title) {
     return (
       <WeeklyArticleContainer>

@@ -170,7 +170,7 @@ export function Home({ activeArticle }) {
               sx={{
                 padding: 0,
                 justifyContent: 'flex-start',
-                mt: 1,
+                mt: 0,
               }}
               onClick={() => router.push('/weekly-article')}
             >
@@ -181,7 +181,7 @@ export function Home({ activeArticle }) {
         </>
       )}
 
-      <Grid container direction="column">
+      <Grid container direction="column" sx={{ mb: 10 }}>
         <Grid item>
           <Typography variant="h3" component="h3">
             {t('keep-in-touch-heading')}
@@ -231,8 +231,6 @@ export function Home({ activeArticle }) {
           {formError && <FormError>{formError}</FormError>}
         </form>
       </Grid>
-
-      <Divider sx={{ pt: 7, mb: 7 }} />
 
       <UploadFileDialog
         isOpen={isUploadFileDialogOpen}
