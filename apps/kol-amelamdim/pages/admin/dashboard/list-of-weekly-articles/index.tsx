@@ -48,8 +48,10 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
       const { data } = await getAllWeeklyArticles();
       setArticles(data);
     } catch (e) {
-      setAlertType('warning');
-      setAlertMessage(e.response.data.message[i18n.language]);
+      if (e.response) {
+        setAlertType('warning');
+        setAlertMessage(e.response.data.message[i18n.language]);
+      }
     }
   };
 

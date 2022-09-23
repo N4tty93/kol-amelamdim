@@ -1,5 +1,6 @@
 import { StyledPageContainer } from '@kol-amelamdim/styled';
 import { Typography, styled } from '@mui/material';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import axios from '../../api';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import i18nConfig from '../../next-i18next.config';
@@ -8,21 +9,24 @@ import { useTranslation } from 'next-i18next';
 const WeeklyArticleContainer = styled(StyledPageContainer)`
   padding: 125px 0 70px;
   h1,
-  h2,
   p {
     margin: 0;
+  }
+
+  @media ${MOBILE_QUERY} {
+    padding: 125px 10px 70px;
   }
 `;
 
 const Index = ({ activeArticle }) => {
   const { t } = useTranslation('weekly-article');
-  if (activeArticle.content && activeArticle.title) {
+  if (activeArticle?.content && activeArticle?.title) {
     return (
       <WeeklyArticleContainer>
         <Typography variant="h1" component="h1">
           {activeArticle.title}
         </Typography>
-        <Typography variant="h2" component="h2">
+        <Typography variant="h2" component="h2" sx={{ mb: 3 }}>
           {activeArticle.description}
         </Typography>
         <div

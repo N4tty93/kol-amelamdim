@@ -123,11 +123,14 @@ const theme: ThemeOptions = createTheme(
           },
           h2: {
             fontSize: '45px',
+            '@media (max-width: 600px)': {
+              fontSize: '30px',
+            },
           },
           h3: {
             fontSize: '35px',
             '@media (max-width: 600px)': {
-              fontSize: '30px',
+              fontSize: '27px',
             },
           },
           body1: {

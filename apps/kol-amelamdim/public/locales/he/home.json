@@ -14,5 +14,12 @@
   "dialog-success-message": "העלאה בוצעה בהצלחה. תודה רבה",
   "logout-btn": "התנתקות",
   "login-btn": "התחברות",
-  "register-btn": "הרשמה"
+  "register-btn": "הרשמה",
+  "article-of-the-week-title": "מאמר השבוע -",
+  "continue-reading-button": "לקריאה לחצו כאן",
+  "keep-in-touch-heading": "בואו נשאר בקשר",
+  "send-us-a-message": "השאירו לנו הודעה ונחזור אליכם בהקדם",
+  "email-input-label": "כתובת אימייל",
+  "what-do-you-want-to-ask": "מה בא לכם לשאול אותנו?",
+  "send-form-button-text": "שליחה"
 }
