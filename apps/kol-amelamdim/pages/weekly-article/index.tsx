@@ -2,6 +2,9 @@ import { StyledPageContainer } from '@kol-amelamdim/styled';
 import { Typography, styled } from '@mui/material';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import axios from '../../api';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import i18nConfig from '../../next-i18next.config';
+import { useTranslation } from 'next-i18next';
 
 const WeeklyArticleContainer = styled(StyledPageContainer)`
   padding: 125px 0 70px;
@@ -16,6 +19,8 @@ const WeeklyArticleContainer = styled(StyledPageContainer)`
 `;
 
 const Index = ({ activeArticle }) => {
+  const { t } = useTranslation('weekly-article');
+
   if (activeArticle?.content && activeArticle?.title) {
     return (
       <WeeklyArticleContainer>
@@ -35,24 +40,39 @@ const Index = ({ activeArticle }) => {
     return (
       <WeeklyArticleContainer>
         <Typography variant="h2" align="center">
-          לא הצלחנו להציג את המאמר המבוקש.
+          {t('no-article-h2')}
         </Typography>
         <Typography variant="h3" align="center">
-          נא לנסות שוב מאוחר יותר
+          {t('no-article-h3')}
         </Typography>
       </WeeklyArticleContainer>
     );
   }
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ locale }) {
   try {
     const activeArticle = await axios.get('/api/get-active-weekly-article');
     return {
-      props: { activeArticle: activeArticle.data },
+      props: {
+        activeArticle: activeArticle.data,
+        ...(await serverSideTranslations(
+          locale,
+          ['weekly-article'],
+          i18nConfig
+        )),
+      },
     };
   } catch (e) {
-    return { props: {} };
+    return {
+      props: {
+        ...(await serverSideTranslations(
+          locale,
+          ['weekly-article', 'home'],
+          i18nConfig
+        )),
+      },
+    };
   }
 }
 
