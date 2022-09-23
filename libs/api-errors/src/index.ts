@@ -93,7 +93,7 @@ export const API_ERRORS = {
   contactUsFormError: {
     code: 12,
     message: {
-      heb: 'שגיאה בעת שליחת הטופס. נא לוודא שכל השדות מלאים.',
+      he: 'שגיאה בעת שליחת הטופס. נא לוודא שכל השדות מלאים.',
       en: 'Error occurred while submiting the form. Please make sure all fields are filled.',
     },
   },

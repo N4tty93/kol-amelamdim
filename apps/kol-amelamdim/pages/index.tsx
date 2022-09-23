@@ -12,10 +12,10 @@ import { useState, ReactElement, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import { Categories } from '@kol-amelamdim/types';
+import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
 import { UploadFileDialog } from '../components';
 import { AlertLayout } from '../layouts';
 import { AuthContext } from '../context/auth-context-provider';
-import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
 import validator from 'validator';
 import axios from '../api';
 import { AlertContext } from '../context/alert-context-provider';
@@ -68,6 +68,9 @@ export function Home({ activeArticle }) {
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const router = useRouter();
+  const translation = useTranslation('home');
+  const { t, i18n } = translation;
+
   const submitButtonStyles = { ml: isMobile ? 0 : 2, mt: isMobile ? 2 : 0 };
 
   const handleShareContentButtonClick = () => {
@@ -97,13 +100,12 @@ export function Home({ activeArticle }) {
       setCustomerQuestion('');
       setAlertType('success');
       setAlertMessage('הטופס נקלט בהצלחה.');
-    } catch (e) {
-      setFormError(e.response.data);
+    } catch (error) {
+      if (error.response.data) {
+        setFormError(error.response.data.message[i18n.language]);
+      }
     }
   };
-
-  const translation = useTranslation('home');
-  const { t, i18n } = translation;
 
   return (
     <StyledPageContainer>
