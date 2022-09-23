@@ -24,6 +24,6 @@ export default async function handler(
       return res.status(400).json({ success: false });
     }
   } catch (error) {
-    return res.status(400).json(API_ERRORS.contactUsFormError.message.heb);
+    return res.status(400).json(API_ERRORS.contactUsFormError);
   }
 }

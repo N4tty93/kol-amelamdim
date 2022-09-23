@@ -12,13 +12,17 @@ import { useState, ReactElement, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import { Categories } from '@kol-amelamdim/types';
+import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
 import { UploadFileDialog } from '../components';
 import { AlertLayout } from '../layouts';
 import { AuthContext } from '../context/auth-context-provider';
-import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
 import validator from 'validator';
 import axios from '../api';
 import { AlertContext } from '../context/alert-context-provider';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticPropsContext } from 'next';
+import i18nConfig from '../next-i18next.config';
+import { useTranslation } from 'next-i18next';
 
 const CategoryCard = styled(Card)`
   height: 90px;
@@ -64,6 +68,9 @@ export function Home({ activeArticle }) {
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const router = useRouter();
+  const translation = useTranslation('home');
+  const { t, i18n } = translation;
+
   const submitButtonStyles = { ml: isMobile ? 0 : 2, mt: isMobile ? 2 : 0 };
 
   const handleShareContentButtonClick = () => {
@@ -93,18 +100,20 @@ export function Home({ activeArticle }) {
       setCustomerQuestion('');
       setAlertType('success');
       setAlertMessage('הטופס נקלט בהצלחה.');
-    } catch (e) {
-      setFormError(e.response.data);
+    } catch (error) {
+      if (error.response.data) {
+        setFormError(error.response.data.message[i18n.language]);
+      }
     }
   };
 
   return (
     <StyledPageContainer>
       <Typography variant="h1" component="h1">
-        כל המלמדים
+        {t('h1')}
       </Typography>
       <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
-        אתר שיתוף חומרי למידה המתקדם ביותר בישראל
+        {t('h2')}
       </Typography>
       <Grid container sx={{ mt: 3 }}>
         <Grid item sx={{ mr: '10px' }}>
@@ -113,7 +122,7 @@ export function Home({ activeArticle }) {
             variant="contained"
             onClick={handleShareContentButtonClick}
           >
-            שיתוף חומרים
+            {t('share-btn')}
           </Button>
         </Grid>
         <Grid item>
@@ -122,7 +131,7 @@ export function Home({ activeArticle }) {
             variant="outlined"
             onClick={() => router.push('/#learn-categories')}
           >
-            הורדת חומרים
+            {t('download-btn')}
           </Button>
         </Grid>
       </Grid>
@@ -131,7 +140,7 @@ export function Home({ activeArticle }) {
 
       <Grid>
         <Typography variant="h3" component="h3">
-          מה בא לך ללמוד?
+          {t('categories-title')}
         </Typography>
 
         <Grid container sx={{ mt: 2 }}>
@@ -140,7 +149,7 @@ export function Home({ activeArticle }) {
               <CategoryCard
                 onClick={() => router.push(`/category/${category.URL}`)}
               >
-                {category.hebName}
+                {category[i18n.language]}
               </CategoryCard>
             </Grid>
           ))}
@@ -153,20 +162,19 @@ export function Home({ activeArticle }) {
         <>
           <Grid container direction="column">
             <Typography variant="h3" component="h3">
-              מאמר השבוע - {activeArticle?.title}
+              {t('article-of-the-week-title')} {activeArticle?.title}
             </Typography>
             <Typography>{activeArticle?.description}</Typography>
             <Button
               variant="text"
               sx={{
-                width: '165px',
                 padding: 0,
                 justifyContent: 'flex-start',
                 mt: 0,
               }}
               onClick={() => router.push('/weekly-article')}
             >
-              לקריאה לחצו כאן
+              {t('continue-reading-button')}
             </Button>
           </Grid>
           <Divider sx={{ pt: 7, mb: 7 }} />
@@ -176,11 +184,11 @@ export function Home({ activeArticle }) {
       <Grid container direction="column" sx={{ mb: 10 }}>
         <Grid item>
           <Typography variant="h3" component="h3">
-            בואו נשאר בקשר
+            {t('keep-in-touch-heading')}
           </Typography>
         </Grid>
         <Grid item>
-          <Typography>השאירו לנו הודעה ונחזור אליכם בהקדם</Typography>
+          <Typography>{t('send-us-a-message')}</Typography>
         </Grid>
 
         <form onSubmit={handleSendCustomerQuestion}>
@@ -188,7 +196,7 @@ export function Home({ activeArticle }) {
             <Grid item xs={12}>
               <TextField
                 sx={{ width: isMobile ? '100%' : '450px' }}
-                label="כתובת מייל"
+                label={t('email-input-label')}
                 value={customerEmail}
                 error={!!formError}
                 onChange={(e) => setCustomerEmail(e.target.value)}
@@ -203,7 +211,7 @@ export function Home({ activeArticle }) {
             >
               <TextField
                 sx={{ width: isMobile ? '100%' : '450px' }}
-                label="מה בא לכם לשאול אותנו?"
+                label={t('what-do-you-want-to-ask')}
                 rows="4"
                 multiline
                 error={!!formError}
@@ -216,7 +224,7 @@ export function Home({ activeArticle }) {
                 size="large"
                 type="submit"
               >
-                שליחה
+                {t('send-form-button-text')}
               </Button>
             </Grid>
           </Grid>
@@ -232,19 +240,22 @@ export function Home({ activeArticle }) {
   );
 }
 
-Home.getLayout = function getLayout(page: ReactElement) {
-  return <AlertLayout>{page}</AlertLayout>;
-};
-
-export async function getServerSideProps() {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   try {
     const activeArticle = await axios.get('/api/get-active-weekly-article');
     return {
-      props: { activeArticle: activeArticle.data },
+      props: {
+        ...(await serverSideTranslations(locale, ['home'], i18nConfig)),
+        activeArticle: activeArticle.data,
+      },
     };
   } catch (e) {
     return { props: {} };
   }
 }
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <AlertLayout>{page}</AlertLayout>;
+};
 
 export default Home;
