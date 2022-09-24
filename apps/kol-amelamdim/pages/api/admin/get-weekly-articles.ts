@@ -1,12 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { WeeklyArticle } from '@kol-amelamdim/models';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
+import connect from '../../../db/connectMongo';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
+    await connect();
     const articles = await WeeklyArticle.find();
 
     if (articles.length) {
