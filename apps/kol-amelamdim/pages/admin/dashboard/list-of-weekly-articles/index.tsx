@@ -114,7 +114,7 @@ const ListOfWeeklyArticles = ({ weeklyArticles }) => {
   );
 };
 
-export async function getServerSideProps({ locale }) {
+export async function getStaticProps({ locale }) {
   try {
     const weeklyArticles = await getAllWeeklyArticles();
     return {
