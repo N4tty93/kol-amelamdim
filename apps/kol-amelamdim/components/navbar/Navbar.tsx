@@ -82,10 +82,15 @@ export const Navbar = () => {
           container
           xs={5}
           alignItems="center"
-          onClick={() => router.push('/')}
           sx={{ position: 'relative' }}
         >
-          <Image src="/images/logo.svg" alt="logo" width={190} height={80} />
+          <Image
+            src="/images/logo.svg"
+            alt="logo"
+            width={190}
+            height={80}
+            onClick={() => router.push('/')}
+          />
         </Grid>
         <Grid
           item
