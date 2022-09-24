@@ -250,7 +250,12 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
       },
     };
   } catch (e) {
-    return { props: {} };
+    return {
+      props: {
+        ...(await serverSideTranslations(locale, ['home'], i18nConfig)),
+        activeArticle: null,
+      },
+    };
   }
 }
 
