@@ -6,9 +6,10 @@ const path = require('path');
 
 const i18nConfig = {
   i18n: {
-    defaultLocale: 'he',
-    locales: ['he', 'en'],
     localePath: path.resolve('./apps/kol-amelamdim/public/locales'),
+    locales: ['he', 'en'],
+    defaultLocale: 'he',
+    localeDetection: false,
   },
 };
 module.exports = i18nConfig;
