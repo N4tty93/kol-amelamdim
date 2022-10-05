@@ -1,12 +1,13 @@
 import AWS from 'aws-sdk';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
-import { File } from '@kol-amelamdim/models';
+import { File, User } from '@kol-amelamdim/models';
 import { Category } from '@kol-amelamdim/types';
 import { IncomingForm } from 'formidable';
 import { promises as fs } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { formatBytes } from '@kol-amelamdim/utils';
 import connect from '../../db/connectMongo';
+import jwt from 'jsonwebtoken';
 
 export const config = {
   api: {
@@ -16,6 +17,14 @@ export const config = {
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
+    const { cookies } = req;
+    const secret = cookies.token
+      ? process.env.ACCESS_TOKEN_SECRET
+      : process.env.ADMIN_TOKEN_SECRET;
+    const { email } = jwt.verify(cookies.token || cookies.adminToken, secret);
+
+    const user = await User.findOne({ email });
+
     const formData: any = await new Promise((resolve, reject) => {
       const form = new IncomingForm();
 
@@ -67,14 +76,19 @@ export default async function handler(req, res) {
             category: selectedCategory,
             name: formData?.files?.sharedFile.originalFilename,
             size: fileSize,
-            author: 'the author',
+            author: user?.fullName || 'לא ידוע',
             type: fileType,
             URL: response.Location,
             approved: false,
           });
+          console.log('here3');
+
           res.status(200).json({ isUploaded: true });
         })
-        .catch((e) => console.error(e));
+        .catch((e) => {
+          res.status(400).json(API_ERRORS.unsupportedFileType);
+          console.log(e);
+        });
     } else {
       res.status(400).json(API_ERRORS.missingFieldsOnUploadFile);
     }
