@@ -9,7 +9,7 @@ const StyledPage = styled('div')`
 export function Index() {
   return (
     <StyledPage>
-      <Container>כל המלמדים</Container>
+      <Container>בקרוב, כל המלמדים. יש למה לצפות</Container>
     </StyledPage>
   );
 }
