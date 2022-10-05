@@ -185,6 +185,7 @@ export async function getStaticProps(context) {
       },
     };
   } catch (e) {
+    console.log('e', e);
     return {
       props: {
         files: [],
