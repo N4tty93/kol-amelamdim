@@ -29,7 +29,6 @@ import i18nConfig from '../../next-i18next.config';
 const rowsPerPage = 25;
 
 const CategoryPage = ({ files, error }) => {
-  console.log(error);
   const [fileType, setFileType] = useState('');
   const [filterText, setFilterText] = useState('');
   const [page, setPage] = useState<number>(0);
@@ -186,11 +185,10 @@ export async function getStaticProps(context) {
       },
     };
   } catch (e) {
-    console.log('e', e);
     return {
       props: {
         files: [],
-        error: e,
+        error: true,
         ...(await serverSideTranslations(
           context.locale,
           ['category', 'home'],
