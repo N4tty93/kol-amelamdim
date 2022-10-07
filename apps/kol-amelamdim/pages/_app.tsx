@@ -8,6 +8,7 @@ import Head from 'next/head';
 import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
+import { i18n } from 'next-i18next';
 import { prefixer } from 'stylis';
 import theme from '../theme';
 import { Navbar, Footer } from '../components';
@@ -29,7 +30,9 @@ const cacheRtl = createCache({
 });
 
 function RTL(props) {
-  return <CacheProvider value={cacheRtl}>{props.children}</CacheProvider>;
+  if (i18n.language === 'he') {
+    return <CacheProvider value={cacheRtl}>{props.children}</CacheProvider>;
+  } else return props.children;
 }
 
 function KolAmelamdimApp({ Component, pageProps }: AppPropsWithLayout) {

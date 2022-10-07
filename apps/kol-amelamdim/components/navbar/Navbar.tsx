@@ -3,6 +3,7 @@ import {
   AppBar,
   Button,
   Grid,
+  ListItemIcon,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -11,11 +12,12 @@ import {
 import Image from 'next/image';
 import { i18n, useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import axios from '../../api';
 import { AuthContext } from '../../context/auth-context-provider';
 import { AlertContext } from '../../context/alert-context-provider';
-import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import { AlertLayout } from '../../layouts';
+import { ILFlag, USFlag } from '../../assets/icons';
 
 const StyledNavbar = styled(AppBar)`
   background: ${(props) => props.theme.palette.primary.light};
@@ -46,6 +48,7 @@ export const Navbar = () => {
     await router.push({ pathname, query }, asPath, {
       locale: event.target.value,
     });
+    router.reload();
   };
 
   useEffect(() => {
@@ -99,16 +102,6 @@ export const Navbar = () => {
           alignItems="center"
           justifyContent="flex-end"
         >
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={i18n.language || 'he'}
-            onChange={handleLanguageChange}
-            sx={{ height: '50px' }}
-          >
-            <MenuItem value={'he'}>עברית</MenuItem>
-            <MenuItem value={'en'}>English(us)</MenuItem>
-          </Select>
           {isAuthenticated ? (
             <Button variant="text" onClick={logOut}>
               {t('logout-btn')}
@@ -123,6 +116,35 @@ export const Navbar = () => {
               </Button>
             </div>
           )}
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={i18n.language || 'he'}
+            onChange={handleLanguageChange}
+            sx={{
+              height: '30px',
+              width: '40px',
+              '.MuiOutlinedInput-notchedOutline': { border: 'none' },
+            }}
+            IconComponent={() => null}
+          >
+            <MenuItem
+              value={'he'}
+              sx={{ display: 'flex', justifyContent: 'center' }}
+            >
+              <ListItemIcon>
+                <ILFlag />
+              </ListItemIcon>
+            </MenuItem>
+            <MenuItem
+              value={'en'}
+              sx={{ display: 'flex', justifyContent: 'center' }}
+            >
+              <ListItemIcon>
+                <USFlag />
+              </ListItemIcon>
+            </MenuItem>
+          </Select>
         </Grid>
       </Grid>
     </StyledNavbar>
