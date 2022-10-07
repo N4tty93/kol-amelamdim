@@ -93,13 +93,6 @@ const theme: ThemeOptions = createTheme(
           },
         },
       },
-      // MuiOutlinedInput: {
-      //   styleOverrides: {
-      //     root: {
-      //       border: '0px'
-      //     }
-      //   }
-      // },
       MuiMenuItem: {
         styleOverrides: {
           root: {
