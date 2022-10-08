@@ -58,7 +58,7 @@ export async function getServerSideProps({ locale }) {
         activeArticle: activeArticle.data,
         ...(await serverSideTranslations(
           locale,
-          ['weekly-article'],
+          ['weekly-article', 'home'],
           i18nConfig
         )),
       },

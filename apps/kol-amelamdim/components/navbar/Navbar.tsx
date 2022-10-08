@@ -3,6 +3,7 @@ import {
   AppBar,
   Button,
   Grid,
+  ListItemIcon,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -11,10 +12,10 @@ import {
 import Image from 'next/image';
 import { i18n, useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import axios from '../../api';
 import { AuthContext } from '../../context/auth-context-provider';
 import { AlertContext } from '../../context/alert-context-provider';
-import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import { AlertLayout } from '../../layouts';
 
 const StyledNavbar = styled(AppBar)`
@@ -33,6 +34,13 @@ const StyledNavbar = styled(AppBar)`
   font-weight: ${(props) => props.theme.fonts.bold};
 `;
 
+const StyledCountryDropDown = styled(Select)`
+  & .MuiSelect-select.MuiSelect-outlined {
+    padding: 0;
+    height: 36px;
+  }
+`;
+
 export const Navbar = () => {
   const router = useRouter();
   const { pathname, asPath, query } = router;
@@ -46,6 +54,7 @@ export const Navbar = () => {
     await router.push({ pathname, query }, asPath, {
       locale: event.target.value,
     });
+    router.reload();
   };
 
   useEffect(() => {
@@ -99,16 +108,6 @@ export const Navbar = () => {
           alignItems="center"
           justifyContent="flex-end"
         >
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={i18n.language || 'he'}
-            onChange={handleLanguageChange}
-            sx={{ height: '50px' }}
-          >
-            <MenuItem value={'he'}>עברית</MenuItem>
-            <MenuItem value={'en'}>English(us)</MenuItem>
-          </Select>
           {isAuthenticated ? (
             <Button variant="text" onClick={logOut}>
               {t('logout-btn')}
@@ -123,6 +122,51 @@ export const Navbar = () => {
               </Button>
             </div>
           )}
+          <StyledCountryDropDown
+            value={i18n.language || 'he'}
+            onChange={handleLanguageChange}
+            sx={{
+              height: '36px',
+              width: '40px',
+              '.MuiOutlinedInput-notchedOutline': { border: 'none' },
+            }}
+            IconComponent={() => null}
+          >
+            <MenuItem
+              value={'he'}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <ListItemIcon>
+                <Image
+                  src="/images/ILIcon.png"
+                  alt="il"
+                  width={36}
+                  height={36}
+                />
+              </ListItemIcon>
+            </MenuItem>
+            <MenuItem
+              value={'en'}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <ListItemIcon>
+                <Image
+                  src="/images/USIcon.png"
+                  alt="us"
+                  width={36}
+                  height={36}
+                />
+              </ListItemIcon>
+            </MenuItem>
+          </StyledCountryDropDown>
         </Grid>
       </Grid>
     </StyledNavbar>

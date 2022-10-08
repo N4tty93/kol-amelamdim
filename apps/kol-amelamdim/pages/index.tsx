@@ -15,7 +15,6 @@ import { Categories } from '@kol-amelamdim/types';
 import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
 import { UploadFileDialog } from '../components';
 import { AlertLayout } from '../layouts';
-import { AuthContext } from '../context/auth-context-provider';
 import validator from 'validator';
 import axios from '../api';
 import { AlertContext } from '../context/alert-context-provider';
@@ -63,7 +62,6 @@ export function Home({ activeArticle }) {
   const [customerEmail, setCustomerEmail] = useState('');
   const [customerQuestion, setCustomerQuestion] = useState('');
   const [formError, setFormError] = useState('');
-  const { isAuthenticated } = useContext(AuthContext);
   const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
   const isMobile = useMediaQuery(MOBILE_QUERY);
@@ -72,14 +70,6 @@ export function Home({ activeArticle }) {
   const { t, i18n } = translation;
 
   const submitButtonStyles = { ml: isMobile ? 0 : 2, mt: isMobile ? 2 : 0 };
-
-  const handleShareContentButtonClick = () => {
-    if (isAuthenticated) {
-      setIsUploadFileDialogOpen(true);
-    } else {
-      router.push('/login');
-    }
-  };
 
   const handleSendCustomerQuestion = async (e) => {
     e.preventDefault();
@@ -120,7 +110,7 @@ export function Home({ activeArticle }) {
           <Button
             size="large"
             variant="contained"
-            onClick={handleShareContentButtonClick}
+            onClick={() => setIsUploadFileDialogOpen(true)}
           >
             {t('share-btn')}
           </Button>

@@ -38,7 +38,7 @@ export const FilterFileType = ({
         <InputLabel>{t('select-file-type')}</InputLabel>
         <Select value={fileType} label="סוג קובץ" onChange={handleChange}>
           <MenuItem value={FILE_TYPES_DICTIONARY.all}>
-            {FILE_TYPES_DICTIONARY.all}
+            {t('all-file-types')}
           </MenuItem>
           <MenuItem value={FILE_TYPES_DICTIONARY.pdf}>
             {FILE_TYPES_DICTIONARY.pdf}

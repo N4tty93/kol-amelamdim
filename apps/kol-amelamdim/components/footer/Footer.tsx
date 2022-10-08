@@ -1,5 +1,6 @@
 import { styled, Typography, Grid } from '@mui/material';
 import { EmailIcon, WhatsappIcon } from 'react-share';
+import { useTranslation } from 'next-i18next';
 
 const StyledFooter = styled('footer')`
   min-height: 150px;
@@ -13,11 +14,13 @@ const Rights = styled(Typography)`
 `;
 
 export const Footer = () => {
+  const translation = useTranslation('home');
+  const { t } = translation;
   return (
     <StyledFooter>
-      <Rights align="center">כל הזכויות שמורות לאתר כל המלמדים&#169; </Rights>
+      <Rights align="center">{t('rights')}</Rights>
       <Typography align="center" sx={{ mt: 2, mb: 2 }}>
-        צרו קשר:
+        {t('contact')}
       </Typography>
       <Grid container justifyContent="center" spacing={4}>
         <Grid item>
