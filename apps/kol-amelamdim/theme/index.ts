@@ -1,4 +1,5 @@
-import { createTheme, ThemeOptions } from '@mui/material/styles';
+import { ThemeOptions } from '@mui/material/styles';
+import { heIL, enUS } from '@mui/material/locale';
 
 type Fonts = {
   regular: string;
@@ -17,20 +18,20 @@ declare module '@mui/material/styles' {
   }
 }
 
-const theme: ThemeOptions = createTheme({
-  direction: 'rtl',
+const defaultTheme = {
   typography: {
     htmlFontSize: 10,
     fontFamily: [
+      'OpenSansHebrew',
       '-apple-system',
       'BlinkMacSystemFont',
-      'OpenSansHebrew',
       'sans-serif',
     ].join(','),
   },
   palette: {
     primary: {
       main: '#356559',
+      dark: '#4a4a4a',
       light: '#FEFDFD',
     },
     secondary: {
@@ -43,6 +44,110 @@ const theme: ThemeOptions = createTheme({
     italic: 'OpenSansHebrewItalic',
     light: 'OpenSansHebrewLight',
   },
-}) as ThemeOptions;
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: (themeParam) => ({
+        body: {
+          backgroundColor: themeParam.palette.primary.light,
+          fontSize: '22px',
+          color: '#4a4a4a',
+          fontFamily: themeParam.fonts.regular,
+        },
+      }),
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          paddingTop: '80px',
+          minHeight: '100vh',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '22px',
+          '@media (max-width: 600px)': {
+            fontSize: '19px',
+          },
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          '@media (max-width: 600px)': {
+            fontSize: '19px',
+          },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          '@media (max-width: 600px)': {
+            fontSize: '19px',
+          },
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          '@media (max-width: 600px)': {
+            fontSize: '19px',
+          },
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          '@media (max-width: 600px)': {
+            fontSize: '19px',
+          },
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'OpenSansHebrewBold',
+        },
+        h1: {
+          fontSize: '60px',
+          '@media (max-width: 600px)': {
+            fontSize: '50px',
+          },
+        },
+        h2: {
+          fontSize: '45px',
+          '@media (max-width: 600px)': {
+            fontSize: '30px',
+          },
+        },
+        h3: {
+          fontSize: '35px',
+          '@media (max-width: 600px)': {
+            fontSize: '27px',
+          },
+        },
+        body1: {
+          fontSize: '22px',
+          fontFamily: 'OpenSansHebrew',
+        },
+      },
+    },
+  },
+};
 
-export default theme;
+const getDesignTokens = (lang: string) => {
+  const langLocale = lang === 'he' ? heIL : enUS;
+  return {
+    ...defaultTheme,
+    direction: lang === 'he' ? 'rtl' : 'ltr',
+    langLocale,
+  } as ThemeOptions;
+};
+
+export default getDesignTokens;
