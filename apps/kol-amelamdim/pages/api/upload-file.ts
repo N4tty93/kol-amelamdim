@@ -81,13 +81,11 @@ export default async function handler(req, res) {
             URL: response.Location,
             approved: false,
           });
-          console.log('here3');
 
           res.status(200).json({ isUploaded: true });
         })
         .catch((e) => {
           res.status(400).json(API_ERRORS.unsupportedFileType);
-          console.log(e);
         });
     } else {
       res.status(400).json(API_ERRORS.missingFieldsOnUploadFile);
