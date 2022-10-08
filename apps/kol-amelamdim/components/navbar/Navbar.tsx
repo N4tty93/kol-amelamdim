@@ -17,7 +17,6 @@ import axios from '../../api';
 import { AuthContext } from '../../context/auth-context-provider';
 import { AlertContext } from '../../context/alert-context-provider';
 import { AlertLayout } from '../../layouts';
-import { ILFlag, USFlag } from '../../assets/icons';
 
 const StyledNavbar = styled(AppBar)`
   background: ${(props) => props.theme.palette.primary.light};
@@ -33,6 +32,13 @@ const StyledNavbar = styled(AppBar)`
 
   color: ${(props) => props.theme.palette.primary.main};
   font-weight: ${(props) => props.theme.fonts.bold};
+`;
+
+const StyledCountryDropDown = styled(Select)`
+  & .MuiSelect-select.MuiSelect-outlined {
+    padding: 0;
+    height: 36px;
+  }
 `;
 
 export const Navbar = () => {
@@ -116,13 +122,11 @@ export const Navbar = () => {
               </Button>
             </div>
           )}
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
+          <StyledCountryDropDown
             value={i18n.language || 'he'}
             onChange={handleLanguageChange}
             sx={{
-              height: '30px',
+              height: '36px',
               width: '40px',
               '.MuiOutlinedInput-notchedOutline': { border: 'none' },
             }}
@@ -130,21 +134,39 @@ export const Navbar = () => {
           >
             <MenuItem
               value={'he'}
-              sx={{ display: 'flex', justifyContent: 'center' }}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <ListItemIcon>
-                <ILFlag />
+                <Image
+                  src="/images/ILIcon.png"
+                  alt="il"
+                  width={36}
+                  height={36}
+                />
               </ListItemIcon>
             </MenuItem>
             <MenuItem
               value={'en'}
-              sx={{ display: 'flex', justifyContent: 'center' }}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <ListItemIcon>
-                <USFlag />
+                <Image
+                  src="/images/USIcon.png"
+                  alt="us"
+                  width={36}
+                  height={36}
+                />
               </ListItemIcon>
             </MenuItem>
-          </Select>
+          </StyledCountryDropDown>
         </Grid>
       </Grid>
     </StyledNavbar>
