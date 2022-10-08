@@ -63,6 +63,9 @@ export const FILE_TYPES_DICTIONARY = {
   pdf: 'pdf',
   png: 'png',
   jpeg: 'jpeg',
+  msword: 'doc',
+  'vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+  plain: 'txt',
 };
 
-export const FileTypes = ['pdf', 'png', 'jpeg'];
+export const FileTypes = ['pdf', 'png', 'jpeg', 'doc', 'docx', 'txt'];
