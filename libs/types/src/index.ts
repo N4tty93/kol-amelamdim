@@ -59,7 +59,7 @@ export interface IFile {
 }
 
 export const FILE_TYPES_DICTIONARY = {
-  all: 'הכל',
+  all: 'all',
   pdf: 'pdf',
   png: 'png',
   jpeg: 'jpeg',

@@ -19,7 +19,6 @@ declare module '@mui/material/styles' {
 }
 
 const defaultTheme = {
-  direction: 'rtl',
   typography: {
     htmlFontSize: 10,
     fontFamily: [
@@ -146,6 +145,7 @@ const getDesignTokens = (lang: string) => {
   const langLocale = lang === 'he' ? heIL : enUS;
   return {
     ...defaultTheme,
+    direction: lang === 'he' ? 'rtl' : 'ltr',
     langLocale,
   } as ThemeOptions;
 };

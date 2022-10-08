@@ -29,7 +29,9 @@ const cacheRtl = createCache({
 });
 
 function RTL(props) {
-  return <CacheProvider value={cacheRtl}>{props.children}</CacheProvider>;
+  if (i18n.language === 'he') {
+    return <CacheProvider value={cacheRtl}>{props.children}</CacheProvider>;
+  } else return props.children;
 }
 
 function KolAmelamdimApp({ Component, pageProps }: AppPropsWithLayout) {
