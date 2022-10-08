@@ -97,4 +97,11 @@ export const API_ERRORS = {
       en: 'Error occurred while submiting the form. Please make sure all fields are filled.',
     },
   },
+  unsupportedFileType: {
+    code: 12,
+    message: {
+      he: 'סוג הקובץ לא נתמך',
+      en: 'File type is not supported',
+    },
+  },
 };

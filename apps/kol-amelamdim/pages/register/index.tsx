@@ -20,6 +20,7 @@ const Register = () => {
   const router = useRouter();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [fullName, setFullName] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -31,6 +32,7 @@ const Register = () => {
       try {
         setLoading(true);
         const { data } = await axios.post('/api/register', {
+          fullName,
           email,
           password,
         });
@@ -56,6 +58,15 @@ const Register = () => {
             <Typography variant="h3" component="h2" sx={{ mt: 2 }}>
               {t('h1')}
             </Typography>
+            <TextField
+              sx={{ mt: 2 }}
+              required
+              id="outlined-required"
+              label={t('fullName')}
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              error={!!error}
+            />
             <TextField
               sx={{ mt: 2 }}
               required
