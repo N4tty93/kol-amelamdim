@@ -6,10 +6,12 @@ export const ALLWOED_FILE_TYPES = [
   'image/jpg',
   'image/png',
   'application/pdf',
+  'application/msword',
   '.doc',
   '.docx',
   'application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'text/plain',
 ];
 
 export const UPLOAD_VALIDATION_ERRORS = {

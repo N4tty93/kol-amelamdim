@@ -13,7 +13,7 @@
   "dialog-file-upload-btn": "Choose file",
   "dialog-submit": "Submit",
   "dialog-loading": "Just a few more moments...",
-  "dialog-success-message": "Upload was done successfully. Thank you!",
+  "dialog-success-message": "The file has been successfully uploaded and will be published after admin approval. Thank you!",
   "logout-btn": "Logout",
   "login-btn": "Login",
   "register-btn": "Register",

@@ -52,9 +52,7 @@ const CategoryPage = ({ files, error }) => {
       fileType && fileType !== FILE_TYPES_DICTIONARY.all;
     let filteredFiles = [...files];
     if (isFilteredByFileType) {
-      filteredFiles = filteredFiles.filter(
-        (file) => file.type === FILE_TYPES_DICTIONARY[fileType]
-      );
+      filteredFiles = filteredFiles.filter((file) => file.type === fileType);
     }
 
     if (filterText) {

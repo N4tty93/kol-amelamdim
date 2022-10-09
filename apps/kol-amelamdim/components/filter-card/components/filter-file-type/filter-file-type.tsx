@@ -49,6 +49,25 @@ export const FilterFileType = ({
           <MenuItem value={FILE_TYPES_DICTIONARY.jpeg}>
             {FILE_TYPES_DICTIONARY.jpeg}
           </MenuItem>
+          <MenuItem value={FILE_TYPES_DICTIONARY.msword}>
+            {FILE_TYPES_DICTIONARY.msword}
+          </MenuItem>
+          <MenuItem
+            value={
+              FILE_TYPES_DICTIONARY[
+                'vnd.openxmlformats-officedocument.wordprocessingml.document'
+              ]
+            }
+          >
+            {
+              FILE_TYPES_DICTIONARY[
+                'vnd.openxmlformats-officedocument.wordprocessingml.document'
+              ]
+            }
+          </MenuItem>
+          <MenuItem value={FILE_TYPES_DICTIONARY.plain}>
+            {FILE_TYPES_DICTIONARY.plain}
+          </MenuItem>
         </Select>
       </FormControl>
     </Box>

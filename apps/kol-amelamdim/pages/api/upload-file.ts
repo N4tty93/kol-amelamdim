@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import { File, User } from '@kol-amelamdim/models';
-import { Category } from '@kol-amelamdim/types';
+import { Category, FILE_TYPES_DICTIONARY } from '@kol-amelamdim/types';
 import { IncomingForm } from 'formidable';
 import { promises as fs } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
@@ -77,7 +77,7 @@ export default async function handler(req, res) {
             name: formData?.files?.sharedFile.originalFilename,
             size: fileSize,
             author: user?.fullName || 'לא ידוע',
-            type: fileType,
+            type: FILE_TYPES_DICTIONARY[fileType],
             URL: response.Location,
             approved: false,
           });
