@@ -13,8 +13,7 @@ const nextConfig = {
   },
   i18n,
   env: {
-    MONGO_URI:
-      'mongodb+srv://david:771992@cluster0.0tyx9p1.mongodb.net/?retryWrites=true&w=majority',
+    MONGO_URI: process.env.MONGO_URI,
   },
 };
 
