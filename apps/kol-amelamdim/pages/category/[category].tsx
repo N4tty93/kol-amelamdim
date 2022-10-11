@@ -169,7 +169,7 @@ export async function getStaticPaths(context) {
 export async function getStaticProps(context) {
   try {
     const category = context.params.category;
-    const { data } = await axios.get(`/api/category/${category}`);
+    const { data } = await axios.get(`/api/category/mivhanim`);
 
     return {
       props: {
