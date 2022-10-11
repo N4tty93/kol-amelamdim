@@ -92,7 +92,7 @@ const CategoryPage = ({ files, error }) => {
           setFilterText={setFilterText}
           onClick={handleFilter}
         />
-        {process.env.MONGO_URI}
+        {process.env.MONGO_URI || 'blablalba'}
         <TableContainer component={Paper} sx={{ maxHeight: 400, mt: '20px' }}>
           <Table stickyHeader>
             <TableHead>
