@@ -12,6 +12,10 @@ const nextConfig = {
     svgr: false,
   },
   i18n,
+  env: {
+    MONGO_URI:
+      'mongodb+srv://david:771992@cluster0.0tyx9p1.mongodb.net/?retryWrites=true&w=majority',
+  },
 };
 
 module.exports = withNx(nextConfig);
