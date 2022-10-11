@@ -92,6 +92,7 @@ const CategoryPage = ({ files, error }) => {
           setFilterText={setFilterText}
           onClick={handleFilter}
         />
+        {process.env.MONGO_URI}
         <TableContainer component={Paper} sx={{ maxHeight: 400, mt: '20px' }}>
           <Table stickyHeader>
             <TableHead>
@@ -169,11 +170,11 @@ export async function getStaticPaths(context) {
 export async function getStaticProps(context) {
   try {
     const category = context.params.category;
-    // const { data } = await axios.get(`/api/category/${category}`);
+    const { data } = await axios.get(`/api/category/${category}`);
 
     return {
       props: {
-        files: [],
+        files: data.files,
         error: false,
         ...(await serverSideTranslations(
           context.locale,
