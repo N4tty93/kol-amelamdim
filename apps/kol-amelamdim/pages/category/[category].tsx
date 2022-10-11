@@ -34,7 +34,7 @@ const CategoryPage = ({ files, error }) => {
   const [page, setPage] = useState<number>(0);
   const [filteredFiles, setFilteredFiles] = useState<IFile[]>([]);
   const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
-
+  console.log(error);
   const router = useRouter();
   const { t } = useTranslation('category');
   const { category } = router.query;
@@ -188,7 +188,7 @@ export async function getStaticProps(context) {
     return {
       props: {
         files: [],
-        error: true,
+        error: e,
         ...(await serverSideTranslations(
           context.locale,
           ['category', 'home'],
