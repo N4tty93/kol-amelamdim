@@ -26,7 +26,7 @@ export const Footer = () => {
         <Grid item>
           <WhatsappIcon
             round
-            onClick={() => window.open('https://wa.me/+972556875251')}
+            onClick={() => window.open('https://wa.me/+972583687427')}
           />
         </Grid>
         <Grid item>
