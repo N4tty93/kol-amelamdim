@@ -16,7 +16,6 @@ const Rights = styled(Typography)`
 export const Footer = () => {
   const translation = useTranslation('home');
   const { t } = translation;
-  test
   return (
     <StyledFooter>
       test
