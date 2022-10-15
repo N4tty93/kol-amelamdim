@@ -1,10 +1,11 @@
 import { StyledPageContainer } from '@kol-amelamdim/styled';
 import { Typography, styled } from '@mui/material';
 import { MOBILE_QUERY } from '@kol-amelamdim/constants';
-import axios from '../../api';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import i18nConfig from '../../next-i18next.config';
 import { useTranslation } from 'next-i18next';
+import { WeeklyArticle } from '@kol-amelamdim/models';
+import connect from '../../db/connectMongo';
 
 const WeeklyArticleContainer = styled(StyledPageContainer)`
   padding: 125px 0 70px;
@@ -52,10 +53,13 @@ const Index = ({ activeArticle }) => {
 
 export async function getServerSideProps({ locale }) {
   try {
-    const activeArticle = await axios.get('/api/get-active-weekly-article');
+    await connect();
+    const activeArticle = await WeeklyArticle.findOne({
+      isActiveArticle: true,
+    });
     return {
       props: {
-        activeArticle: activeArticle.data,
+        activeArticle: JSON.parse(JSON.stringify(activeArticle)),
         ...(await serverSideTranslations(
           locale,
           ['weekly-article', 'home'],
