@@ -51,7 +51,7 @@ const Index = ({ activeArticle }) => {
   }
 };
 
-export async function getServerSideProps({ locale }) {
+export async function getStaticProps({ locale }) {
   try {
     await connect();
     const activeArticle = await WeeklyArticle.findOne({
