@@ -190,6 +190,7 @@ export async function getStaticProps(context) {
         files: [],
         error: true,
         contextTest: '',
+
         errorData: e,
         ...(await serverSideTranslations(
           context.locale,
