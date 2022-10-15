@@ -23,8 +23,9 @@ import { FilterCard } from '../../components/filter-card/FilterCard';
 import { UploadFileDialog } from '../../components';
 import { AlertContext } from '../../context/alert-context-provider';
 import { AlertLayout } from '../../layouts';
-import axios from '../../api';
 import i18nConfig from '../../next-i18next.config';
+import connect from '../../db/connectMongo';
+import { File } from '@kol-amelamdim/models';
 
 const rowsPerPage = 25;
 
@@ -150,8 +151,6 @@ CategoryPage.getLayout = function getLayout(page: ReactElement) {
 export default CategoryPage;
 
 export async function getStaticPaths(context) {
-  // Get available locales from `context`
-
   const paths = Categories.map((category: CategoryObj) =>
     context.locales.map((locale) => ({
       params: { category: category.URL },
@@ -165,11 +164,12 @@ export async function getStaticPaths(context) {
 export async function getStaticProps(context) {
   try {
     const category = context.params.category;
-    const { data } = await axios.get(`/api/category/mivhanim`);
+    await connect();
+    const files = await File.find({ category });
 
     return {
       props: {
-        files: data.files,
+        files: JSON.parse(JSON.stringify(files)),
         error: false,
         ...(await serverSideTranslations(
           context.locale,
