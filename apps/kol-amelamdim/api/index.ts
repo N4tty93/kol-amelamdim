@@ -4,7 +4,7 @@ const axiosConfig = {
   baseURL:
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:4200'
-      : process.env.VERCEL_URL,
+      : 'https://' + process.env.NEXT_PUBLIC_VERCEL_URL,
   headers: {
     'Content-type': 'application/json',
     Accept: 'application/json',
