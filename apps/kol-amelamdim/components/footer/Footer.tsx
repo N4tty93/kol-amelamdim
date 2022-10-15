@@ -18,7 +18,6 @@ export const Footer = () => {
   const { t } = translation;
   return (
     <StyledFooter>
-      test
       <Rights align="center">{t('rights')}</Rights>
       <Typography align="center" sx={{ mt: 2, mb: 2 }}>
         {t('contact')}
