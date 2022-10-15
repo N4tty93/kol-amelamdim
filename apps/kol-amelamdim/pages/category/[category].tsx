@@ -41,8 +41,6 @@ const CategoryPage = ({ files, error }) => {
   const { setAlertMessage, setAlertType } = useContext(AlertContext);
   const displayedCategory = Categories.filter((cat) => cat.URL === category);
 
-  //TODO: handle Error & loading & no data to show.
-  //TODO: handle file upload to be added to the tabled immediately
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -170,6 +168,7 @@ export async function getStaticProps(context) {
     const category = context.params.category;
 
     const { data } = await axios.get(`/api/category/${category}`);
+
     return {
       props: {
         files: data.files,
