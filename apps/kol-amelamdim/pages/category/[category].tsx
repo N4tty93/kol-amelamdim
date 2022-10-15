@@ -154,13 +154,13 @@ CategoryPage.getLayout = function getLayout(page: ReactElement) {
 export default CategoryPage;
 
 export async function getStaticPaths(context) {
-  // Get available locales from `context`
+  const paths = Categories.map((category: CategoryObj) =>
+    context.locales.map((locale) => ({
+      params: { category: category.URL },
+      locale,
+    }))
+  ).flat();
 
-  const paths = Categories.map((category: CategoryObj) => ({
-    params: { category: category.URL },
-  })).flat();
-
-  console.log(paths);
   return { paths, fallback: false };
 }
 

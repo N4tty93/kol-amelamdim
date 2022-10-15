@@ -230,7 +230,7 @@ export function Home({ activeArticle }) {
   );
 }
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
+export async function getServerSideProps({ locale }: GetStaticPropsContext) {
   try {
     const activeArticle = await axios.get('/api/get-active-weekly-article');
     return {
