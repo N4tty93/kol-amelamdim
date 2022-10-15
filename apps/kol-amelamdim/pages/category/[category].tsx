@@ -189,6 +189,7 @@ export async function getStaticProps(context) {
       props: {
         files: [],
         error: true,
+        contextTest: '',
         errorData: e,
         ...(await serverSideTranslations(
           context.locale,
