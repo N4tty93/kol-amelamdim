@@ -28,14 +28,13 @@ import i18nConfig from '../../next-i18next.config';
 
 const rowsPerPage = 25;
 
-const CategoryPage = ({ files, error, contextTest, errorData }) => {
+const CategoryPage = ({ files, error }) => {
   const [fileType, setFileType] = useState('');
   const [filterText, setFilterText] = useState('');
   const [page, setPage] = useState<number>(0);
   const [filteredFiles, setFilteredFiles] = useState<IFile[]>([]);
   const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
-  console.log('contextTest', contextTest);
-  console.log('errorData', errorData);
+
   const router = useRouter();
   const { t } = useTranslation('category');
   const { category } = router.query;
@@ -175,8 +174,6 @@ export async function getStaticProps(context) {
       props: {
         files: data.files,
         error: false,
-        contextTest: context,
-        errorData: '',
         ...(await serverSideTranslations(
           context.locale,
           ['category', 'home'],
@@ -189,8 +186,6 @@ export async function getStaticProps(context) {
       props: {
         files: [],
         error: true,
-        contextTest: '',
-        errorData: e.message,
         ...(await serverSideTranslations(
           context.locale,
           ['category', 'home'],
