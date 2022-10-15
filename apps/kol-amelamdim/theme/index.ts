@@ -67,8 +67,9 @@ const defaultTheme = {
       styleOverrides: {
         root: {
           fontSize: '22px',
+          textTransform: 'none',
           '@media (max-width: 600px)': {
-            fontSize: '19px',
+            fontSize: '18px',
           },
         },
       },
