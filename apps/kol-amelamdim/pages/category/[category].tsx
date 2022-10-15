@@ -163,7 +163,7 @@ export async function getStaticPaths(context) {
     }))
   ).flat();
 
-  return { paths, fallback: false };
+  return { paths, fallback: false, x: 'bla' };
 }
 
 export async function getStaticProps(context) {
