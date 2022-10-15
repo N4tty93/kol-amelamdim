@@ -18,6 +18,7 @@ export const Footer = () => {
   const { t } = translation;
   return (
     <StyledFooter>
+      test
       <Rights align="center">{t('rights')}</Rights>
       <Typography align="center" sx={{ mt: 2, mb: 2 }}>
         {t('contact')}
@@ -26,7 +27,7 @@ export const Footer = () => {
         <Grid item>
           <WhatsappIcon
             round
-            onClick={() => window.open('https://wa.me/+972556875251')}
+            onClick={() => window.open('https://wa.me/+972583687427')}
           />
         </Grid>
         <Grid item>

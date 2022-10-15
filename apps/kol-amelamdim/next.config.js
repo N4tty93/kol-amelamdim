@@ -12,6 +12,9 @@ const nextConfig = {
     svgr: false,
   },
   i18n,
+  env: {
+    MONGO_URI: process.env.MONGO_URI,
+  },
 };
 
 module.exports = withNx(nextConfig);
