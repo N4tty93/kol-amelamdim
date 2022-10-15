@@ -28,13 +28,13 @@ import i18nConfig from '../../next-i18next.config';
 
 const rowsPerPage = 25;
 
-const CategoryPage = ({ files, error }) => {
+const CategoryPage = ({ files, error, contextTest }) => {
   const [fileType, setFileType] = useState('');
   const [filterText, setFilterText] = useState('');
   const [page, setPage] = useState<number>(0);
   const [filteredFiles, setFilteredFiles] = useState<IFile[]>([]);
   const [isUploadFileDialogOpen, setIsUploadFileDialogOpen] = useState(false);
-
+  console.log('contextTest', contextTest);
   const router = useRouter();
   const { t } = useTranslation('category');
   const { category } = router.query;
@@ -170,11 +170,11 @@ export async function getStaticProps(context) {
     const category = context.params.category;
 
     const { data } = await axios.get(`/api/category/${category}`);
-
     return {
       props: {
         files: data.files,
         error: false,
+        contextTest: context,
         ...(await serverSideTranslations(
           context.locale,
           ['category', 'home'],
