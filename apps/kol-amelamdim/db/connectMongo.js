@@ -15,6 +15,7 @@ async function connect() {
     bufferCommands: false,
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    maxPoolSize: 10,
   });
 
   return cachedConnection;

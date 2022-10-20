@@ -22,6 +22,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
 import i18nConfig from '../next-i18next.config';
 import { useTranslation } from 'next-i18next';
+import connect from '../db/connectMongo';
+import { WeeklyArticle } from '@kol-amelamdim/models';
 
 const CategoryCard = styled(Card)`
   height: 90px;
@@ -232,11 +234,15 @@ export function Home({ activeArticle }) {
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   try {
-    const activeArticle = await axios.get('/api/get-active-weekly-article');
+    await connect();
+    const activeArticle = await WeeklyArticle.findOne({
+      isActiveArticle: true,
+    });
+
     return {
       props: {
         ...(await serverSideTranslations(locale, ['home'], i18nConfig)),
-        activeArticle: activeArticle.data,
+        activeArticle: JSON.parse(JSON.stringify(activeArticle)),
       },
     };
   } catch (e) {
