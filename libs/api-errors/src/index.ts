@@ -104,4 +104,11 @@ export const API_ERRORS = {
       en: 'File type is not supported',
     },
   },
+  invalidPhoneError: {
+    code: 13,
+    message: {
+      he: 'הוזן טלפון לא תקין, אנא בדקו שהטלפון שהוזן תקין ונסו שוב',
+      en: 'Phone is not valid, try again with other phone',
+    },
+  },
 };

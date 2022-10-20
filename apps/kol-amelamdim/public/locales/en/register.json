@@ -5,5 +5,6 @@
   "fullName": "Full name",
   "submit": "Submit",
   "login-txt": "Already signed in?",
-  "login-btn": "Login"
+  "login-btn": "Login",
+  "phone-number": "Phone number"
 }
