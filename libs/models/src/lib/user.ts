@@ -5,6 +5,7 @@ export interface IUser {
   email: string;
   password: string;
   admin?: boolean;
+  phoneNumber: string;
 }
 
 const UserSchema = new mongoose.Schema(
