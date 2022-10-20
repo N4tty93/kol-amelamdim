@@ -16,11 +16,15 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import i18nConfig from '../../next-i18next.config';
 import { i18n, useTranslation } from 'next-i18next';
 
+const phoneNumberPattern =
+  /^(?:(?:(\+?972|\(\+?972\)|\+?\(972\))(?:\s|\.|-)?([1-9]\d?))|(0[23489]{1})|(0[57]{1}[0-9]))(?:\s|\.|-)?([^0\D]{1}\d{2}(?:\s|\.|-)?\d{4})$/;
+
 const Register = () => {
   const router = useRouter();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [fullName, setFullName] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -29,20 +33,26 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validator.isEmail(email)) {
-      try {
-        setLoading(true);
-        const { data } = await axios.post('/api/register', {
-          fullName,
-          email,
-          password,
-        });
-        if (data.success) {
-          await router.push('/');
+      if (phoneNumberPattern.test(phoneNumber)) {
+        try {
+          setLoading(true);
+          const { data } = await axios.post('/api/register', {
+            fullName,
+            email,
+            password,
+            phoneNumber,
+          });
+          if (data.success) {
+            await router.push('/');
+            setLoading(false);
+          }
+        } catch (error) {
           setLoading(false);
+          setError(error.response.data.message[i18n.language]);
         }
-      } catch (error) {
+      } else {
         setLoading(false);
-        setError(error.response.data.message[i18n.language]);
+        setError(API_ERRORS.invalidPhoneError.message[i18n.language]);
       }
     } else {
       setLoading(false);
@@ -65,6 +75,15 @@ const Register = () => {
               label={t('fullName')}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
+              error={!!error}
+            />
+            <TextField
+              sx={{ mt: 2 }}
+              required
+              id="outlined-required"
+              label={t('phone-number')}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               error={!!error}
             />
             <TextField

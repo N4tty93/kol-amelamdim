@@ -3,6 +3,7 @@
   "email": "אימייל",
   "password": "סיסמא",
   "fullName": "שם מלא",
+  "phone-number": "מספר טלפון",
   "submit": "הרשם",
   "login-txt": "כבר נרשמתם?",
   "login-btn": "לחצו להתחברות"
