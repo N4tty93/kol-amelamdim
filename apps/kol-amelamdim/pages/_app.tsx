@@ -29,15 +29,15 @@ const cacheRtl = createCache({
 });
 
 function RTL(props) {
-  if (i18n.language === 'he') {
+  if (i18n?.language === 'he') {
     return <CacheProvider value={cacheRtl}>{props.children}</CacheProvider>;
   } else return props.children;
 }
 
 function KolAmelamdimApp({ Component, pageProps }: AppPropsWithLayout) {
   const theme = useMemo(
-    () => createTheme(getDesignTokens(i18n.language || 'he')),
-    [i18n.language]
+    () => createTheme(getDesignTokens(i18n?.language || 'he')),
+    [i18n?.language]
   );
   const getLayout = Component.getLayout ?? ((page) => page);
 
