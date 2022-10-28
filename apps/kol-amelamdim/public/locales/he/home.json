@@ -5,7 +5,6 @@
   "contact": "צרו קשר:",
   "share-btn": "שיתוף חומרים",
   "download-btn": "הורדת חומרים",
-  "categories-title": "מה בא לך ללמוד ?",
   "dialog-header": "שיתוף תוכן",
   "dialog-subheader": "תודה שבחרת לשתף חומרי לימוד ולהגדיל תורה בישראל!",
   "dialog-file-name": "שם הקובץ",
@@ -22,7 +21,7 @@
   "keep-in-touch-heading": "בואו נשאר בקשר",
   "send-us-a-message": "השאירו לנו הודעה ונחזור אליכם בהקדם",
   "email-input-label": "כתובת אימייל",
-  "what-do-you-want-to-ask": "מה בא לכם לשאול אותנו?",
+  "what-do-you-want-to-ask": "מה תרצו לשאול אותנו?",
   "send-form-button-text": "שליחה",
   "phone-number": "מספר טלפון"
 }

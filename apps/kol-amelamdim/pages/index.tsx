@@ -131,10 +131,6 @@ export function Home({ activeArticle }) {
       <Divider sx={{ pt: 7, mb: 7 }} id="learn-categories" />
 
       <Grid>
-        <Typography variant="h3" component="h3">
-          {t('categories-title')}
-        </Typography>
-
         <Grid container sx={{ mt: 2 }}>
           {Categories.map((category) => (
             <Grid key={category.URL} item xs={6}>
