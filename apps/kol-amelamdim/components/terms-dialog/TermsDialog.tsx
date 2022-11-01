@@ -7,10 +7,10 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 import CloseIcon from '@mui/icons-material/Close';
 import { pdfjs, Document, Page } from 'react-pdf';
 import { i18n, useTranslation } from 'next-i18next';
-import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
