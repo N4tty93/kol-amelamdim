@@ -21,7 +21,8 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       await connect();
-      const { fullName, email, password, phoneNumber } = req.body;
+      const { fullName, email, password, phoneNumber, acceptedTerms } =
+        req.body;
       if (!validator.isEmail(email)) {
         return res.status(400).json(API_ERRORS.invalidEmailError);
       }
@@ -36,6 +37,7 @@ export default async function handler(req, res) {
         email,
         password: hashedPassword,
         phoneNumber,
+        acceptedTerms,
       });
 
       if (!newUser) {

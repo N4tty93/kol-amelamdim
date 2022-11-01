@@ -6,6 +6,7 @@ export interface IUser {
   password: string;
   admin?: boolean;
   phoneNumber: string;
+  acceptedTerms: boolean;
 }
 
 const UserSchema = new mongoose.Schema(
@@ -37,6 +38,9 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     admin: {
+      type: Boolean,
+    },
+    acceptedTerms: {
       type: Boolean,
     },
   },
