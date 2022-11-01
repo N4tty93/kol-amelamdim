@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
-import { Button, Dialog, Grid, IconButton, Typography } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  Grid,
+  IconButton,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { pdfjs, Document, Page } from 'react-pdf';
 import { i18n, useTranslation } from 'next-i18next';
+import { MOBILE_QUERY } from '@kol-amelamdim/constants';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -13,6 +21,7 @@ interface TermsDialogProps {
 
 const TermsDialog = ({ isOpen, onClose }: TermsDialogProps) => {
   const { t } = useTranslation('register');
+  const isMobile = useMediaQuery(MOBILE_QUERY);
 
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -46,14 +55,16 @@ const TermsDialog = ({ isOpen, onClose }: TermsDialogProps) => {
       >
         <CloseIcon />
       </IconButton>
-      <Document
-        file={
-          i18n.language === 'en' ? '../files/terms.pdf' : './files/terms.pdf'
-        }
-        onLoadSuccess={onDocumentLoadSuccess}
-      >
-        <Page pageNumber={pageNumber} />
-      </Document>
+      <Grid sx={{ mt: '30px' }}>
+        <Document
+          file={
+            i18n.language === 'en' ? '../files/terms.pdf' : './files/terms.pdf'
+          }
+          onLoadSuccess={onDocumentLoadSuccess}
+        >
+          <Page width={isMobile && '340'} pageNumber={pageNumber} />
+        </Document>
+      </Grid>
       <Grid container justifyContent="center">
         {pageNumber > 1 && (
           <Button onClick={changePageBack}>{t('previous-page')}</Button>
