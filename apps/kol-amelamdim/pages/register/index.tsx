@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import NextLink from 'next/link';
 import {
   TextField,
@@ -6,15 +6,19 @@ import {
   Grid,
   Typography,
   Link as MUILink,
+  Checkbox,
+  FormControlLabel,
+  Link,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import validator from 'validator';
 import { StyledPageContainer, FormError } from '@kol-amelamdim/styled';
 import { API_ERRORS } from '@kol-amelamdim/api-errors';
 import axios from '../../api';
+import { i18n, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import i18nConfig from '../../next-i18next.config';
-import { i18n, useTranslation } from 'next-i18next';
+import TermsDialog from '../../components/terms-dialog/TermsDialog';
 
 const phoneNumberPattern =
   /^(?:(?:(\+?972|\(\+?972\)|\+?\(972\))(?:\s|\.|-)?([1-9]\d?))|(0[23489]{1})|(0[57]{1}[0-9]))(?:\s|\.|-)?([^0\D]{1}\d{2}(?:\s|\.|-)?\d{4})$/;
@@ -27,6 +31,8 @@ const Register = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [acceptedTerms, setAcceptedTerms] = useState<boolean>(false);
+  const [termsDialogOpen, setTermsDialogOpen] = useState<boolean>(false);
 
   const { t } = useTranslation('register');
 
@@ -41,6 +47,7 @@ const Register = () => {
             email,
             password,
             phoneNumber,
+            acceptedTerms,
           });
           if (data.success) {
             await router.push('/');
@@ -105,11 +112,29 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               error={!!error}
             />
+            <Grid container alignItems="center">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    required
+                    onChange={(e) => setAcceptedTerms(e.target.checked)}
+                    name="acceptTerms"
+                  />
+                }
+                label={t('approve-terms')}
+              />
+              <Link
+                sx={{ cursor: 'pointer' }}
+                onClick={() => setTermsDialogOpen(true)}
+              >
+                {t('approve-terms-link')}
+              </Link>
+            </Grid>
             <Button
               sx={{ mt: 2 }}
               variant="contained"
               type="submit"
-              disabled={!email || !password || loading}
+              disabled={!email || !password || loading || !acceptedTerms}
             >
               {loading ? <>רק רגע..</> : t('submit')}
             </Button>
@@ -123,6 +148,10 @@ const Register = () => {
         </Grid>
         {error && <FormError>{error}</FormError>}
       </>
+      <TermsDialog
+        isOpen={termsDialogOpen}
+        onClose={() => setTermsDialogOpen(false)}
+      />
     </StyledPageContainer>
   );
 };
