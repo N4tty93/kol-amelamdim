@@ -122,6 +122,7 @@ export const Navbar = () => {
               </Button>
             </div>
           )}
+
           <StyledCountryDropDown
             value={i18n?.language || 'he'}
             onChange={handleLanguageChange}
