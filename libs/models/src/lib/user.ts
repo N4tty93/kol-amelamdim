@@ -42,6 +42,7 @@ const UserSchema = new mongoose.Schema(
     },
     acceptedTerms: {
       type: Boolean,
+      required: true,
     },
   },
   { collection: 'my-users' }
