@@ -33,7 +33,7 @@
     "react-dom": "18.2.0",
     "react-pdf": "5.7.2",
     "react-quill": "2.0.0",
-    "react-share": "4.4.0",
+    "react-share": "4.4.1",
     "regenerator-runtime": "0.13.7",
     "stylis": "4.1.1",
     "stylis-plugin-rtl": "2.1.1",
