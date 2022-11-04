@@ -33,6 +33,7 @@ const Login = () => {
       setLoading(true);
       try {
         const { data } = await axios.post('/api/login', { email, password });
+
         if (data.success) {
           setAuthenticated(true);
           await router.push('/');
