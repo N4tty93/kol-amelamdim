@@ -165,7 +165,7 @@ export async function getStaticProps(context) {
   try {
     const category = context.params.category;
     await connect();
-    const files = await File.find({ category });
+    const files = await File.find({ category, approved: true });
 
     return {
       props: {
