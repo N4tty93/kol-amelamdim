@@ -3,7 +3,6 @@ import {
   AppBar,
   Button,
   Grid,
-  ListItemIcon,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -36,8 +35,14 @@ const StyledNavbar = styled(AppBar)`
 
 const StyledCountryDropDown = styled(Select)`
   & .MuiSelect-select.MuiSelect-outlined {
-    padding: 0;
-    height: 36px;
+    padding: 10px;
+    color: #356559;
+  }
+`;
+
+const Actions = styled(Grid)`
+  @media ${MOBILE_QUERY} {
+    flex-wrap: wrap-reverse;
   }
 `;
 
@@ -101,7 +106,7 @@ export const Navbar = () => {
             onClick={() => router.push('/')}
           />
         </Grid>
-        <Grid
+        <Actions
           item
           container
           xs={7}
@@ -122,53 +127,14 @@ export const Navbar = () => {
               </Button>
             </div>
           )}
-
           <StyledCountryDropDown
             value={i18n?.language || 'he'}
             onChange={handleLanguageChange}
-            sx={{
-              height: '36px',
-              width: '40px',
-              '.MuiOutlinedInput-notchedOutline': { border: 'none' },
-            }}
-            IconComponent={() => null}
           >
-            <MenuItem
-              value={'he'}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <ListItemIcon>
-                <Image
-                  src="/images/ILIcon.png"
-                  alt="il"
-                  width={36}
-                  height={36}
-                />
-              </ListItemIcon>
-            </MenuItem>
-            <MenuItem
-              value={'en'}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <ListItemIcon>
-                <Image
-                  src="/images/USIcon.png"
-                  alt="us"
-                  width={36}
-                  height={36}
-                />
-              </ListItemIcon>
-            </MenuItem>
+            <MenuItem value={'he'}>עברית</MenuItem>
+            <MenuItem value={'en'}>English</MenuItem>
           </StyledCountryDropDown>
-        </Grid>
+        </Actions>
       </Grid>
     </StyledNavbar>
   );
