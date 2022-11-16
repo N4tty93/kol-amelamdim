@@ -110,6 +110,13 @@ const defaultTheme = {
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          color: '#356559',
+        },
+      },
+    },
     MuiTypography: {
       styleOverrides: {
         root: {
